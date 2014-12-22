@@ -1,0 +1,44 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+$speed-off:#bbbbbb;
+$speed-idle:#888888;
+$speed-slow:#5555bb;
+$speed-normal:#55bb55;
+$speed-fast:#bbbb55;
+$speed-speeding:#bb5555;
+
+span.speed-off{
+    background:$speed-off;
+    padding:0 10px;
+}
+
+span.speed-idle{
+    background:$speed-idle;
+    padding:0 10px;
+}
+
+span.speed-slow{
+    background:$speed-slow;
+    padding:0 10px;
+}
+
+span.speed-normal{
+    background:$speed-normal;
+    padding:0 10px;
+}
+
+span.speed-fast{
+    background:$speed-fast;
+    padding:0 10px;
+}
+
+span.speed-speeding{
+    background:$speed-speeding;
+    padding:0 10px;
+}
+
+span.speed-regend{
+    background:#ffffff;
+    padding:0 10px;
+}

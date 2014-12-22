@@ -1,0 +1,80 @@
+body {
+  overflow-y:scroll;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+svg {
+  display: block;
+}
+
+#x-bar {
+	display: inline-block;
+	position:absolute;
+	border: 1px solid #808080;
+	overflow: auto;
+}
+#x-bar svg {
+  min-width: 100px;
+  min-height: 100px;
+}
+
+#x-bar-Label {
+	height:50;
+}
+
+#r {
+	display: inline-block;
+	position:absolute;
+	border: 1px solid #808080;
+	overflow: auto;
+}
+#r svg {
+  min-width: 100px;
+  min-height: 100px;
+}
+
+::-webkit-scrollbar-track-piece{
+    background-color:#fff;
+    -webkit-border-radius:0;
+}
+::-webkit-scrollbar{
+    width:10px;
+    height:10px;
+}
+::-webkit-scrollbar-thumb{
+    height:50px;
+    background-color:#999;
+    -webkit-border-radius:4px;
+    outline:2px solid #fff;
+    outline-offset:-2px;
+    border: 2px solid #fff;
+}
+::-webkit-scrollbar-thumb:hover{
+    height:50px;
+    background-color:#9f9f9f;
+    -webkit-border-radius:4px;
+}
+
+table { 
+	width: 100%; 
+	border-collapse: collapse; 
+}
+/* Zebra striping */
+tr:nth-of-type(odd) { 
+	background: #eee; 
+}
+th { 
+	background: #a9a9a9; 
+	color: black; 
+	font-weight: bold; 
+}
+td, th { 
+	padding: 1px; 
+	border: 1px solid #cccccc; 
+	text-align: left; 
+}
+
+input[type="text"] {width: 80%;}

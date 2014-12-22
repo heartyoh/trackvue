@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lastname: MyString
+  firstname: MyString
+  email: MyString
+  group_id: MyString
+  vehicle_id: MyString
+  car_model: MyString
+  speed_slow: 1.5
+  speed_normal: 1.5
+  speed_fast: 1.5
+  address: MyString
+
+two:
+  lastname: MyString
+  firstname: MyString
+  email: MyString
+  group_id: MyString
+  vehicle_id: MyString
+  car_model: MyString
+  speed_slow: 1.5
+  speed_normal: 1.5
+  speed_fast: 1.5
+  address: MyString
