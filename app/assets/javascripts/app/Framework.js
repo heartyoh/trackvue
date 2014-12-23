@@ -6,6 +6,7 @@ Ext.define('App.Framework', {
 
   mixins: {
     history: 'App.mixin.History',
-    nav: 'App.mixin.Nav'
+    nav: 'App.mixin.Nav',
+    localstore: 'App.mixin.LocalStore'
   }
 });

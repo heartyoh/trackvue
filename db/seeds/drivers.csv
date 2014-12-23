@@ -1,0 +1,10 @@
+firstname, lastname, email, vehicle_name, car_model, driver_img, vehicle_img, speed_slow, speed_normal, speed_fast
+Ricardo   , R. Soltys,   RicardoRSoltys@rhyta.com,      BMW , 2015 BMW i8 Coupe , d01.jpeg , v01.jpeg , 32, 97, 121
+Gordon    , S. Aucoin,   GordonSAucoin@dayrep.com,     Audi ,            IFA F9 , d02.jpeg , v02.jpg  , 32, 97, 121
+Lawrence  ,     Keach, LawrenceTKeach@armyspy.com,     Benz ,      Coupe Torino , d03.jpeg , v03.jpeg , 32, 97, 121
+Charles   ,     Foley,  CharlesEFoley@teleworm.us,  Renault ,               QM3 , d04.jpeg , v04.png  , 32, 97, 121
+Walter    ,     Gomez,   WalterDGomez@armyspy.com,     Ford ,             Focus , d05.jpeg , v05.jpeg , 32, 97, 121
+Kevin     ,  Dunavant, KevinJDunavant@armyspy.com,     Ford ,            Taurus , d06.jpeg , v06.jpeg , 32, 97, 121
+Frank     ,   Morales,  FrankPMorales@armyspy.com,     Ford ,            Escape , d07.jpeg , v07.jpeg , 32, 97, 121
+Eric B.   ,      Long,   EricBLong@jourrapide.com,     Ford ,          Explorer , d08.jpeg , v08.jpeg , 32, 97, 121
+Shannon H.,    Graham,   ShannonHGraham@rhyta.com,     Ford ,           Mustang , d09.jpeg , v09.jpeg , 32, 97, 121

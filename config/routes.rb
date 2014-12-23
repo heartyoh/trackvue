@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
-  get 'drivers/index'
 
-  get 'drivers/show'
+  get 'trips/index'
+
+  get 'trips/show'
+
+  get 'trips/create'
+
+  get 'trips/update'
 
   get 'home/index'
 
@@ -23,6 +28,8 @@ Rails.application.routes.draw do
   resources :users
   resources :groups
   resources :drivers
+  resources :tracks
+  resources :trips
   resources :attachments
 
   # Example resource route with options:

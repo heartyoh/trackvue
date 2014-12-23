@@ -18,6 +18,10 @@
 
   <script type ="text/javascript" src="assets/app.js"></script>
 
+  <script type ="text/javascript">
+  var login = <%=raw current_user.to_json %>;
+  </script>
+
   <%= csrf_meta_tags %>
 </head>
 <body>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141222135537) do
+ActiveRecord::Schema.define(version: 20141223152026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,11 +55,69 @@ ActiveRecord::Schema.define(version: 20141222135537) do
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
+    t.text     "address"
     t.integer  "creator_id"
     t.integer  "updater_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "tracks", force: :cascade do |t|
+    t.integer  "driver_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "elapsed"
+    t.integer  "speed"
+    t.integer  "speed_max"
+    t.integer  "speed_avg"
+    t.float    "from_lat"
+    t.float    "from_lng"
+    t.float    "to_lat"
+    t.float    "to_lng"
+    t.string   "distance"
+    t.string   "status"
+    t.integer  "count_off"
+    t.integer  "count_idle"
+    t.integer  "count_slow"
+    t.integer  "count_normal"
+    t.integer  "count_fast"
+    t.integer  "count_speeding"
+    t.string   "front_img_url"
+    t.string   "rear_img_url"
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tracks", ["driver_id", "start_time", "end_time"], name: "idx_tracks_0", unique: true, using: :btree
+
+  create_table "trips", force: :cascade do |t|
+    t.integer  "driver_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "elapsed"
+    t.integer  "speed_max"
+    t.integer  "speed_avg"
+    t.float    "from_lat"
+    t.float    "from_lng"
+    t.float    "to_lat"
+    t.float    "to_lng"
+    t.string   "distance"
+    t.string   "status"
+    t.integer  "count_off"
+    t.integer  "count_idle"
+    t.integer  "count_slow"
+    t.integer  "count_normal"
+    t.integer  "count_fast"
+    t.integer  "count_speeding"
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trips", ["driver_id", "start_time"], name: "idx_trips_0", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

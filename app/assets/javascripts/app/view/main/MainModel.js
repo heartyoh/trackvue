@@ -10,8 +10,6 @@ Ext.define('App.view.main.MainModel', {
         name: 'App',
         location: 'Arion',
         brand_image: 'assets/logo.png',
-        user: {
-            id: 'orlando1'
-        }
+        login: login
     }
 });

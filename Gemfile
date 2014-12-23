@@ -50,6 +50,7 @@ gem 'carrierwave'
 gem 'jquery-fileupload-rails'
 gem 'jquery-cookie-rails'
 gem 'uuidtools'
+gem 'geocoder'
 
 gem 'hatiocore', path: 'vendor/bundles/hatiocore'
 

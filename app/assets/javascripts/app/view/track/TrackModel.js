@@ -1,3 +1,5 @@
+Ext.require('App.store.DriverStore');
+
 Ext.define('App.view.track.TrackModel', {
   extend: 'Ext.app.ViewModel',
 

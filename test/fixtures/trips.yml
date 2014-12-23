@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  driver: 
+  date: 2014-12-24
+  distance: 1.5
+  from: 1.5
+  to: 1.5
+  speed_max: 1.5
+  elapsed: 1
+  status: MyString
+  start_time: 2014-12-24 00:20:26
+  end_time: 2014-12-24 00:20:26
+  count_off: 1
+  count_idle: 1
+  count_slow: 1
+  count_normal: 1
+  count_fast: 1
+  count_speeding: 1
+
+two:
+  driver: 
+  date: 2014-12-24
+  distance: 1.5
+  from: 1.5
+  to: 1.5
+  speed_max: 1.5
+  elapsed: 1
+  status: MyString
+  start_time: 2014-12-24 00:20:26
+  end_time: 2014-12-24 00:20:26
+  count_off: 1
+  count_idle: 1
+  count_slow: 1
+  count_normal: 1
+  count_fast: 1
+  count_speeding: 1

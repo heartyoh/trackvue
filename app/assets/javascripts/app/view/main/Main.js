@@ -52,7 +52,7 @@ Ext.define('App.view.main.Main', {
         items: ['->', {
           xtype: 'component',
           bind: {
-              html: '{user.id}'
+              html: '{login.email}'
           }
         }, {
         //  text: 'DEMO_ARION'

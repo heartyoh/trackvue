@@ -1,31 +1,48 @@
 #encoding: utf-8
 
-driver = Driver.where(email: 'RicardoRSoltys@rhyta.com').first_or_create(
-  firstname: 'Ricardo',
-  lastname: 'R. Soltys',
-  email: 'RicardoRSoltys@rhyta.com',
-  vehicle_name: 'BMW',
-  car_model: '2015 BMW i8 Coupe',
-  group_id: 1,
-  speed_slow: 32,
-  speed_normal: 97,
-  speed_fast: 121,
-  address: 'Hogye 2(i)-dong, Dongan-gu, Anyang-si, Gyeonggi-do, South Korea'
-)
+group = Group.where(name: 'Arion').first();
 
-driver_img = Attachment.where(on_id: driver.id, on_type: 'Driver', tag: 'driver').first_or_create(
-    path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', 'driver.jpeg')),
-    on: driver,
-    tag: 'driver'
-  )
+headers, separator = [], ','
 
-vehicle_img = Attachment.where(on_id: driver.id, on_type: 'Driver', tag: 'vehicle').first_or_create(
-    path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', 'vehicle.jpeg')),
-    on: driver,
-    tag: 'vehicle'
-  )
+File.open(File.dirname(__FILE__) + '/drivers.csv', 'r').each_with_index do |line, index|
+  if index == 0
+    # 첫 번째 라인은 헤더 정보
+    headers = line.strip.split(separator).collect{ |header| header.strip.downcase }
+  else
+    # 두 번째 이상 부터는 데이터
+    next if line.strip.empty?
+    next if line.strip.starts_with? '#'
+    seq = -1
+    data = {}
+    values = line.split(separator).collect do |v|
+      seq += 1
+      data[headers[seq].to_sym] = v.strip
+    end
 
-driver.update!(
-  driver_img_url: driver_img.path,
-  vehicle_img_url: vehicle_img.path
-)
+    driver_img = data[:'driver_img']
+    data = data.except(:driver_img)
+    vehicle_img = data[:vehicle_img]
+    data = data.except(:vehicle_img)
+
+    data[:group_id] = group.id
+
+    driver = Driver.create! data
+
+    driver_img = Attachment.where(on_id: driver.id, on_type: 'Driver', tag: 'driver').first_or_create(
+      path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', driver_img)),
+      on: driver,
+      tag: 'driver'
+    )
+
+    vehicle_img = Attachment.where(on_id: driver.id, on_type: 'Driver', tag: 'vehicle').first_or_create(
+      path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', vehicle_img)),
+      on: driver,
+      tag: 'vehicle'
+    )
+
+    driver.update!(
+      driver_img_url: driver_img.path,
+      vehicle_img_url: vehicle_img.path
+    )
+  end
+end

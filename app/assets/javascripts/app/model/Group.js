@@ -5,5 +5,7 @@ Ext.define('App.model.Group', {
     name: 'name', type: 'string'
   }, {
     name: 'description', type: 'string'
+  }, {
+    name: 'address', type: 'string'
   }]
 });

@@ -1,16 +1,16 @@
 Ext.define('App.view.setting.GroupInfo', {
 	extend: 'Ext.panel.Panel',
 	requires: [
-		'App.view.setting.SettingController',
-		'App.view.setting.SettingModel',
+		'App.view.setting.GroupInfoController',
+		'App.view.setting.GroupInfoModel',
 		'Ext.ux.GMapPanel'
 	],
 
 	xtype: 'setting-group-info',
-	
-	controller: 'setting',
+
+	controller: 'group_info',
 	viewModel: {
-		type: 'setting'
+		type: 'group_info'
 	},
 
 	title: 'GROUP INFORMATION',
@@ -38,12 +38,12 @@ Ext.define('App.view.setting.GroupInfo', {
 			},
 			items: [{
 				xtype: 'combo',
+                itemId: 'combo_group',
 				fieldLabel: 'Group',
 				displayField: 'name',
 				valueField: 'name',
 				queryMode: 'local',
 				bind: {
-					selection: '{current.group_selection}',
 					store: '{stores.groups}'
 				}
 			}]
@@ -62,15 +62,24 @@ Ext.define('App.view.setting.GroupInfo', {
 			items: [{
 				xtype: 'textfield',
 				fieldLabel: 'Name',
-				emptyText: 'ex) Arion'
+				emptyText: 'ex) Arion',
+                bind: {
+                    value: '{current_group.name}'
+                }
 			}, {
 				xtype: 'textarea',
 				fieldLabel: 'Description',
-				emptyText: 'ex) Arion Co. LTD.'
+				emptyText: 'ex) Arion Co. LTD.',
+                bind: {
+                    value: '{current_group.description}'
+                }
 			}, {
 				xtype: 'textarea',
 				fieldLabel: '*Address',
-				emptyText: 'ex) Seoul, KR'
+				emptyText: 'ex) Seoul, KR',
+                bind: {
+                    value: '{current_group.address}'
+                }
 			}]
 		}],
 		dockedItems: [{
