@@ -19,6 +19,9 @@ Ext.define('App.view.track.TrackController', {
     },
     '#alerts': {
       itemclick: 'onAlertSelect'
+    },
+    '#driver_alerts': {
+      itemclick: 'onAlertSelect'
     }
   },
 

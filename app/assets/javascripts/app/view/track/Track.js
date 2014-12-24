@@ -225,6 +225,7 @@ Ext.define('App.view.track.Track', {
       }, {
         xtype: 'grid',
         title: 'ALERTS',
+        itemId: 'driver_alerts',
         bind: {
           store: '{stores.alert_history}'
         },
