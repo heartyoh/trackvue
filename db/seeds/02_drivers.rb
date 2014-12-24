@@ -25,6 +25,7 @@ File.open(File.dirname(__FILE__) + '/drivers.csv', 'r').each_with_index do |line
     data = data.except(:vehicle_img)
 
     data[:group_id] = group.id
+    data[:home] = '21 Baekhyeon-ro 101(baegil)beon-g, Bundang-gu, Seongnam-si, Gyeonggi-do, South Korea'
 
     driver = Driver.create! data
 

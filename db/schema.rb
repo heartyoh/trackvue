@@ -11,10 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141223152026) do
+ActiveRecord::Schema.define(version: 20141224041250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alerts", force: :cascade do |t|
+    t.integer  "driver_id"
+    t.datetime "alert_time"
+    t.string   "alert_type"
+    t.string   "severity"
+    t.string   "value"
+    t.float    "lat"
+    t.float    "lng"
+    t.string   "front_img_url"
+    t.string   "rear_img_url"
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alerts", ["driver_id", "alert_time"], name: "idx_alerts_0", unique: true, using: :btree
+  add_index "alerts", ["driver_id"], name: "index_alerts_on_driver_id", using: :btree
 
   create_table "attachments", force: :cascade do |t|
     t.string   "name",        null: false
@@ -37,15 +56,20 @@ ActiveRecord::Schema.define(version: 20141223152026) do
     t.string   "lastname"
     t.string   "firstname"
     t.string   "email"
+    t.string   "home"
     t.integer  "group_id"
     t.string   "vehicle_name"
     t.string   "car_model"
     t.float    "speed_slow"
     t.float    "speed_normal"
     t.float    "speed_fast"
-    t.text     "address"
     t.string   "vehicle_img_url"
     t.string   "driver_img_url"
+    t.float    "lat"
+    t.float    "lng"
+    t.text     "address"
+    t.string   "status"
+    t.integer  "speed"
     t.integer  "creator_id"
     t.integer  "updater_id"
     t.datetime "created_at"

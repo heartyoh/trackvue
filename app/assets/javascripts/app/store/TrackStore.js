@@ -1,13 +1,13 @@
-Ext.define('App.store.TripStore', {
+Ext.define('App.store.TrackStore', {
   extend: 'Ext.data.Store',
 
-  model: 'App.model.Trip',
+  model: 'App.model.Track',
 
-  autoLoad: true,
+  autoLoad: false,
 
   proxy: {
     type: 'rest',
-    url: 'trips',
+    url: 'tracks',
     reader: {
       type: 'json'
     }

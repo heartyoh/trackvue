@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  driver_id: 
+  alert_time: 2014-12-24 13:12:50
+  alert_type: MyString
+  value: MyString
+  lat: 1.5
+  lng: 1.5
+
+two:
+  driver_id: 
+  alert_time: 2014-12-24 13:12:50
+  alert_type: MyString
+  value: MyString
+  lat: 1.5
+  lng: 1.5

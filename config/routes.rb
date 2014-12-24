@@ -1,13 +1,4 @@
 Rails.application.routes.draw do
-
-  get 'trips/index'
-
-  get 'trips/show'
-
-  get 'trips/create'
-
-  get 'trips/update'
-
   get 'home/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -30,6 +21,7 @@ Rails.application.routes.draw do
   resources :drivers
   resources :tracks
   resources :trips
+  resources :alerts
   resources :attachments
 
   # Example resource route with options:

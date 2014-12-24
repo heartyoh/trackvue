@@ -41,20 +41,41 @@ Ext.define('App.view.track.Track', {
           { text: 'STS', dataIndex: 'status', width: 40 },
           { text: 'SPD', dataIndex: 'speed', width: 40 },
           { text: 'HEADING', dataIndex: 'heading', width: 120 },
-          { text: 'LOCATION', dataIndex: 'location', width: 120 }
+          { text: 'LOCATION', dataIndex: 'address', width: 120,
+            renderer: function(value, x, record) {
+              return value || '(home)';
+            }
+          }
         ]
       }, {
         xtype: 'grid',
+        itemId: 'alerts',
         title: 'DRIVER ALERTS',
         bind: {
           store: '{stores.alerts}'
         },
         columns: [
-          { text: 'VEHICLE',  dataIndex: 'vehicle', width: 80 },
-          { text: 'DRIVER', dataIndex: 'driver', width: 80 },
-          { text: 'DATE/TIME', dataIndex: 'datetime', width: 120 },
-          { text: 'TYP', dataIndex: 'type', width: 40 },
-          { text: 'SEV', dataIndex: 'severity', width: 40 },
+          { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
+          { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
+          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
+          { text: 'TYP', dataIndex: 'alert_type', width: 40 },
+          { text: 'SEV', dataIndex: 'severity', width: 40,
+            renderer: function(value){
+              var image;
+              switch(value) {
+                case 'S':
+                  image = 'alert_safety_red.png';
+                  break;
+                case 'N':
+                  image = 'alert_efficiency_red.png';
+                  break;
+                case 'T':
+                  image = 'alert_geofence_blue.png';
+                  break;
+              }
+              return '<img src="assets/severity/' + image + '" height="16" width="16" />';
+            }
+          },
           { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
         ]
 
@@ -165,13 +186,13 @@ Ext.define('App.view.track.Track', {
           }, {
             fieldLabel: 'Date/Time',
             bind: {
-              value: '{vehicle.datetime}'
+              value: '{vehicle_last_time}'
             }
           }, {
             xtype: 'textarea',
             fieldLabel: 'Location',
             bind: {
-              value: '{vehicle.location}'
+              value: '{vehicle.address}'
             }
           }]
         }, {
@@ -208,11 +229,27 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alert_history}'
         },
         columns: [
-          { text: 'VEHICLE',  dataIndex: 'vehicle', width: 80 },
-          { text: 'DRIVER', dataIndex: 'driver', width: 80 },
-          { text: 'DATE/TIME', dataIndex: 'datetime', width: 120 },
-          { text: 'TYP', dataIndex: 'type', width: 40 },
-          { text: 'SEV', dataIndex: 'severity', width: 40 },
+          { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
+          { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
+          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
+          { text: 'TYP', dataIndex: 'alert_type', width: 40 },
+          { text: 'SEV', dataIndex: 'severity', width: 40,
+            renderer: function(value){
+              var image;
+              switch(value) {
+                case 'S':
+                  image = 'alert_safety_red.png';
+                  break;
+                case 'N':
+                  image = 'alert_efficiency_red.png';
+                  break;
+                case 'T':
+                  image = 'alert_geofence_blue.png';
+                  break;
+              }
+              return '<img src="assets/severity/' + image + '" height="16" width="16" />';
+            }
+          },
           { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
         ]
       }, {
@@ -292,6 +329,7 @@ Ext.define('App.view.track.Track', {
   }, {
     region: 'center',
     xtype: 'gmappanel',
+    itemId: 'gmap',
     gmapType: 'map',
     zoomLevel: 14,
     center: {

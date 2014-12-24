@@ -6,8 +6,8 @@ Ext.define('App.store.GroupStore', {
   autoLoad: true,
 
   proxy: {
-    type: 'ajax',
-    url: '/groups.json',
+    type: 'rest',
+    url: 'groups',
     reader: {
       type: 'json'
     }

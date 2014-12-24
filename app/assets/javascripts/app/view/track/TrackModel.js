@@ -1,5 +1,7 @@
 Ext.require('App.store.DriverStore');
 Ext.require('App.store.TripStore');
+Ext.require('App.store.AlertStore');
+Ext.require('App.store.TrackStore');
 
 Ext.define('App.view.track.TrackModel', {
   extend: 'Ext.app.ViewModel',
@@ -12,6 +14,9 @@ Ext.define('App.view.track.TrackModel', {
     },
     trip_end_time: function (get) {
       return Ext.Date.format(get('trip.end_time'), 'Y-m-d H:i:s');
+    },
+    vehicle_last_time: function(get) {
+      return Ext.Date.format(get('vehicle.updated_at'), 'Y-m-d H:i:s');
     }
   },
 
@@ -47,42 +52,9 @@ Ext.define('App.view.track.TrackModel', {
     stores: {
       drivers: Ext.create('App.store.DriverStore'),
       trips: Ext.create('App.store.TripStore'),
-
-      alerts: Ext.create('Ext.data.Store', {
-        fields:['vehicle', 'driver', 'datetime', 'type', 'severity', 'description'],
-        data:[
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' }
-        ],
-        proxy: {
-          type: 'memory'
-        }
-      }),
-
-      alert_history: Ext.create('Ext.data.Store', {
-        fields:['vehicle', 'driver', 'datetime', 'type', 'severity', 'description'],
-        data:[
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' },
-          { vehicle: 'Lisa',  driver: 'V001', datetiem: '23/12/2014 02:43 PM', type: 0, severity: 'S', description: 'Targeted Geofence Exit' }
-        ],
-        proxy: {
-          type: 'memory'
-        }
-      })
+      tracks: Ext.create('App.store.TrackStore'),
+      alerts: Ext.create('App.store.AlertStore'), // 최근 기간 검색
+      alert_history: Ext.create('App.store.AlertStore') // 전체 기간 검
     }
   }
 });

@@ -27,5 +27,17 @@ Ext.define('App.model.Driver', {
     name: 'driver_img_url', type: 'string'
   }, {
     name: 'vehicle_img_url', type: 'string'
+  }, {
+    name: 'speed', type: 'integer'
+  }, {
+    name: 'lat', type: 'float'
+  }, {
+    name: 'lng', type: 'float'
+  }, {
+    name: 'status', type: 'string'
+  }, {
+    name: 'address', type: 'string'
+  }, {
+    name: 'updated_at', type: 'date'
   }]
 });

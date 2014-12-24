@@ -3,11 +3,11 @@ Ext.define('App.store.DriverStore', {
 
   model: 'App.model.Driver',
 
-  autoLoad: true,
+  autoLoad: false,
 
   proxy: {
-    type: 'ajax',
-    url: '/drivers.json',
+    type: 'rest',
+    url: 'drivers',
     reader: {
       type: 'json'
     }
