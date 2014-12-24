@@ -55,8 +55,14 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alerts}'
         },
         columns: [
-          { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
-          { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
+          { text: 'VEHICLE / DRIVER',  width: 200,
+            renderer: function(value, x, record) {
+              var drivers = this.up('app-track').getViewModel().get('stores.drivers');
+              var driver = drivers.findRecord('id', record.get('driver_id'));
+              return driver.get('lastname') + ' ' + driver.get('firstname') + ' / ' + driver.get('vehicle_name');
+            }
+          },
+          // { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
           { text: 'TYPE', dataIndex: 'alert_type', width: 50,
             renderer: function(value, s, record){
@@ -249,8 +255,13 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alert_history}'
         },
         columns: [
-          { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
-          { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
+          { text: 'VEHICLE / DRIVER',  width: 200,
+            renderer: function(value, x, record) {
+              var drivers = this.up('app-track').getViewModel().get('stores.drivers');
+              var driver = drivers.findRecord('id', record.get('driver_id'));
+              return driver.get('lastname') + ' ' + driver.get('firstname') + ' / ' + driver.get('vehicle_name');
+            }
+          },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
           { text: 'TYPE', dataIndex: 'alert_type', width: 50,
             renderer: function(value, s, record){

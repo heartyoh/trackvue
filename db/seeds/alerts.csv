@@ -1,9 +1,9 @@
 driver_id, alert_time, alert_type, severity, value, lat, lng, front_img, rear_img
 1, 2014-12-09 12:24:57, G,  S,             , 36.288, 127.249, front01.jpeg, rear01.jpeg
-1, 2014-12-13 14:56:14, G,  N,             , 36.298, 127.257, front02.jpeg, rear02.jpeg
-1, 2014-12-15 23:45:16, G,  T,             , 36.301, 127.251, front03.jpeg, rear03.jpeg
-1, 2014-12-16 03:31:24, G,  S,             , 36.295, 127.248, front04.jpeg, rear04.jpg
-1, 2014-12-20 12:12:17, G,  T,             , 36.289, 127.246, front05.jpeg, rear05.jpeg
-1, 2014-12-22 10:13:31, G,  N,             , 36.292, 127.252, front06.jpeg, rear06.jpeg
-1, 2014-12-23 09:54:33, G,  N,             , 36.273, 127.253, front07.jpeg, rear07.jpeg
-1, 2014-12-24 13:24:51, G,  S,             , 36.272, 127.254, front08.jpeg, rear08.jpeg
+1, 2014-12-13 14:56:14, E,  N,             , 36.298, 127.257, front02.jpeg, rear02.jpeg
+1, 2014-12-15 23:45:16, B,  T,             , 36.301, 127.251, front03.jpeg, rear03.jpeg
+1, 2014-12-16 03:31:24, F,  S,             , 36.295, 127.248, front04.jpeg, rear04.jpeg
+1, 2014-12-20 12:12:17, E,  T,             , 36.289, 127.246, front05.jpeg, rear05.jpeg
+1, 2014-12-22 10:13:31, F,  N,             , 36.292, 127.252, front06.jpeg, rear06.jpeg
+1, 2014-12-23 09:54:33, E,  N,             , 36.273, 127.253, front07.jpeg, rear07.jpeg
+1, 2014-12-24 13:24:51, F,  S,             , 36.272, 127.254, front08.jpeg, rear08.jpeg

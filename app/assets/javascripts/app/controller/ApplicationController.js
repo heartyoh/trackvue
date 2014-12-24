@@ -3,7 +3,7 @@ Ext.define('App.controller.ApplicationController', {
 
     requires : [ ],
 
-    stores : [ ],
+    stores : [ 'App.store.DriverStore' ],
     models : [ ],
     views : [ ],
 
