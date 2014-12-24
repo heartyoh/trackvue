@@ -8,7 +8,7 @@ Ext.define('App.view.track.TrackController', {
   alias: 'controller.track',
 
   control: {
-    '#': {// matches the view itself
+    '#': {
       afterrender: 'onAfterRender'
     },
     '#drivers': {
@@ -116,23 +116,68 @@ Ext.define('App.view.track.TrackController', {
     if(record.get('lat') && record.get('lng')) {
       var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
 
+      var icon;
+      var status = record.get('status');
+      if(status == 'E' || status == 'F')
+        icon = '/assets/van_off.png';
+      else {
+        var prefix = '/assets/van_';
+        var speed = record.get('speed');
+
+        if(speed == 0)
+          icon = prefix + 'idle.png';
+        else if(speed <= 32)
+          icon = prefix + 'slow.png';
+        else if(speed <= 97)
+          icon = prefix + 'normal.png';
+        else if(speed <= 121)
+          icon = prefix + 'fast.png';
+        else
+          icon = prefix + 'speed.png';
+      }
+
       var marker = new google.maps.Marker({
         position: latlng,
-        map: gmap
+        map: gmap,
+        icon: icon
       });
       this.addMarker(marker);
       this.setInformationWindow(gmap, record.get('address'), marker);
-
+      gmap.setCenter(latlng);
     } else {
       /* 현재 주소에 값이 없는 경우 */
       HF.geocode(this, record.get('home'), function(self, results, status) {
 
+        var latlng = results && results[0].geometry.location;
+
+        var icon;
+        var status = record.get('status');
+        if(status == 'E' || status == 'F')
+          icon = '/assets/van_off.png';
+        else {
+          var prefix = '/assets/van_';
+          var speed = record.get('speed');
+
+          if(speed == 0)
+            icon = prefix + 'idle.png';
+          else if(speed <= 32)
+            icon = prefix + 'slow.png';
+          else if(speed <= 97)
+            icon = prefix + 'normal.png';
+          else if(speed <= 121)
+            icon = prefix + 'fast.png';
+          else
+            icon = prefix + 'speed.png';
+        }
+
         var marker = new google.maps.Marker({
-          position: results && results[0].geometry.location,
-          map: gmap
+          position: latlng,
+          map: gmap,
+          icon: icon
         });
         self.addMarker(marker);
         self.setInformationWindow(gmap, record.get('home'), marker);
+        gmap.setCenter(latlng);
       });
     }
   },
@@ -168,10 +213,39 @@ Ext.define('App.view.track.TrackController', {
 
           bounds.extend(latlng);
 
+          var icon;
+          var status = record.get('status');
+          if(status == 'S')
+            icon = 'tripstart';
+          else if(status == 'E')
+            icon = 'tripend';
+          else {
+            var prefix = 'tripmarker_';
+            if(record.get('front_img_url') || record.get('rear_img_url'))
+              prefix += 'i_';
+
+            if(status == 'F')
+              icon = prefix + 'off';
+            else {
+              var speed = record.get('speed');
+              if(speed == 0)
+                icon = prefix + 'idle';
+              else if(speed <= 32)
+                icon = prefix + 'slow';
+              else if(speed <= 97)
+                icon = prefix + 'normal';
+              else if(speed <= 121)
+                icon = prefix + 'fast';
+              else
+                icon = prefix + 'speed';
+            }
+          }
+
           var marker = new google.maps.Marker({
             position: latlng,
             map: gmap,
             zIndex: i,
+            icon: '/assets/' + icon + '.png',
             info: record.data
           });
           self.addMarker(marker);
@@ -221,14 +295,49 @@ Ext.define('App.view.track.TrackController', {
         address = results[0].formatted_address
       }
 
+      var icon = 'assets/alert_';
+      var severity = record.get('severity'); //H, M, L
+      var type = record.get('alert_type'); //G,
+
+      switch(type) {
+        case 'G': // G Sensor
+          icon += 'safety_';
+          break;
+        case 'E':
+        case 'B':
+          icon += 'efficiency_';
+          break;
+        case 'F': // Geofence
+          icon += 'geofence_';
+          break;
+        default:
+          icon += 'safety_';
+      }
+
+      switch(severity) {
+        case 'S':
+          icon += 'red.png';
+          break;
+        case 'N':
+          icon += 'blue.png';
+          break;
+        case 'T':
+          icon += 'green.png';
+          break;
+        default:
+          icon += 'blue.png';
+      }
+
       var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
       var marker = new google.maps.Marker({
         position: latlng,
-        map: gmap
+        map: gmap,
+        icon: icon
       });
       self.addMarker(marker);
       var content = 'Address : ' + address;
       self.setInformationWindow(gmap, content, marker);
+      gmap.setCenter(latlng);
     });
   },
 
@@ -240,6 +349,14 @@ Ext.define('App.view.track.TrackController', {
     var lng = this.getViewModel().get('location.lng');
 
     var location = new google.maps.LatLng(lat, lng);
+
+    var marker = new google.maps.Marker({
+      position: location,
+      map: gmap,
+      icon: '/assets/home_location.png'
+    });
+
+    this.addMarker(marker);
 
     gmap.setCenter(location);
   }

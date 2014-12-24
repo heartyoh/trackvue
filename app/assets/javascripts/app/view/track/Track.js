@@ -58,22 +58,41 @@ Ext.define('App.view.track.Track', {
           { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
           { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
-          { text: 'TYP', dataIndex: 'alert_type', width: 40 },
-          { text: 'SEV', dataIndex: 'severity', width: 40,
-            renderer: function(value){
-              var image;
-              switch(value) {
+          { text: 'TYPE', dataIndex: 'alert_type', width: 50,
+            renderer: function(value, s, record){
+              var severity = record.get('severity'); //Severe, Normal, Trivial
+              var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
+              var icon;
+              switch(type) {
+                case 'G': // G Sensor
+                  icon = 'safety_';
+                  break;
+                case 'E': // External Button
+                case 'B': // Button
+                  icon = 'efficiency_';
+                  break;
+                case 'F': // Geofence
+                  icon = 'geofence_';
+                  break;
+                default:
+                  icon = 'safety_';
+              }
+
+              switch(severity) {
                 case 'S':
-                  image = 'alert_safety_red.png';
+                  icon += 'red.png';
                   break;
                 case 'N':
-                  image = 'alert_efficiency_red.png';
+                  icon += 'blue.png';
                   break;
                 case 'T':
-                  image = 'alert_geofence_blue.png';
+                  icon += 'green.png';
                   break;
+                default:
+                  icon += 'blue.png';
               }
-              return '<img src="assets/severity/' + image + '" height="16" width="16" />';
+
+              return '<img src="assets/alert/alert_' + icon + '" height="16" width="16" />';
             }
           },
           { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
@@ -233,22 +252,41 @@ Ext.define('App.view.track.Track', {
           { text: 'VEHICLE',  dataIndex: 'driver_id', width: 80 },
           { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
-          { text: 'TYP', dataIndex: 'alert_type', width: 40 },
-          { text: 'SEV', dataIndex: 'severity', width: 40,
-            renderer: function(value){
-              var image;
-              switch(value) {
+          { text: 'TYPE', dataIndex: 'alert_type', width: 50,
+            renderer: function(value, s, record){
+              var severity = record.get('severity'); //Severe, Normal, Trivial
+              var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
+              var icon;
+              switch(type) {
+                case 'G': // G Sensor
+                  icon = 'safety_';
+                  break;
+                case 'E': // External Button
+                case 'B': // Button
+                  icon = 'efficiency_';
+                  break;
+                case 'F': // Geofence
+                  icon = 'geofence_';
+                  break;
+                default:
+                  icon = 'safety_';
+              }
+
+              switch(severity) {
                 case 'S':
-                  image = 'alert_safety_red.png';
+                  icon += 'red.png';
                   break;
                 case 'N':
-                  image = 'alert_efficiency_red.png';
+                  icon += 'blue.png';
                   break;
                 case 'T':
-                  image = 'alert_geofence_blue.png';
+                  icon += 'green.png';
                   break;
+                default:
+                  icon += 'blue.png';
               }
-              return '<img src="assets/severity/' + image + '" height="16" width="16" />';
+
+              return '<img src="assets/alert/alert_' + icon + '" height="16" width="16" />';
             }
           },
           { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
