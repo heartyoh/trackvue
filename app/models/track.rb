@@ -3,13 +3,6 @@ class Track < ActiveRecord::Base
 
   after_create :update_trip
 
-  # reverse_geocoded_by :lat, :lng
-  # after_validation :reverse_geocode
-
-  def address
-
-  end
-
   def update_trip
     attributes = self.attributes.clone
 
@@ -17,9 +10,7 @@ class Track < ActiveRecord::Base
 
     debug_print attributes
 
-    trip = Trip.where(driver_id: attributes['driver_id'], start_time: attributes['start_time']).first_or_create(attributes)
-    trip.update!(attributes)
-    # trip = Trip.first_or_initialize(driver_id: attributes[:driver_id], start_time: attributes[:start_time])
-    # trip.update_attributes!(attributes)
+    trip = Trip.first_or_initialize(driver_id: attributes['driver_id'], start_time: attributes['start_time'])
+    trip.update_attributes!(attributes)
   end
 end

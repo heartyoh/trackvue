@@ -2,6 +2,8 @@ Ext.define('App.model.Driver', {
   extend: 'Ext.data.Model',
 
   fields: [{
+    name: 'id', type: 'string'
+  }, {
     name: 'lastname', type: 'string'
   }, {
     name: 'firstname', type: 'string'

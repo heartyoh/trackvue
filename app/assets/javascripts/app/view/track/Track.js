@@ -25,6 +25,7 @@ Ext.define('App.view.track.Track', {
     layout: 'border',
     items: [{
       xtype: 'tabpanel',
+      itemId: 'tabmaster',
       region: 'center',
       items: [{
         xtype: 'grid',
@@ -34,6 +35,7 @@ Ext.define('App.view.track.Track', {
           store: '{stores.drivers}'
         },
         columns: [
+          { text: '#', dataIndex: 'id', width: 30 },
           { text: 'DRIVER',  dataIndex: 'lastname', width: 80 },
           { text: 'VEHICLE', dataIndex: 'vehicle_name', width: 80 },
           { text: 'STS', dataIndex: 'status', width: 40 },
@@ -70,6 +72,7 @@ Ext.define('App.view.track.Track', {
     //         '<span class="speed-speeding">Speeding</span>'
     }, {
       xtype: 'tabpanel',
+      itemId: 'tabdetail',
       title: 'Speed : <span class="speed-off">Off</span>' +
         '<span class="speed-idle">Idle</span>' +
         '<span class="speed-slow">Slow</span>' +
@@ -215,15 +218,17 @@ Ext.define('App.view.track.Track', {
       }, {
         xtype: 'grid',
         title: 'TRIPS',
+        itemId: 'trips',
         bind: {
           store: '{stores.trips}'
         },
         columns: [
-          { text: 'DATE/TIME',  dataIndex: 'datetime', width: 150 },
+          { text: '#', dataIndex: 'id', width: 40 },
+          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 150 },
           { text: 'MAX', dataIndex: 'speed_max', width: 80 },
           { text: 'AVG', dataIndex: 'speed_avg', width: 80 },
           { text: 'DISTANCE', dataIndex: 'distance', width: 80 },
-          { text: 'TIME', dataIndex: 'time', width: 80 }
+          { text: 'TIME', dataIndex: 'elapsed', width: 80 }
         ]
       }, {
         xtype: 'panel',
@@ -254,12 +259,12 @@ Ext.define('App.view.track.Track', {
         items: [{
           fieldLabel: 'Start / End Time',
           bind: {
-            value: '{trip.start_time} / {trip.end_time}'
+            value: '{trip_start_time} / {trip_end_time}'
           }
         }, {
           fieldLabel: 'Distance / Duration',
           bind: {
-            value: '{trip.distance} / {trip.duration}'
+            value: '{trip.distance} / {trip.elapsed}'
           }
         }, {
           fieldLabel: 'Speed / Status',
@@ -274,12 +279,12 @@ Ext.define('App.view.track.Track', {
         }, {
           fieldLabel: 'From',
           bind: {
-            value: '{trip.from}'
+            value: '{trip.from_address}'
           }
         }, {
           fieldLabel: 'To',
           bind: {
-            value: '{trip.to}'
+            value: '{trip.to_address}'
           }
         }]
       }]
@@ -297,8 +302,11 @@ Ext.define('App.view.track.Track', {
         title: 'Central Park'
       }
     },
-    mapOptions : {
+    mapOptions: {
       mapTypeId: google.maps.MapTypeId.ROADMAP
+    },
+    listeners: {
+      mapready: 'onMapReady'
     }
   }]
 });

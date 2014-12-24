@@ -6,19 +6,19 @@ Ext.define('App.view.main.MainController', {
 
   alias: 'controller.main',
 
-  go: function(view) {
-    content = Ext.getCmp('content');
+  // go: function(view) {
+  //   content = Ext.getCmp('content');
 
-    var itemId = view.replace(/\./g, '_');
+  //   var itemId = view.replace(/\./g, '_');
 
-    var current = content.getComponent(itemId);
-    if(!current) {
-      current = content.add(Ext.create(view, {
-        itemId: itemId
-      }));
-    }
-    content.getLayout().setActiveItem(current);
-  },
+  //   var current = content.getComponent(itemId);
+  //   if(!current) {
+  //     current = content.add(Ext.create(view, {
+  //       itemId: itemId
+  //     }));
+  //   }
+  //   content.getLayout().setActiveItem(current);
+  // },
 
   onClickMenu: function (menu) {
     var view = menu.target;
