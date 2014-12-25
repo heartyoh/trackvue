@@ -8,7 +8,7 @@ class Track < ActiveRecord::Base
 
     attributes = attributes.except('id', 'front_img_url', 'rear_img_url', 'speed')
 
-    trip = Trip.first_or_initialize(driver_id: attributes['driver_id'], start_time: attributes['start_time'])
+    trip = Trip.where(driver_id: attributes['driver_id'], start_time: attributes['start_time']).first_or_create(attributes)
     trip.update_attributes!(attributes)
 
     self.driver.lat = self.to_lat

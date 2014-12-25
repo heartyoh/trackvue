@@ -44,6 +44,23 @@ Ext.define('App.view.track.TrackController', {
         // }
       }
     });
+
+    model.get('stores.alerts').load({
+      scope: this,
+      callback: function(records) {
+        // for(var i = 0;i < records.length;i++) {
+        //   var record = records[i];
+        //   HF.reverse_geocode(record, record.get('lat'), record.get('lng'), function(record, results, status) {
+        //     console.log(arguments)
+        //     if (results && results[0]) {
+        //       record.set('address', results[0].formatted_address);
+        //     } else {
+        //       record.set('address', '--')
+        //     }
+        //   });
+        // }
+      }
+    });
   },
 
   addMarker: function(marker) {
@@ -105,6 +122,29 @@ Ext.define('App.view.track.TrackController', {
 
   onDriverSelect: function(grid, record, item, index, e, eOpts) {
     this.getViewModel().set('vehicle', record.data);
+
+    var trips = this.getViewModel().get('stores.trips');
+    trips.getProxy().extraParams = {
+      driver_id: record.get('id')
+    };
+
+    trips.load({
+      scope: this,
+      callback: function(records) {
+      }
+    });
+
+    var alert_history = this.getViewModel().get('stores.alert_history');
+    alert_history.getProxy().extraParams = {
+      driver_id: record.get('id')
+    };
+
+    alert_history.load({
+      scope: this,
+      callback: function(records) {
+      }
+    });
+
     var gmap = this.getView().down('#gmap').gmap;
 
     gmap.setZoom(11);
@@ -200,7 +240,12 @@ Ext.define('App.view.track.TrackController', {
     // Track리스트를 가져온다.
     // TODO Trip ID를 파라미터로 보낸다.
     var tracks = this.getViewModel().get('stores.tracks');
+    tracks.getProxy().extraParams = {
+      driver_id: record.get('driver_id'),
+      start_time: record.get('start_time')
+    };
     tracks.load({
+
       callback: function(records) {
         var path = [];
 
@@ -215,6 +260,7 @@ Ext.define('App.view.track.TrackController', {
 
           var icon;
           var status = record.get('status');
+
           if(status == 'S')
             icon = 'tripstart';
           else if(status == 'E')
@@ -336,6 +382,15 @@ Ext.define('App.view.track.TrackController', {
       });
       self.addMarker(marker);
       var content = 'Address : ' + address;
+      var content = "<div>Address : " + address + "</div>"
+      + "<div>Time : " + record.get('alert_time') + "</div>";
+      if(record.get('front_img_url')) {
+        content += '<img src="' + record.get('front_img_url') + '" width=256 height=172></img>';
+      }
+      if(record.get('rear_img_url')) {
+        content += '<img src="' + record.get('rear_img_url') + '" width=256 height=172></img>';
+      }
+
       self.setInformationWindow(gmap, content, marker);
       gmap.setCenter(latlng);
     });

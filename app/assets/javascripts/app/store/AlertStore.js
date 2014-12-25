@@ -3,7 +3,7 @@ Ext.define('App.store.AlertStore', {
 
   model: 'App.model.Alert',
 
-  autoLoad: true,
+  autoLoad: false,
 
   proxy: {
     type: 'rest',

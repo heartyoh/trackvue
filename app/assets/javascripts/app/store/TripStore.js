@@ -3,7 +3,7 @@ Ext.define('App.store.TripStore', {
 
   model: 'App.model.Trip',
 
-  autoLoad: true,
+  autoLoad: false,
 
   proxy: {
     type: 'rest',

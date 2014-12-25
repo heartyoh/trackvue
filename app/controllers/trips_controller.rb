@@ -2,7 +2,10 @@ class TripsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with(@trips=Trip.all)
+    filter = {}
+    filter[:driver_id] = params[:driver_id] if params[:driver_id]
+
+    respond_with(@trips=Trip.where(filter))
   end
 
   def show
