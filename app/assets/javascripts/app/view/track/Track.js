@@ -137,8 +137,9 @@ Ext.define('App.view.track.Track', {
         },
         padding: 10,
         defaults: {
-          xtype: 'textfield',
-          fieldStyle: 'border:none 0px black',
+          xtype: 'displayfield',
+          labelStyle: 'font-weight:bold;',
+          labelAlign: 'right',
           labelAlign: 'right',
           editable: false,
           padding: 4,
@@ -150,7 +151,6 @@ Ext.define('App.view.track.Track', {
             value: '{location.description}'
           }
         }, {
-          xtype: 'textarea',
           fieldLabel: 'Address',
           bind: {
             value: '{location.address}'
@@ -168,35 +168,35 @@ Ext.define('App.view.track.Track', {
         }]
       }, {
         xtype: 'container',
-        title: 'VEHICLE DETAILS',
+        title: 'DRIVER',
         layout: {
           type: 'hbox',
           align: 'stretch'
         },
         items: [{
           xtype: 'panel',
+          border: 0,
           layout: {
             type: 'vbox',
             align: 'center'
           },
           padding: 8,
           defaults: {
-            xtype: 'textfield',
-            fieldStyle: 'border:none 0px black',
+            xtype: 'displayfield',
+            labelStyle: 'font-weight:bold;',
             labelAlign: 'right',
-            editable: false,
             padding: 0,
             width: 380
           },
           items: [{
-            fieldLabel: 'VEHICLE',
-            bind: {
-              value: '{vehicle.vehicle_name}'
-            }
-          }, {
             fieldLabel: 'Driver',
             bind: {
-              value: '{vehicle.lastname}'
+              value: '{vehicle.firstname} {vehicle.lastname}'
+            }
+          }, {
+            fieldLabel: 'Vehicle',
+            bind: {
+              value: '{vehicle.vehicle_name} {vehicle.car_model}'
             }
           }, {
             fieldLabel: 'Speed',
@@ -214,7 +214,6 @@ Ext.define('App.view.track.Track', {
               value: '{vehicle_last_time}'
             }
           }, {
-            xtype: 'textarea',
             fieldLabel: 'Location',
             bind: {
               value: '{vehicle.address}'
@@ -321,23 +320,24 @@ Ext.define('App.view.track.Track', {
         xtype: 'panel',
         title: 'TRIP DETAILS',
         tbar: [{
-          xtype: 'label',
+          xtype: 'displayfield',
+          fieldLabel: 'TRIP ID',
+          labelStyle: 'font-weight:bold;',
+          labelWidth: 60,
           bind: {
-            text: 'TRIP ID: {trip.id}'
+            value: '{trip.id}'
           }
         }, '->', {
           text: 'up'
         }, {
           text: 'down'
         }],
-        layout: {
-          type: 'vbox',
-          align: 'stretch'
-        },
+        // layout: 'anchor',
+        autoScroll: true,
         margin: '0 8 4 8',
         defaults: {
-          xtype: 'textfield',
-          fieldStyle: 'border:none 0px black',
+          xtype: 'displayfield',
+          labelStyle: 'font-weight:bold;',
           labelAlign: 'right',
           labelWidth: 140,
           editable: false,
@@ -346,17 +346,17 @@ Ext.define('App.view.track.Track', {
         items: [{
           fieldLabel: 'Start / End Time',
           bind: {
-            value: '{trip_start_time} / {trip_end_time}'
+            value: '{trip_start_time} ~ {trip_end_time}'
           }
         }, {
           fieldLabel: 'Distance / Duration',
           bind: {
-            value: '{trip.distance} / {trip.elapsed}'
+            value: '{trip.distance} Km / {trip.elapsed} seconds'
           }
         }, {
           fieldLabel: 'Speed / Status',
           bind: {
-            value: '{trip.speed_max} (Avg: {trip.speed_avg}) / {trip.status}'
+            value: '{trip.speed_max} Km/h (Avg: {trip.speed_avg}) / {trip.status}'
           }
         }, {
           fieldLabel: 'Events',

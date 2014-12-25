@@ -309,6 +309,15 @@ Ext.define('App.view.track.TrackController', {
             }
             self.setInformationWindow(gmap, content, this);
           });
+
+          self.getViewModel().set('trip.events',
+            '<span class="speed-off">' + record.get('count_off') + '</span>' +
+            '<span class="speed-idle">' + record.get('count_idle') + '</span>' +
+            '<span class="speed-slow">' + record.get('count_slow') + '</span>' +
+            '<span class="speed-normal">' + record.get('count_normal') + '</span>' +
+            '<span class="speed-fast">' + record.get('count_fast') + '</span>' +
+            '<span class="speed-speeding">' + record.get('count_speeding') + '</span>'
+          );
         }
 
         gmap.fitBounds(bounds);
