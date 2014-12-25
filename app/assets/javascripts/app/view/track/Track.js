@@ -64,7 +64,7 @@ Ext.define('App.view.track.Track', {
           },
           // { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
-          { text: 'TYPE', dataIndex: 'alert_type', width: 50,
+          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50,
             renderer: function(value, s, record){
               var severity = record.get('severity'); //Severe, Normal, Trivial
               var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
@@ -262,7 +262,7 @@ Ext.define('App.view.track.Track', {
             }
           },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
-          { text: 'TYPE', dataIndex: 'alert_type', width: 50,
+          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50,
             renderer: function(value, s, record){
               var severity = record.get('severity'); //Severe, Normal, Trivial
               var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
@@ -328,9 +328,9 @@ Ext.define('App.view.track.Track', {
             value: '{trip.id}'
           }
         }, '->', {
-          text: 'up'
+          icon: '/assets/sort_up.png'
         }, {
-          text: 'down'
+          icon: '/assets/sort_down.png'
         }],
         // layout: 'anchor',
         autoScroll: true,

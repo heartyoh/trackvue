@@ -49,6 +49,7 @@ Ext.define('App.view.main.Main', {
       items: [{
         xtype: 'toolbar',
         flex: 1,
+        border: 0,
         items: ['->', {
           xtype: 'component',
           bind: {
@@ -62,7 +63,12 @@ Ext.define('App.view.main.Main', {
         }]
       }, {
         xtype: 'toolbar',
+        border: 0,
         flex: 1,
+        defaults: {
+          border: 0,
+          style: 'background-color:white;background-image:none;'
+        },
         items: [{
           xtype: 'button',
           text: 'Home',
