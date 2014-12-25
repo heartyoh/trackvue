@@ -20,9 +20,6 @@ class TracksController < ApplicationController
   end
 
   def create
-    # front_img_param = track_params[:front_img]
-    # rear_img_param = track_params[:rear_img]
-
     @track = Track.create(track_params.except(:front_img, :rear_img))
 
     front_img = Attachment.create(

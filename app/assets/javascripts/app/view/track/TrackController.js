@@ -242,7 +242,7 @@ Ext.define('App.view.track.TrackController', {
     var tracks = this.getViewModel().get('stores.tracks');
     tracks.getProxy().extraParams = {
       driver_id: record.get('driver_id'),
-      start_time: record.get('start_time')
+      start_time: record.raw.start_time
     };
     tracks.load({
 
