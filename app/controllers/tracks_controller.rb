@@ -45,6 +45,8 @@ class TracksController < ApplicationController
 private
 
   def track_params
-    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img)
+    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img, :count_off, :count_idle, :count_slow, :count_normal, :count_fast, :count_speeding)
   end
 end
+
+
