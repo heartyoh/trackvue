@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: trackvue_production
-  username: trackvue
-  password: <%= ENV['TRACKVUE_DATABASE_PASSWORD'] %>
+  # username: trackvue
+  # password: <%= ENV['TRACKVUE_DATABASE_PASSWORD'] %>
