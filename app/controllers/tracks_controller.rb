@@ -7,7 +7,7 @@ class TracksController < ApplicationController
     filter[:driver_id] = params[:driver_id] if params[:driver_id]
     filter[:start_time] = Time.parse(params[:start_time]) if params[:start_time]
 
-    respond_with(@tracks=Track.where(filter))
+    respond_with(@tracks=Track.where(filter).order(:start_time, :end_time))
   end
 
   def show

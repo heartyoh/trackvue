@@ -39,9 +39,9 @@ Ext.define('App.view.track.Track', {
           { text: 'DRIVER',  dataIndex: 'lastname', width: 80 },
           { text: 'VEHICLE', dataIndex: 'vehicle_name', width: 80 },
           { text: 'STS', dataIndex: 'status', width: 40 },
-          { text: 'SPD', dataIndex: 'speed', width: 40 },
-          { text: 'HEADING', dataIndex: 'heading', width: 120 },
-          { text: 'LOCATION', dataIndex: 'address', width: 120,
+          { text: 'SPD', dataIndex: 'speed', width: 50 },
+          { text: 'HEADING', dataIndex: 'heading', width: 60 },
+          { text: 'LOCATION', dataIndex: 'address', width: 180,
             renderer: function(value, x, record) {
               return value || '(home)';
             }

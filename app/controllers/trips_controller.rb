@@ -5,7 +5,7 @@ class TripsController < ApplicationController
     filter = {}
     filter[:driver_id] = params[:driver_id] if params[:driver_id]
 
-    respond_with(@trips=Trip.where(filter))
+    respond_with(@trips=Trip.where(filter).order(start_time: :desc))
   end
 
   def show

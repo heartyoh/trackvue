@@ -5,7 +5,7 @@ class AlertsController < ApplicationController
     filter = {}
     filter[:driver_id] = params[:driver_id] if params[:driver_id]
 
-    respond_with(@alerts=Alert.where(filter))
+    respond_with(@alerts=Alert.where(filter).order(alert_time: :desc))
   end
 
   def show

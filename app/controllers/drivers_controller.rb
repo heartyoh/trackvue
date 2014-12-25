@@ -2,7 +2,7 @@ class DriversController < ApplicationController
   respond_to :json
 
   def index
-    respond_with(@drivers = Driver.all)
+    respond_with(@drivers = Driver.order(:id).all)
   end
 
   def create
