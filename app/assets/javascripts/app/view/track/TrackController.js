@@ -240,9 +240,10 @@ Ext.define('App.view.track.TrackController', {
     // Track리스트를 가져온다.
     // TODO Trip ID를 파라미터로 보낸다.
     var tracks = this.getViewModel().get('stores.tracks');
+
     tracks.getProxy().extraParams = {
       driver_id: record.get('driver_id'),
-      start_time: record.raw.start_time
+      start_time: Ext.Date.format(record.get('start_time'), 'c')
     };
     tracks.load({
 

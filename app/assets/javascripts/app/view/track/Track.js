@@ -311,7 +311,7 @@ Ext.define('App.view.track.Track', {
         },
         columns: [
           { text: '#', dataIndex: 'id', width: 40 },
-          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 150 },
+          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:sZ', width: 150 },
           { text: 'MAX', dataIndex: 'speed_max', width: 80 },
           { text: 'AVG', dataIndex: 'speed_avg', width: 80 },
           { text: 'DISTANCE', dataIndex: 'distance', width: 80 },
