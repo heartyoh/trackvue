@@ -51,6 +51,7 @@ gem 'jquery-fileupload-rails'
 gem 'jquery-cookie-rails'
 gem 'uuidtools'
 gem 'geocoder'
+gem 'geokit'
 
 gem 'hatiocore', path: 'vendor/bundles/hatiocore'
 

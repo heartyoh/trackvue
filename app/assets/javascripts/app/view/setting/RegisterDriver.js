@@ -7,7 +7,7 @@ Ext.define('App.view.setting.RegisterDriver', {
 	],
 
 	xtype: 'setting-register-driver',
-	
+
 	controller: 'setting',
 	viewModel: {
 		type: 'setting'
@@ -156,13 +156,16 @@ Ext.define('App.view.setting.RegisterDriver', {
 			padding: 6,
 			items: [{
 				xtype: 'numberfield',
-				fieldLabel: 'Slow'
+				fieldLabel: 'Slow',
+                value: 32
 			}, {
 				xtype: 'numberfield',
-				fieldLabel: 'Normal'
+				fieldLabel: 'Normal',
+                value: 97
 			}, {
 				xtype: 'numberfield',
-				fieldLabel: 'Fast'
+				fieldLabel: 'Fast',
+                value: 121
 			}]
 		}],
 		dockedItems: [{

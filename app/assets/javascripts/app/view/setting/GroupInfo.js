@@ -22,6 +22,7 @@ Ext.define('App.view.setting.GroupInfo', {
 
 	items: [{
 		xtype: 'form',
+        border: 0,
 		padding: 8,
 		width: 360,
 		items: [{
@@ -96,6 +97,7 @@ Ext.define('App.view.setting.GroupInfo', {
 	}, {
 		xtype: 'gmappanel',
 		flex: 1,
+        itemId: 'gmap',
 		gmapType: 'map',
 		zoomLevel: 14,
 		center: {

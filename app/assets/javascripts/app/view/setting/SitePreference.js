@@ -7,7 +7,7 @@ Ext.define('App.view.setting.SitePreference', {
 	],
 
 	xtype: 'setting-site-preference',
-	
+
 	controller: 'setting',
 	viewModel: {
 		type: 'setting'
@@ -17,12 +17,14 @@ Ext.define('App.view.setting.SitePreference', {
 
 	layout: {
 		type: 'vbox',
-		align: 'center'
+		align: 'center',
+        pack: 'center'
 	},
 
 	items: [{
 		xtype: 'form',
 		width: 400,
+        border: 0,
 		items: [{
 			xtype: 'fieldset',
 			title: 'Distance & Speed',

@@ -22,5 +22,21 @@ class Track < ActiveRecord::Base
     self.driver.address = formatted_address
 
     self.driver.save!
+
+
+# Sample Code
+  # polygon = [
+  #   Geokit::LatLng.new(0,0),
+  #   Geokit::LatLng.new(10,0),
+  #   Geokit::LatLng.new(10,10),
+  #   Geokit::LatLng.new(20,10),
+  #   Geokit::LatLng.new(20,0),
+  #   Geokit::LatLng.new(30,0),
+  #   Geokit::LatLng.new(30,20),
+  #   Geokit::LatLng.new(0,20)
+  # ]
+# point = Geokit::LatLng.new(5,5)
+# polygon.contains?(point) # => true
+
   end
 end
