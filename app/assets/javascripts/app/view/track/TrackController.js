@@ -238,7 +238,6 @@ Ext.define('App.view.track.TrackController', {
     this.clearAll();
 
     // Track리스트를 가져온다.
-    // TODO Trip ID를 파라미터로 보낸다.
     var tracks = this.getViewModel().get('stores.tracks');
 
     tracks.getProxy().extraParams = {
@@ -336,74 +335,123 @@ Ext.define('App.view.track.TrackController', {
       }
     });
 
+    // Alert리스트를 가져온다.
+    var alerts = Ext.create('App.store.AlertStore');
+
+    alerts.getProxy().extraParams = {
+      driver_id: record.get('driver_id'),
+      trip_start_time: Ext.Date.format(record.get('start_time'), 'c')
+    };
+    alerts.load({
+
+      callback: function(records) {
+        var alerts = [];
+        for(i = 0;i < records.length;i++) {
+          alerts.push(records[i].data);
+        }
+
+        self.showAlerts(alerts, false);
+      }
+    });
+  },
+
+  showAlerts: function(alerts, fit) {
+    var gmap = this.getView().down('#gmap').gmap;
+
+    if(fit) {
+      gmap.setZoom(11);
+    }
+
+    for(i = 0;i < alerts.length;i++) {
+      var alert = alerts[i];
+
+      HF.reverse_geocode(this, alert.lat, alert.lng, function(self, results, status) {
+        var address = '--';
+        if (results && results[0]) {
+          address = results[0].formatted_address
+        }
+
+        var icon = 'assets/alert_';
+        var severity = alert.severity; //H, M, L
+        var type = alert.alert_type; //G,
+
+        switch(type) {
+          case 'G': // G Sensor
+            icon += 'safety_';
+            break;
+          case 'E':
+          case 'B':
+            icon += 'efficiency_';
+            break;
+          case 'F': // Geofence
+            icon += 'geofence_';
+            break;
+          default:
+            icon += 'safety_';
+        }
+
+        switch(severity) {
+          case 'S':
+            icon += 'red.png';
+            break;
+          case 'N':
+            icon += 'blue.png';
+            break;
+          case 'T':
+            icon += 'green.png';
+            break;
+          default:
+            icon += 'blue.png';
+        }
+
+        var latlng = new google.maps.LatLng(alert.lat, alert.lng);
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: gmap,
+          icon: icon,
+          info: alert
+        });
+        self.addMarker(marker);
+
+        if(fit) {
+          var content = 'Address : ' + address;
+          var content = "<div>Address : " + address + "</div>"
+          + "<div>Time : " + alert.alert_time + "</div>";
+          if(alert.front_img_url) {
+            content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
+          }
+          if(alert.rear_img_url) {
+            content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
+          }
+
+          self.setInformationWindow(gmap, content, marker);
+          gmap.setCenter(latlng);
+        } else {
+          google.maps.event.addListener(marker, 'click', function(e) {
+
+            var alert = this.info;
+
+            var content = 'Address : ' + address;
+            var content = "<div>Address : " + address + "</div>"
+            + "<div>Time : " + alert.alert_time + "</div>";
+            if(alert.front_img_url) {
+              content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
+            }
+            if(alert.rear_img_url) {
+              content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
+            }
+
+            self.setInformationWindow(gmap, content, this);
+          });
+        }
+      });
+    }
   },
 
   onAlertSelect: function(grid, record, item, index, e, eOpts) {
-
-    var gmap = this.getView().down('#gmap').gmap;
-
-    gmap.setZoom(11);
     this.clearAll();
 
-    HF.reverse_geocode(this, record.get('lat'), record.get('lng'), function(self, results, status) {
-      var address = '--';
-      if (results && results[0]) {
-        address = results[0].formatted_address
-      }
-
-      var icon = 'assets/alert_';
-      var severity = record.get('severity'); //H, M, L
-      var type = record.get('alert_type'); //G,
-
-      switch(type) {
-        case 'G': // G Sensor
-          icon += 'safety_';
-          break;
-        case 'E':
-        case 'B':
-          icon += 'efficiency_';
-          break;
-        case 'F': // Geofence
-          icon += 'geofence_';
-          break;
-        default:
-          icon += 'safety_';
-      }
-
-      switch(severity) {
-        case 'S':
-          icon += 'red.png';
-          break;
-        case 'N':
-          icon += 'blue.png';
-          break;
-        case 'T':
-          icon += 'green.png';
-          break;
-        default:
-          icon += 'blue.png';
-      }
-
-      var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
-      var marker = new google.maps.Marker({
-        position: latlng,
-        map: gmap,
-        icon: icon
-      });
-      self.addMarker(marker);
-      var content = 'Address : ' + address;
-      var content = "<div>Address : " + address + "</div>"
-      + "<div>Time : " + record.get('alert_time') + "</div>";
-      if(record.get('front_img_url')) {
-        content += '<img src="' + record.get('front_img_url') + '" width=256 height=172></img>';
-      }
-      if(record.get('rear_img_url')) {
-        content += '<img src="' + record.get('rear_img_url') + '" width=256 height=172></img>';
-      }
-
-      self.setInformationWindow(gmap, content, marker);
-      gmap.setCenter(latlng);
-    });
+    this.showAlerts([record.data], true);
   },
 
   onMapReady: function(mappanel, gmap) {

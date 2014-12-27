@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224041250) do
+ActiveRecord::Schema.define(version: 20141227073504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141224041250) do
     t.integer  "updater_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "trip_start_time"
   end
 
   add_index "alerts", ["driver_id", "alert_time"], name: "idx_alerts_0", unique: true, using: :btree

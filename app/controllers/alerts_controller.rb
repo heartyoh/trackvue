@@ -4,6 +4,7 @@ class AlertsController < ApplicationController
   def index
     filter = {}
     filter[:driver_id] = params[:driver_id] if params[:driver_id]
+    filter[:trip_start_time] = Time.parse(params[:trip_start_time]) if params[:trip_start_time]
 
     respond_with(@alerts=Alert.where(filter).order(alert_time: :desc))
   end
@@ -40,6 +41,6 @@ class AlertsController < ApplicationController
 private
 
   def alert_params
-    params.require(:alert).permit(:driver_id, :alert_time, :alert_type, :severity, :value, :lat, :lng, :front_img, :rear_img)
+    params.require(:alert).permit(:driver_id, :trip_start_time, :alert_time, :alert_type, :severity, :value, :lat, :lng, :front_img, :rear_img)
   end
 end
