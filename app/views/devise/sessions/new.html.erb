@@ -1,25 +1,25 @@
-<h2>Log in</h2>
+<h2 class="login-img">track<strong>vue</strong><span class="login-img favicon"></span> <span class="login-text">login</span></h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'new_user'}) do |f| %>
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email, html: {class: 'login-img user_email'} %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
 
   <div class="field">
-    <%= f.label :password %><br />
+    <%= f.label :password, html: {class: 'login-img user_password'} %><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
 
   <% if devise_mapping.rememberable? -%>
     <div class="field">
       <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+      <%= f.label :remember_me, html: {class: 'user_remember_me'} %>
     </div>
   <% end -%>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit "Log in", html: {class: 'loginBtn'} %>
   </div>
 <% end %>
 

@@ -1,0 +1,84 @@
+*{margin:0;padding:0;}
+body{
+    background:#e7ecf2;
+    font-size:13px;color:#585858;
+}
+.login-img{background:url('login.png') 50% 0 no-repeat;}
+h2{
+    width:200px;
+    margin:auto;margin-top:12%;
+    padding-top:125px;
+    position:relative;
+    z-index:100;
+    text-align:center;text-transform:uppercase;
+    font-size:16px;font-weight:normal;color:#3c83c2;
+}
+h2 .login-text{color:#585858;}
+.favicon{
+    background-position:50% -200px;
+    width:16px;height:16px;
+    display:inline-block;
+    position:relative;
+    top:2px;
+    margin-right:5px;
+}
+#new_user{
+    background-color:#fff;
+    border:1px solid #d0d9e4;
+    width:300px;
+    margin:auto;margin-top:-80px;
+    padding:90px 25px 10px 25px;
+}
+.field{
+    clear:both;
+    margin-top:12px;
+}
+.actions{clear:both;}
+.field input{
+    background-color:#f4f4f4;
+    border:none;
+    padding:7px;
+    font-size:14px;
+}
+.field input[type='email'],.field input[type='password']{width:245px;}
+.field input[type='checkbox']{float:left;}
+.field label{
+    width:40px;height:31px;
+    display:inline-block;
+    float:left;
+}
+.field .user_email{background-position:49% -243px;background-color:#559ad8;}
+.field .user_password{background-position:49% -292px;background-color:#559ad8;}
+.user_remember_me{width:200px !important;margin-left:5px;color:#666;font-size:11px;}
+a{
+    border-right:1px dotted #ccc;
+    padding:0 10px;
+    color:#666;text-decoration:none;font-size:12px;
+}
+a:hover{color:#559ad8;}
+a:first-child{padding-left:0 !important;}
+input[type="submit"].loginBtn{
+    float:right;
+    position:relative;
+    top:-4px;
+    cursor:pointer;
+    font-size:20px;
+}
+.success{
+    background-color:#7cbe13;
+    position:absolute;top:10px;
+    margin-left:1%;padding:9px 5px 8px 5px;
+    width:96%;
+    border-radius:4px;
+    text-align:center;
+    color:#fff;letter-spacing:1px;
+}
+.warning{
+    background-color:#ff5252;
+    position:absolute;top:10px;
+    margin-left:1%;padding:9px 5px 8px 5px;
+    width:96%;
+    border-radius:4px;
+    text-align:center;
+    color:#fff;letter-spacing:1px;
+}
