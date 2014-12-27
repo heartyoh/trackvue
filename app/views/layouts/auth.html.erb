@@ -21,8 +21,12 @@
 </head>
 <body>
 
-<div><%= notice %></div>
-<div><%= alert %></div>
+<% if notice -%>
+<div class="success"><%= notice %></div>
+<% end -%>
+<% if alert && !alert.empty? -%>
+<div class="warning"><%= alert %></div>
+<% end -%>
 
 <%= yield %>
 
