@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   resources :trips
   resources :alerts
   resources :attachments
+  
+	resources :groups do
+    member do
+      post :update_group_address
+    end
+	end
 
   # Example resource route with options:
   #   resources :products do

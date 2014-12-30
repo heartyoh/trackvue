@@ -1,14 +1,14 @@
 Ext.define('App.view.setting.RegisterDriver', {
 	extend: 'Ext.form.Panel',
 	requires: [
-		'App.view.setting.SettingController',
+		'App.view.setting.RegisterDriverController',
 		'App.view.setting.SettingModel',
 		'Ext.ux.GMapPanel'
 	],
 
 	xtype: 'setting-register-driver',
 
-	controller: 'setting',
+	controller: 'register_driver',
 	viewModel: {
 		type: 'setting'
 	},
@@ -173,9 +173,11 @@ Ext.define('App.view.setting.RegisterDriver', {
 			dock: 'bottom',
 			items: ['->', {
 				xtype: 'button',
+				itemId: 'btn_save',
 				text: 'SAVE'
 			}, {
 				xtype: 'button',
+				itemId: 'btn_reset',
 				text: 'RESET'
 			}]
 		}]
@@ -190,11 +192,14 @@ Ext.define('App.view.setting.RegisterDriver', {
 		items: [{
 			xtype: 'textfield',
 			fieldLabel: 'Address',
+			itemId : 'txt_address',
 			margin: 6,
-			emptyText: 'ex) Seoul, KR'
+			emptyText: 'ex) Seoul, KR',
+			enableKeyEvents : true
 		}, {
 			xtype: 'gmappanel',
 			flex: 1,
+        	itemId: 'gmap',
 			gmapType: 'map',
 			zoomLevel: 14,
 			center: {

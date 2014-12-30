@@ -88,9 +88,11 @@ Ext.define('App.view.setting.GroupInfo', {
 			dock: 'bottom',
 			items: ['->', {
 				xtype: 'button',
+				itemId: 'btn_save',
 				text: 'SAVE'
 			}, {
 				xtype: 'button',
+				itemId: 'btn_reset',
 				text: 'RESET'
 			}]
 		}]
