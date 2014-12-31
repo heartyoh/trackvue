@@ -6,11 +6,17 @@ class DriversController < ApplicationController
   end
 
   def create
-    @driver = Driver.create(params)
+    @driver = Driver.create(driver_params)
 
     respond_with(@driver)
   end
 
   def show
+  end
+  
+private
+
+  def driver_params
+    params.require(:driver).permit(:group_id, :lastname, :firstname, :email, :home, :vehicle_name, :car_model, :speed_slow, :speed_normal, :speed_fast)
   end
 end

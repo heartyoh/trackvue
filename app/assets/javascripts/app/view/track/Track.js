@@ -381,7 +381,7 @@ Ext.define('App.view.track.Track', {
     xtype: 'gmappanel',
     itemId: 'gmap',
     gmapType: 'map',
-    zoomLevel: 14,
+    // zoomLevel: 14,
     center: {
       lat: 40.782686,
       lng: -73.96524,
@@ -392,9 +392,9 @@ Ext.define('App.view.track.Track', {
     },
     mapOptions: {
       mapTypeId: google.maps.MapTypeId.ROADMAP
-    },
+    }/*,
     listeners: {
       mapready: 'onMapReady'
-    }
+    }*/
   }]
 });

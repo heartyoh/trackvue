@@ -31,11 +31,59 @@ Ext.define('App.view.setting.RegisterDriverController', {
 	},
 	
 	onClickReset: function() {
-		Ext.Msg.alert('Infomation', "Reset Complete");
+		var group = this.getView().down('#group_combo').reset();
+		var last_name = this.getView().down('#last_name').reset();
+		var first_name = this.getView().down('#first_name').reset();
+		var email = this.getView().down('#email').reset();
+		var vehicle_id = this.getView().down('#vehicle_id').reset();
+		var car_model = this.getView().down('#car_model').reset();
+		var speed_slow = this.getView().down('#speed_slow').reset();
+		var speed_normal = this.getView().down('#speed_normal').reset();
+		var speed_fast = this.getView().down('#speed_fast').reset();
+		var address = this.getView().down('#txt_address').reset();
+		this.setMarker(null);
 	},
 	
 	onClickSave: function() {
-		Ext.Msg.alert('Infomation', "Save Complete");
+		var selection = this.getViewModel().get('current.group_selection');
+		
+		var group_id = selection.get('id');
+		var last_name = this.getView().down('#last_name').getValue();
+		var first_name = this.getView().down('#first_name').getValue();
+		var email = this.getView().down('#email').getValue();
+		var vehicle_id = this.getView().down('#vehicle_id').getValue();
+		var car_model = this.getView().down('#car_model').getValue();
+		var speed_slow = this.getView().down('#speed_slow').getValue();
+		var speed_normal = this.getView().down('#speed_normal').getValue();
+		var speed_fast = this.getView().down('#speed_fast').getValue();
+		var address = this.getView().down('#txt_address').getValue();
+		
+		
+		var params = {
+			"driver[group_id]" : group_id,
+			"driver[lastname]" : last_name,
+			"driver[firstname]" : first_name,
+			"driver[email]" : email,
+			"driver[home]" : address,
+			"driver[vehicle_name]" : vehicle_id,
+			"driver[car_model]" : car_model,
+			"driver[speed_slow]" : speed_slow,
+			"driver[speed_normal]" : speed_normal,
+			"driver[speed_fast]" : speed_fast
+		}
+		
+		var self = this;
+		
+    	Ext.Ajax.request({
+		    url : "drivers.json",
+		    method : 'POST',
+			params : params,
+		    success : function(response) {
+				Ext.Msg.alert('Infomation', "Save Complete");
+				self.onClickReset();
+			},
+			scope : this
+		});
 	},
 
 	onMapReady: function() {

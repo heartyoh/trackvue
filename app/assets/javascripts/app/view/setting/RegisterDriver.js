@@ -39,6 +39,7 @@ Ext.define('App.view.setting.RegisterDriver', {
 			},
 			items: [{
 				xtype: 'combo',
+				itemId: 'group_combo',
 				fieldLabel: 'Group',
 				displayField: 'name',
 				valueField: 'name',
@@ -72,13 +73,16 @@ Ext.define('App.view.setting.RegisterDriver', {
 					hidden: true
 				}, {
 					xtype: 'textfield',
-					fieldLabel: 'Lastname'
+					fieldLabel: 'Lastname',
+					itemId: 'last_name'
 				}, {
 					xtype: 'textfield',
-					fieldLabel: 'Firstname'
+					fieldLabel: 'Firstname',
+					itemId: 'first_name'
 				}, {
 					xtype: 'textfield',
-					fieldLabel: 'Email'
+					fieldLabel: 'Email',
+					itemId: 'email'
 				}]
 			}, {
 				xtype: 'image',
@@ -118,13 +122,12 @@ Ext.define('App.view.setting.RegisterDriver', {
 					hidden: true
 				}, {
 					xtype: 'textfield',
-					fieldLabel: 'Vehicle ID'
+					fieldLabel: 'Vehicle ID',
+					itemId: 'vehicle_id'
 				}, {
 					xtype: 'textfield',
-					fieldLabel: 'Car Model'
-				}, {
-					xtype: 'textfield',
-					fieldLabel: 'Email'
+					fieldLabel: 'Car Model',
+					itemId: 'car_model'
 				}]
 			}, {
 				xtype: 'image',
@@ -156,14 +159,17 @@ Ext.define('App.view.setting.RegisterDriver', {
 			padding: 6,
 			items: [{
 				xtype: 'numberfield',
+				itemId: 'speed_slow',
 				fieldLabel: 'Slow',
                 value: 32
 			}, {
 				xtype: 'numberfield',
+				itemId: 'speed_normal',
 				fieldLabel: 'Normal',
                 value: 97
 			}, {
 				xtype: 'numberfield',
+				itemId: 'speed_fast',
 				fieldLabel: 'Fast',
                 value: 121
 			}]

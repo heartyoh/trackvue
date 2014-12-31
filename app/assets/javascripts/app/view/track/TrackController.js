@@ -27,10 +27,12 @@ Ext.define('App.view.track.TrackController', {
 
   onAfterRender: function() {
     var model = this.getViewModel();
+	this.onRefreshTermChange(60);
 
     model.get('stores.drivers').load({
       scope: this,
       callback: function(records) {
+		  this.onMapReady();
         // for(var i = 0;i < records.length;i++) {
         //   var record = records[i];
         //   HF.reverse_geocode(record, record.get('lat'), record.get('lng'), function(record, results, status) {
@@ -42,6 +44,7 @@ Ext.define('App.view.track.TrackController', {
         //     }
         //   });
         // }
+		
       }
     });
 
@@ -74,6 +77,10 @@ Ext.define('App.view.track.TrackController', {
       }
       this.markers.push(marker);
     }
+	  //     google.maps.event.addListener(marker, 'mouseover', function() {
+	  //       // console.log('polygon dragged');
+	  // console.log(marker);
+	  //     });
   },
 
   clearMarkers: function() {
@@ -117,6 +124,28 @@ Ext.define('App.view.track.TrackController', {
       this.infowindow = new google.maps.InfoWindow();
 
     this.infowindow.setContent(infowindow_content);
+    this.infowindow.open(gmap, marker);
+  },
+  
+  setInformationWindowDirver: function(gmap, vehicle, firstname, lastname, location, marker) {
+    if(!this.infowindow)
+      this.infowindow = new google.maps.InfoWindow();
+	
+	var content = '<b>Vehicle :</b> ' + vehicle + '<br><hr><br> Drivers : ' + lastname + 
+	' ' + firstname + '<br>' +
+	'Location : ' + location + '<br>';
+	
+    this.infowindow.setContent(content);
+    this.infowindow.open(gmap, marker);
+  },
+  
+  setInformationWindowCompany: function(gmap, company, address, marker) {
+    if(!this.infowindow)
+      this.infowindow = new google.maps.InfoWindow();
+
+	var content = '<b>Company :</b> ' + company + '<br>' + '<b>Location :</b> ' + address + '<br>';
+	
+    this.infowindow.setContent(content);
     this.infowindow.open(gmap, marker);
   },
 
@@ -182,7 +211,7 @@ Ext.define('App.view.track.TrackController', {
         icon: icon
       });
       this.addMarker(marker);
-      this.setInformationWindow(gmap, record.get('address'), marker);
+      this.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('address'), marker);
       gmap.setCenter(latlng);
     } else {
       /* 현재 주소에 값이 없는 경우 */
@@ -216,7 +245,7 @@ Ext.define('App.view.track.TrackController', {
           icon: icon
         });
         self.addMarker(marker);
-        self.setInformationWindow(gmap, record.get('home'), marker);
+        self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('home'), marker);
         gmap.setCenter(latlng);
       });
     }
@@ -453,13 +482,34 @@ Ext.define('App.view.track.TrackController', {
 
     this.showAlerts([record.data], true);
   },
+  
+  onRefreshTermChange : function(value) {
+	var interval = value * 1000;
+	if(this.refreshTask) {
+		this.refreshTask.cancel();
+	}
+	
+	this.refreshTask = new Ext.util.DelayedTask(function() {
+		this.onMapReady();
+		this.refreshTask.delay(interval);
+	}, this);
+	
+	this.refreshTask.delay(interval);
+  },
 
-  onMapReady: function(mappanel, gmap) {
+  onMapReady: function() {
+	  
+	this.clearAll();
+	var gmap = this.getView().down('#gmap').gmap;
+	var self = this;
+	var count = 0;
     /*
       그룹에 해당하는 위치를 중심으로 초기에 지도의 위치를 잡는다.
     */
     var lat = this.getViewModel().get('location.lat');
     var lng = this.getViewModel().get('location.lng');
+	var address = this.getViewModel().get('location.address');
+	var company = this.getViewModel().get('location.description');
 
     var location = new google.maps.LatLng(lat, lng);
 
@@ -468,10 +518,117 @@ Ext.define('App.view.track.TrackController', {
       map: gmap,
       icon: '/assets/home_location.png'
     });
+	
+	this.addMarker(marker);
+	
+    google.maps.event.addListener(marker, 'mouseover', function() {
+      self.setInformationWindowCompany(gmap, company, address, marker);
+    });
+	
+	var driver_store = this.getViewModel().get('stores.drivers');
+	
+	var bounds = null;
+	
+	driver_store.each(function(record) {
+		
+	    if(record.get('lat') && record.get('lng')) {
+			var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
+			
+	        var icon;
+	        var status = record.get('status');
+	        if(status == 'E' || status == 'F')
+	          icon = '/assets/van_off.png';
+	        else {
+	          var prefix = '/assets/van_';
+	          var speed = record.get('speed');
 
-    this.addMarker(marker);
+	          if(speed == 0)
+	            icon = prefix + 'idle.png';
+	          else if(speed <= 32)
+	            icon = prefix + 'slow.png';
+	          else if(speed <= 97)
+	            icon = prefix + 'normal.png';
+	          else if(speed <= 121)
+	            icon = prefix + 'fast.png';
+	          else
+	            icon = prefix + 'speed.png';
+	        }
+			
+	        var marker = new google.maps.Marker({
+	          position: latlng,
+	          map: gmap,
+	          icon: icon
+	        });
+	        self.addMarker(marker);
+			
+			if(!bounds)
+				bounds = new google.maps.LatLngBounds(latlng, latlng);
+			else if (latlng)
+				bounds.extend(latlng);
+			
+			
+	        google.maps.event.addListener(marker, 'mouseover', function() {
+	          self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('address'), marker);
+	        });
+			
+			count++;
+			
+		    if(count == driver_store.count())
+		    {
+			  gmap.fitBounds(bounds);
+		    }
+		} else {
+	        HF.geocode(this, record.get('home'), function(scope, results, status) {
 
-    gmap.setCenter(location);
+	          var latlng = results && results[0].geometry.location;
+			  
+		      var icon;
+		      var status = record.get('status');
+		      if(status == 'E' || status == 'F')
+		        icon = '/assets/van_off.png';
+		      else {
+		        var prefix = '/assets/van_';
+		        var speed = record.get('speed');
+
+		        if(speed == 0)
+		          icon = prefix + 'idle.png';
+		        else if(speed <= 32)
+		          icon = prefix + 'slow.png';
+		        else if(speed <= 97)
+		          icon = prefix + 'normal.png';
+		        else if(speed <= 121)
+		          icon = prefix + 'fast.png';
+		        else
+		          icon = prefix + 'speed.png';
+		      }
+			  
+	          var marker = new google.maps.Marker({
+	            position: latlng,
+	            map: gmap,
+	            icon: icon
+	          });
+	          self.addMarker(marker);
+			  gmap.setCenter(latlng);
+			  // gmap.setZoom(10);
+  			  if(!bounds)
+  				bounds = new google.maps.LatLngBounds(latlng, latlng);
+  			  else if (latlng)
+  				bounds.extend(latlng);
+			  
+			  
+		      google.maps.event.addListener(marker, 'mouseover', function() {
+		        self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('home'), marker);
+		      });
+			  
+			  count++;
+			  
+			  if(count == driver_store.count())
+			  {
+				gmap.fitBounds(bounds);
+			  }
+	        });
+		}
+	});
   }
 
 });

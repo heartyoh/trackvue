@@ -55,33 +55,33 @@ Ext.define('App.view.setting.GroupDeviceController', {
     });
 
     paths.forEach(function(path) {
-      // console.log('paths event ............') //occurred once only
+      console.log('paths event ............') //occurred once only
       google.maps.event.addListener(path, 'set_at', function() {
-        // console.log('polygon set at');
-		console.log(path);
+        console.log('polygon set at');
+		// console.log(path);
       })
       google.maps.event.addListener(path, 'insert_at', function() {
-        // console.log('polygon insert at');
-		console.log(path);
+        console.log('polygon insert at');
+		// console.log(path);
       })
       google.maps.event.addListener(path, 'remove_at', function() {
-        // console.log('polygon remove at');
-		console.log(path);
+        console.log('polygon remove at');
+		// console.log(path);
       })
     });
 	
     /* Drawing */
     var drawingManager = new google.maps.drawing.DrawingManager({
-      drawingMode: google.maps.drawing.OverlayType.MARKER,
+      // drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControl: true,
       drawingControlOptions: {
         position: google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
-          google.maps.drawing.OverlayType.MARKER,
+          // google.maps.drawing.OverlayType.MARKER,
           google.maps.drawing.OverlayType.CIRCLE,
           google.maps.drawing.OverlayType.POLYGON,
-          google.maps.drawing.OverlayType.POLYLINE,
-          google.maps.drawing.OverlayType.RECTANGLE
+          // google.maps.drawing.OverlayType.POLYLINE,
+          // google.maps.drawing.OverlayType.RECTANGLE
         ]
       },
       markerOptions: {
@@ -104,17 +104,22 @@ Ext.define('App.view.setting.GroupDeviceController', {
 
 
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-      console.log('overlaycomplete')
+      // console.log('overlaycomplete')
       if (event.type == google.maps.drawing.OverlayType.CIRCLE) {
         var radius = event.overlay.getRadius();
       } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
-        console.log('polygoncomplete')
+        // console.log('polygoncomplete')
         var polygon = event.overlay;
         var paths = polygon.getPaths();
 
-        google.maps.event.addListener(polygon, 'drag', function() {
-          console.log('polygon dragged');
+        google.maps.event.addListener(polygon, 'dragend', function() {
+          // console.log('polygon dragged');
+		  console.log(paths);
         });
+		
+		google.maps.event.addListener(polygon, 'click', function() {
+			console.log(paths);
+		});
 
         paths.forEach(function(path) {
           console.log('paths event ............') //occurred once only
@@ -123,14 +128,25 @@ Ext.define('App.view.setting.GroupDeviceController', {
           })
           google.maps.event.addListener(path, 'insert_at', function() {
             console.log('polygon insert at');
+			console.log(path);
           })
           google.maps.event.addListener(path, 'remove_at', function() {
             console.log('polygon remove at');
           })
         });
         // path.removeAt(xxx)
+		console.log(paths);
       }
     });
+	
+	
+	
+	
+	
+	
+	
+	
+	
     // //loadGeoJson  runs asnchronously, listen to the addfeature-event
     // google.maps.event.addListener(gmap.data,'addfeature',function(e){
 
@@ -157,6 +173,10 @@ Ext.define('App.view.setting.GroupDeviceController', {
     //     e.feature.setProperty('bounds',bounds);
     //   }
     // });
+  },
+  
+  setLatLng: function() {
+  	
   },
 
   onAfterRender: function() {
