@@ -57,8 +57,8 @@ Ext.define('App.view.setting.RegisterDriverController', {
 				
 				self.gmap.setCenter(center);
 				
-				self.setMarker(null);
-				self.setMarker(self.createMarker(center));
+				self.setMarker(null, address);
+				self.setMarker(self.createMarker(center), address);
 
 			} else {
 				Ext.Msg.alert('address notfound');
@@ -97,12 +97,11 @@ Ext.define('App.view.setting.RegisterDriverController', {
 			if (status == google.maps.GeocoderStatus.OK) {
 				self.gmap.setCenter(position);
 				
-				self.setMarker(null);
-				self.setMarker(self.createMarker(position));
+				self.setMarker(null, results[0].formatted_address);
+				self.setMarker(self.createMarker(position), results[0].formatted_address);
 				
 				self.getView().down('#txt_address').setValue(results[0].formatted_address);
 				
-				// self.getViewModel().set('current_group.address', results[0].formatted_address);
 			} else {
 				self.map.setCenter(position);
 				Ext.Msg.alert("Failed to search!", "Couldn't find address by position [" + position.lat() + ", " + position.lng() + "]!");
@@ -110,11 +109,24 @@ Ext.define('App.view.setting.RegisterDriverController', {
 		});
 	},
 	
-	setMarker : function(marker) {
-		if (this.marker)
+	setMarker : function(marker, address) {
+		if (this.marker){
 			this.marker.setMap(null);
+			this.infowindow.close();
+		}
+			
 	
 		this.marker = marker;
+		
+		if(this.marker) {
+			this.infowindow = new google.maps.InfoWindow( 
+			{ 
+				content: address, 
+				size: new google.maps.Size(100,100) 
+			})
+			this.infowindow.open(this.gmap, this.marker);
+		}
+		
 	},
 
 	onAfterRender: function() {
