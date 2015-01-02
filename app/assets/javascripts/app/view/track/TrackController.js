@@ -682,7 +682,7 @@ Ext.define('App.view.track.TrackController', {
 	            icon: icon
 	          });
 	          oms.addMarker(marker);
-			  gmap.setCenter(latlng);
+			  // gmap.setCenter(latlng);
 			
 			  // gmap.setZoom(10);
   			  if(!bounds)
