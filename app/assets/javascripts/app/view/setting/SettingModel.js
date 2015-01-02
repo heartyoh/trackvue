@@ -32,7 +32,8 @@ Ext.define('App.view.setting.SettingModel', {
         proxy: {
           type: 'memory'
         }
-      })
+      }),
+	  geofence: Ext.create('App.store.GeofenceStore')
     },
     current: {
       group: 'Arion'

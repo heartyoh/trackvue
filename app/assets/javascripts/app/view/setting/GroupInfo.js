@@ -97,21 +97,36 @@ Ext.define('App.view.setting.GroupInfo', {
 			}]
 		}]
 	}, {
-		xtype: 'gmappanel',
+		xtype: 'panel',
 		flex: 1,
-        itemId: 'gmap',
-		gmapType: 'map',
-		zoomLevel: 14,
-		center: {
-			lat: 40.782686,
-			lng: -73.96524,
-			// geoCodeAddr: "221B Baker Street",
-			marker: {
-				title: 'Central Park'
-			}
+		layout: {
+			type: 'vbox',
+			align: 'stretch'
 		},
-		mapOptions : {
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		}
+		items: [{
+			xtype: 'textfield',
+			fieldLabel: 'Address',
+			itemId : 'txt_address',
+			margin: 6,
+			emptyText: 'ex) Seoul, KR',
+			enableKeyEvents : true
+		}, {
+			xtype: 'gmappanel',
+			flex: 1,
+	        itemId: 'gmap',
+			gmapType: 'map',
+			zoomLevel: 14,
+			center: {
+				lat: 40.782686,
+				lng: -73.96524,
+				// geoCodeAddr: "221B Baker Street",
+				marker: {
+					title: 'Central Park'
+				}
+			},
+			mapOptions : {
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+		}]
 	}]
 });

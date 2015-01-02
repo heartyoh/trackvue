@@ -38,6 +38,7 @@ Ext.define('App.view.setting.GroupDevice', {
       },
       items: [{
         xtype: 'combo',
+        itemId: 'combo_group',
         fieldLabel: 'Group',
         displayField: 'name',
         valueField: 'name',
@@ -212,28 +213,84 @@ Ext.define('App.view.setting.GroupDevice', {
       dock: 'bottom',
       items: ['->', {
         xtype: 'button',
+		itemId: 'btn_save',
         text: 'SAVE'
       }, {
         xtype: 'button',
+		itemId: 'btn_reset',
         text: 'RESET'
       }]
     }]
   }, {
-    xtype: 'gmappanel',
-    flex: 1,
-    itemId: 'gmap',
-    gmapType: 'map',
-    zoomLevel: 14,
-    center: {
-      lat: 40.782686,
-      lng: -73.96524,
-      // geoCodeAddr: "221B Baker Street",
-      marker: {
-        title: 'Central Park'
-      }
-    },
-    mapOptions : {
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
+	xtype: 'panel',
+	flex: 1,
+	layout: {
+		type: 'vbox',
+		align: 'stretch'
+	},
+	items: [{
+        xtype: 'radiogroup',
+		itemId: 'geofence_group',
+        fieldLabel: 'Geofence',
+        layout: {
+          type: 'vbox',
+          align: 'stretch'
+        },
+        defaults: {
+          xtype: 'container',
+          layout: {
+            type: 'hbox',
+            align: 'stretch'
+          },
+          flex: 1
+        },
+        items: [{
+          defaults: {
+            flex: 1,
+            padding: '0 4'
+          },
+          items: [{
+            xtype: 'radio',
+            boxLabel: 'Area1',
+            name: 'geofence',
+			inputValue: '1',
+            checked: true
+          }, {
+            xtype: 'radio',
+            boxLabel: 'Area2',
+            name: 'geofence',
+			inputValue: '2'
+          }, {
+            xtype: 'radio',
+            boxLabel: 'Area3',
+            name: 'geofence',
+			inputValue: '3'
+          }, {
+			xtype: 'checkbox',
+			boxLabel  : 'edit',
+			itemId: 'edit_chk',
+            name      : 'topping',
+            inputValue: '1',
+            id        : 'edit'
+          }]
+        }]
+	}, {
+	    xtype: 'gmappanel',
+	    flex: 1,
+	    itemId: 'gmap',
+	    gmapType: 'map',
+	    zoomLevel: 14,
+	    center: {
+	      lat: 40.782686,
+	      lng: -73.96524,
+	      // geoCodeAddr: "221B Baker Street",
+	      marker: {
+	        title: 'Central Park'
+	      }
+	    },
+	    mapOptions : {
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    }
+	}]
   }]
 });

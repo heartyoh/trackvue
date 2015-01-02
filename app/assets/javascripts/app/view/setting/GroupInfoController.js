@@ -21,6 +21,15 @@ Ext.define('App.view.setting.GroupInfoController', {
 		},
 		'#btn_save': {
 			click: 'onClickSave'
+		},
+		' #txt_address': {
+			keydown: 'onDownAddress'
+		},
+	},
+	
+	onDownAddress : function(f, e) {
+		if(e.keyCode == 13) {
+			this.onMapReady();
 		}
 	},
 	
@@ -54,21 +63,28 @@ Ext.define('App.view.setting.GroupInfoController', {
 	onMapReady: function() {
 		this.gmap = this.getView().down('#gmap').gmap;
 		var self = this;
+		
+		var current_address = this.getView().down('#txt_address').getValue();
 		var address = self.getViewModel().get('current_group.address');
+		
+		if(!current_address)
+			current_address = address;
 
 		this.geocoder = new google.maps.Geocoder();
 	
-		if(address)
+		if(current_address)
 		{
 			// 주소로 위치 검색
-	    	this.geocoder.geocode({'address': address}, function(results, status) {
+	    	this.geocoder.geocode({'address': current_address}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {	    		
 					var center = results[0].geometry.location;
 					
 					self.gmap.setCenter(center);
 					
-					self.setMarker(null, address);
-					self.setMarker(self.createMarker(center), address);
+					self.setMarker(null, current_address);
+					self.setMarker(self.createMarker(center), current_address);
+					
+					self.getViewModel().set('current_group.address', current_address);
 
 				} else {
 					Ext.Msg.alert('address notfound');
@@ -114,7 +130,8 @@ Ext.define('App.view.setting.GroupInfoController', {
 				self.setMarker(null, results[0].formatted_address);
 				self.setMarker(self.createMarker(position), results[0].formatted_address);
 				
-				self.getViewModel().set('current_group.address', results[0].formatted_address);			
+				self.getViewModel().set('current_group.address', results[0].formatted_address);
+				self.getView().down('#txt_address').setValue(results[0].formatted_address);
 			} else {
 				self.map.setCenter(position);
 				Ext.Msg.alert("Failed to search!", "Couldn't find address by position [" + position.lat() + ", " + position.lng() + "]!");

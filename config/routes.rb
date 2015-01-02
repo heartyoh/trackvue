@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :trips
   resources :alerts
   resources :attachments
+  resources :geofences
   
 	resources :groups do
     member do
