@@ -45,7 +45,7 @@ Ext.define('App.view.track.TrackController', {
         //     }
         //   });
         // }
-		
+
       }
     });
 
@@ -124,35 +124,35 @@ Ext.define('App.view.track.TrackController', {
     this.infowindow.setContent(infowindow_content);
     this.infowindow.open(gmap, marker);
   },
-  
+
   setInformationWindowDirver: function(gmap, vehicle, firstname, lastname, location, marker) {
     if(!this.infowindow)
       this.infowindow = new google.maps.InfoWindow();
-	
-	var content = '<b>Vehicle :</b> ' + vehicle + '<br><hr><br> Drivers : ' + lastname + 
+
+	var content = '<b>Vehicle :</b> ' + vehicle + '<br><hr><br> Drivers : ' + lastname +
 	' ' + firstname + '<br>' +
 	'Location : ' + location + '<br>';
-	
+
     this.infowindow.setContent(content);
     this.infowindow.open(gmap, marker);
   },
-  
+
   setInformationWindowCompany: function(gmap, company, address, marker) {
     if(!this.infowindow)
       this.infowindow = new google.maps.InfoWindow();
 
 	var content = '<b>Company :</b> ' + company + '<br>' + '<b>Location :</b> ' + address + '<br>';
-	
+
     this.infowindow.setContent(content);
     this.infowindow.open(gmap, marker);
   },
 
   onDriverSelect: function(grid, record, item, index, e, eOpts) {
-	  
+
 	this.onRefreshTaskCancel();
-	
+
 	this.onRefreshDriver(60, grid, record, item, index, e, eOpts);
-	  
+
     this.getViewModel().set('vehicle', record.data);
 
     var trips = this.getViewModel().get('stores.trips');
@@ -257,7 +257,7 @@ Ext.define('App.view.track.TrackController', {
   onTripSelect: function(grid, record, item, index, e, eOpts) {
 	this.onRefreshTaskCancel();
 	this.onRefreshTrip(60, grid, record, item, index, e, eOpts);
-	  
+
     var id = record.get('id');
     var self = this;
     App.model.Trip.load(id, {
@@ -485,70 +485,70 @@ Ext.define('App.view.track.TrackController', {
 
   onAlertSelect: function(grid, record, item, index, e, eOpts) {
 	this.onRefreshTaskCancel();
-	  
+
     this.clearAll();
 
 	this.onRefreshAlert(60, grid, record, item, index, e, eOpts);
-	
+
     this.showAlerts([record.data], true);
   },
-  
+
   onRefreshTermChange : function(value) {
 	var interval = value * 1000;
 	if(this.refreshTask) {
 		this.refreshTask.cancel();
 	}
-	
+
 	this.refreshTask = new Ext.util.DelayedTask(function() {
 		this.onMapReady(false);
 		this.refreshTask.delay(interval);
 	}, this);
-	
+
 	this.refreshTask.delay(interval);
   },
-  
+
   onRefreshAlert : function(value, grid, record, item, index, e, eOpts) {
-	var interval = value * FF0000;
+	var interval = value * 1000;
 	if(this.refreshTask) {
 		this.refreshTask.cancel();
 	}
-	
+
 	this.refreshTask = new Ext.util.DelayedTask(function() {
 		this.onAlertSelect(grid, record, item, index, e, eOpts);
 		this.refreshTask.delay(interval);
 	}, this);
-	
+
 	this.refreshTask.delay(interval);
   },
-  
+
   onRefreshDriver : function(value, grid, record, item, index, e, eOpts) {
 	var interval = value * 1000;
 	if(this.refreshTask) {
 		this.refreshTask.cancel();
 	}
-	
+
 	this.refreshTask = new Ext.util.DelayedTask(function() {
 		this.onDriverSelect(grid, record, item, index, e, eOpts);
 		this.refreshTask.delay(interval);
 	}, this);
-	
+
 	this.refreshTask.delay(interval);
   },
-  
+
   onRefreshTrip : function(value, grid, record, item, index, e, eOpts) {
 	var interval = value * 1000;
 	if(this.refreshTask) {
 		this.refreshTask.cancel();
 	}
-	
+
 	this.refreshTask = new Ext.util.DelayedTask(function() {
 		this.onTripSelect(grid, record, item, index, e, eOpts);
 		this.refreshTask.delay(interval);
 	}, this);
-	
+
 	this.refreshTask.delay(interval);
   },
-  
+
   onRefreshTaskCancel : function() {
 	if(this.refreshTask) {
 		this.refreshTask.cancel();
@@ -557,7 +557,7 @@ Ext.define('App.view.track.TrackController', {
   },
 
   onMapReady: function(fit) {
-	  
+
 	this.clearAll();
 	var gmap = this.getView().down('#gmap').gmap;
 	var self = this;
@@ -569,7 +569,7 @@ Ext.define('App.view.track.TrackController', {
     var lng = this.getViewModel().get('location.lng');
 	var address = this.getViewModel().get('location.address');
 	var company = this.getViewModel().get('location.description');
-	
+
 	var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
 
     var location = new google.maps.LatLng(lat, lng);
@@ -579,22 +579,22 @@ Ext.define('App.view.track.TrackController', {
       map: gmap,
       icon: '/assets/home_location.png'
     });
-	
+
 	oms.addMarker(marker);
-	
+
     google.maps.event.addListener(marker, 'mouseover', function() {
       self.setInformationWindowCompany(gmap, company, address, marker);
     });
-	
+
 	var driver_store = this.getViewModel().get('stores.drivers');
-	
+
 	var bounds = null;
-	
+
 	driver_store.each(function(record) {
-		
+
 	    if(record.get('lat') && record.get('lng')) {
 			var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
-			
+
 	        var icon;
 	        var status = record.get('status');
 	        if(status == 'E' || status == 'F')
@@ -614,33 +614,33 @@ Ext.define('App.view.track.TrackController', {
 	          else
 	            icon = prefix + 'speed.png';
 	        }
-			
+
 	        var marker = new google.maps.Marker({
 	          position: latlng,
 	          map: gmap,
 	          icon: icon
 	        });
 	        oms.addMarker(marker);
-			
 
-	
+
+
 			google.maps.event.addListener(marker, 'click', function() {
 				console.log(marker);
 				console.log(self.markers);
 			});
-			
+
 			if(!bounds)
 				bounds = new google.maps.LatLngBounds(latlng, latlng);
 			else if (latlng)
 				bounds.extend(latlng);
-			
-			
+
+
 	        google.maps.event.addListener(marker, 'mouseover', function() {
 	          self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('address'), marker);
 	        });
-			
+
 			count++;
-			
+
 		    if(count == driver_store.count())
 		    {
 				if(fit)
@@ -648,14 +648,14 @@ Ext.define('App.view.track.TrackController', {
 		    }
 		} else {
 	        HF.geocode(this, record.get('home'), function(scope, results, status) {
-				
+
 			  var usualColor = 'eebb22';
 			  var spiderfiedColor = 'ffee22';
-					  
-			  
+
+
 
 	          var latlng = results && results[0].geometry.location;
-			  
+
 		      var icon;
 		      var status = record.get('status');
 		      if(status == 'E' || status == 'F')
@@ -675,7 +675,7 @@ Ext.define('App.view.track.TrackController', {
 		        else
 		          icon = prefix + 'speed.png';
 		      }
-			  
+
 	          var marker = new google.maps.Marker({
 	            position: latlng,
 	            map: gmap,
@@ -683,13 +683,13 @@ Ext.define('App.view.track.TrackController', {
 	          });
 	          oms.addMarker(marker);
 			  // gmap.setCenter(latlng);
-			
+
 			  // gmap.setZoom(10);
   			  if(!bounds)
   				bounds = new google.maps.LatLngBounds(latlng, latlng);
   			  else if (latlng)
   				bounds.extend(latlng);
-			  
+
 				oms.addListener('click', function(marker) {
 				// iw.setContent(marker.desc);
 				//     iw.open(map, marker);
@@ -707,16 +707,16 @@ Ext.define('App.view.track.TrackController', {
 				// 	markers[i].setShadow(shadow);
 				// }
 			});
-			  
+
 		      google.maps.event.addListener(marker, 'mouseover', function() {
 		        self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('home'), marker);
 		      });
-			  
+
   			  google.maps.event.addListener(marker, 'click', function() {
   			  });
-			  
+
 			  count++;
-			  
+
 			  if(count == driver_store.count())
 			  {
 				  if(fit)
