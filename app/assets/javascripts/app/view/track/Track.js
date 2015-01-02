@@ -36,11 +36,11 @@ Ext.define('App.view.track.Track', {
         },
         columns: [
           { text: '#', dataIndex: 'id', width: 30 },
-          { text: 'DRIVER',  dataIndex: 'lastname', width: 80 },
-          { text: 'VEHICLE', dataIndex: 'vehicle_name', width: 80 },
-          { text: 'STS', dataIndex: 'status', width: 40 },
+          { text: 'DRIVER',  dataIndex: 'lastname', width: 100 },
+          { text: 'VEHICLE', dataIndex: 'vehicle_name', width: 100 },
+          { text: 'STS', dataIndex: 'status', width: 50 },
           { text: 'SPD', dataIndex: 'speed', width: 50 },
-          { text: 'HEADING', dataIndex: 'heading', width: 60 },
+          // { text: 'HEADING', dataIndex: 'heading', width: 60 },
           { text: 'LOCATION', dataIndex: 'address', width: 180,
             renderer: function(value, x, record) {
               return value || '(home)';
@@ -204,11 +204,11 @@ Ext.define('App.view.track.Track', {
               value: '{vehicle.speed}'
             }
           }, {
-            fieldLabel: 'Heading',
-            bind: {
-              value: '{vehicle.heading}'
-            }
-          }, {
+          //   fieldLabel: 'Heading',
+          //   bind: {
+          //     value: '{vehicle.heading}'
+          //   }
+          // }, {
             fieldLabel: 'Date/Time',
             bind: {
               value: '{vehicle_last_time}'
