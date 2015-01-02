@@ -78,8 +78,10 @@ ActiveRecord::Schema.define(version: 20141227073504) do
   end
 
   create_table "geofences", force: :cascade do |t|
+    t.integer  "area"
     t.text     "lat"
     t.text     "lng"
+    t.integer  "group_id"
     t.integer  "creator_id"
     t.integer  "updater_id"
     t.datetime "created_at"

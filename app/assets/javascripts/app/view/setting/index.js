@@ -1,0 +1,10 @@
+//= require ./SettingModel
+//= require ./GroupInfoModel
+//= require ./GroupInfoController
+//= require ./GroupDeviceController
+//= require ./RegisterDriverController
+//= require ./SettingController
+//= require ./SitePreference
+//= require ./GroupDevice
+//= require ./GroupInfo
+//= require ./RegisterDriver
