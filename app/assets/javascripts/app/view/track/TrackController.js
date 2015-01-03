@@ -332,7 +332,7 @@ Ext.define('App.view.track.TrackController', {
           });
           // self.addMarker(marker);
 		  oms.addMarker(marker);
-		  
+
 		  oms.addListener('click', function(marker) {
 			  // iw.setContent(marker.desc);
 			  //     iw.open(map, marker);
@@ -418,9 +418,12 @@ Ext.define('App.view.track.TrackController', {
     }
 
     for(i = 0;i < alerts.length;i++) {
-      var alert = alerts[i];
+      var alert_to_pass = alerts[i];
 
-      HF.reverse_geocode(this, alert.lat, alert.lng, function(self, results, status) {
+      HF.reverse_geocode({self:this, alert:alert_to_pass}, alert.lat, alert.lng, function(passed, results, status) {
+        var self = passed.self;
+        var alert = passed.alert;
+
         var address = '--';
         if (results && results[0]) {
           address = results[0].formatted_address
@@ -469,7 +472,6 @@ Ext.define('App.view.track.TrackController', {
         self.addMarker(marker);
 
         if(fit) {
-          var content = 'Address : ' + address;
           var content = "<div>Address : " + address + "</div>"
           + "<div>Time : " + alert.alert_time + "</div>";
           if(alert.front_img_url) {
@@ -484,9 +486,8 @@ Ext.define('App.view.track.TrackController', {
         } else {
           google.maps.event.addListener(marker, 'click', function(e) {
 
-            var alert = this.info;
+            // var alert = this.info;
 
-            var content = 'Address : ' + address;
             var content = "<div>Address : " + address + "</div>"
             + "<div>Time : " + alert.alert_time + "</div>";
             if(alert.front_img_url) {
@@ -646,7 +647,7 @@ Ext.define('App.view.track.TrackController', {
 				bounds = new google.maps.LatLngBounds(latlng, latlng);
 			else if (latlng)
 				bounds.extend(latlng);
-			
+
 			oms.addListener('click', function(marker) {
 				// iw.setContent(marker.desc);
 				//     iw.open(map, marker);
