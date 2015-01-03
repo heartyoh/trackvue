@@ -24,9 +24,9 @@ Ext.define('App.view.track.TrackModel', {
     location: {
       description: 'Arion Technology',
       address: 'Hogye 2(i)-dong, Dongan-gu, Anyang-si, Gyeonggi-do, South Korea',
-      lat: 37.52,
-      lng: 127.031,
-      vehicle_count: 6,
+      lat: 37.3918814,
+      lng: 126.94384890000003,
+      vehicle_count: 9,
       total_trips: 194
     },
 
