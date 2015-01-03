@@ -309,7 +309,7 @@ Ext.define('App.view.track.Track', {
           store: '{stores.trips}'
         },
         columns: [
-          { text: '#', dataIndex: 'id', width: 40 },
+          { text: '#', dataIndex: 'id', width: 50 },
           { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:sZ', width: 150 },
           { text: 'MAX', dataIndex: 'speed_max', width: 80 },
           { text: 'AVG', dataIndex: 'speed_avg', width: 80 },

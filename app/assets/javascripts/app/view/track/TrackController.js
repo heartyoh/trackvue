@@ -330,7 +330,9 @@ Ext.define('App.view.track.TrackController', {
             icon: '/assets/' + icon + '.png',
             info: record.data
           });
-          // self.addMarker(marker);
+          // TODO Check --
+          self.addMarker(marker);
+          // --
 		  oms.addMarker(marker);
 
 		  oms.addListener('click', function(marker) {
@@ -515,66 +517,71 @@ Ext.define('App.view.track.TrackController', {
   },
 
   onRefreshTermChange : function(value) {
-	var interval = value * 1000;
-	if(this.refreshTask) {
-		this.refreshTask.cancel();
-	}
+    // TODO Check --
+	// var interval = value * 1000;
+	// if(this.refreshTask) {
+	// 	this.refreshTask.cancel();
+	// }
 
-	this.refreshTask = new Ext.util.DelayedTask(function() {
-		this.onMapReady(false);
-		this.refreshTask.delay(interval);
-	}, this);
+	// this.refreshTask = new Ext.util.DelayedTask(function() {
+	// 	this.onMapReady(false);
+	// 	this.refreshTask.delay(interval);
+	// }, this);
 
-	this.refreshTask.delay(interval);
+	// this.refreshTask.delay(interval);
   },
 
   onRefreshAlert : function(value, grid, record, item, index, e, eOpts) {
-	var interval = value * 1000;
-	if(this.refreshTask) {
-		this.refreshTask.cancel();
-	}
+    // TODO Check --
+	// var interval = value * 1000;
+	// if(this.refreshTask) {
+	// 	this.refreshTask.cancel();
+	// }
 
-	this.refreshTask = new Ext.util.DelayedTask(function() {
-		this.onAlertSelect(grid, record, item, index, e, eOpts);
-		this.refreshTask.delay(interval);
-	}, this);
+	// this.refreshTask = new Ext.util.DelayedTask(function() {
+	// 	this.onAlertSelect(grid, record, item, index, e, eOpts);
+	// 	this.refreshTask.delay(interval);
+	// }, this);
 
-	this.refreshTask.delay(interval);
+	// this.refreshTask.delay(interval);
   },
 
   onRefreshDriver : function(value, grid, record, item, index, e, eOpts) {
-	var interval = value * 1000;
-	if(this.refreshTask) {
-		this.refreshTask.cancel();
-	}
+    // TODO Check --
+	// var interval = value * 1000;
+	// if(this.refreshTask) {
+	// 	this.refreshTask.cancel();
+	// }
 
-	this.refreshTask = new Ext.util.DelayedTask(function() {
-		this.onDriverSelect(grid, record, item, index, e, eOpts);
-		this.refreshTask.delay(interval);
-	}, this);
+	// this.refreshTask = new Ext.util.DelayedTask(function() {
+	// 	this.onDriverSelect(grid, record, item, index, e, eOpts);
+	// 	this.refreshTask.delay(interval);
+	// }, this);
 
-	this.refreshTask.delay(interval);
+	// this.refreshTask.delay(interval);
   },
 
   onRefreshTrip : function(value, grid, record, item, index, e, eOpts) {
-	var interval = value * 1000;
-	if(this.refreshTask) {
-		this.refreshTask.cancel();
-	}
+    // TODO Check --
+	// var interval = value * 1000;
+	// if(this.refreshTask) {
+	// 	this.refreshTask.cancel();
+	// }
 
-	this.refreshTask = new Ext.util.DelayedTask(function() {
-		this.onTripSelect(grid, record, item, index, e, eOpts);
-		this.refreshTask.delay(interval);
-	}, this);
+	// this.refreshTask = new Ext.util.DelayedTask(function() {
+	// 	this.onTripSelect(grid, record, item, index, e, eOpts);
+	// 	this.refreshTask.delay(interval);
+	// }, this);
 
-	this.refreshTask.delay(interval);
+	// this.refreshTask.delay(interval);
   },
 
   onRefreshTaskCancel : function() {
-	if(this.refreshTask) {
-		this.refreshTask.cancel();
-		this.refreshTask = null;
-	}
+    // TODO Check --
+	// if(this.refreshTask) {
+	// 	this.refreshTask.cancel();
+	// 	this.refreshTask = null;
+	// }
   },
 
   onMapReady: function(fit) {
@@ -641,6 +648,9 @@ Ext.define('App.view.track.TrackController', {
 	          map: gmap,
 	          icon: icon
 	        });
+            // TODO Check --
+            self.addMarker(marker);
+            // --
 	        oms.addMarker(marker);
 
 			if(!bounds)
@@ -713,6 +723,11 @@ Ext.define('App.view.track.TrackController', {
 	            map: gmap,
 	            icon: icon
 	          });
+
+              // TODO Check --
+              self.addMarker(marker);
+              // --
+
 	          oms.addMarker(marker);
 			  // gmap.setCenter(latlng);
 
