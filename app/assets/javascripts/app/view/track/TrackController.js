@@ -414,22 +414,23 @@ Ext.define('App.view.track.TrackController', {
 
   showAlerts: function(alerts, fit) {
     var gmap = this.getView().down('#gmap').gmap;
+    var self = this;
 
     if(fit) {
       gmap.setZoom(11);
     }
 
     for(i = 0;i < alerts.length;i++) {
-      var alert_to_pass = alerts[i];
+      // var alert_to_pass = alerts[i];
+      var alert = alerts[i];
+      // HF.reverse_geocode({self:this, alert:alert_to_pass}, alert_to_pass.lat, alert_to_pass.lng, function(passed, results, status) {
+        // var self = passed.self;
+        // var alert = passed.alert;
 
-      HF.reverse_geocode({self:this, alert:alert_to_pass}, alert_to_pass.lat, alert_to_pass.lng, function(passed, results, status) {
-        var self = passed.self;
-        var alert = passed.alert;
-
-        var address = '--';
-        if (results && results[0]) {
-          address = results[0].formatted_address
-        }
+        // var address = '--';
+        // if (results && results[0]) {
+        //   address = results[0].formatted_address
+        // }
 
         var icon = 'assets/alert_';
         var severity = alert.severity; //H, M, L
@@ -468,27 +469,21 @@ Ext.define('App.view.track.TrackController', {
         var marker = new google.maps.Marker({
           position: latlng,
           map: gmap,
+          zIndex: 1000 - i,
           icon: icon,
           info: alert
         });
-        self.addMarker(marker);
+        this.addMarker(marker);
 
         if(fit) {
-          var content = "<div>Address : " + address + "</div>"
-          + "<div>Time : " + alert.alert_time + "</div>";
-          if(alert.front_img_url) {
-            content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
-          }
-          if(alert.rear_img_url) {
-            content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
-          }
+          HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
+            // var self = passed.self;
+            var alert = marker.info;
 
-          self.setInformationWindow(gmap, content, marker);
-          gmap.setCenter(latlng);
-        } else {
-          google.maps.event.addListener(marker, 'click', function(e) {
-
-            // var alert = this.info;
+            var address = '--';
+            if (results && results[0]) {
+              address = results[0].formatted_address
+            }
 
             var content = "<div>Address : " + address + "</div>"
             + "<div>Time : " + alert.alert_time + "</div>";
@@ -499,10 +494,36 @@ Ext.define('App.view.track.TrackController', {
               content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
             }
 
-            self.setInformationWindow(gmap, content, this);
+            self.setInformationWindow(gmap, content, marker);
+            gmap.setCenter(latlng);
+          });
+        } else {
+          google.maps.event.addListener(marker, 'click', function(e) {
+            var alert = this.info;
+
+            // var alert = this.info;
+            HF.reverse_geocode(this, alert.lat, alert.lng, function(marker, results, status) {
+              // var alert = marker.info;
+
+              var address = '--';
+              if (results && results[0]) {
+                address = results[0].formatted_address
+              }
+
+              var content = "<div>Address : " + address + "</div>"
+              + "<div>Time : " + alert.alert_time + "</div>";
+              if(alert.front_img_url) {
+                content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
+              }
+              if(alert.rear_img_url) {
+                content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
+              }
+
+              self.setInformationWindow(gmap, content, marker);
+            });
           });
         }
-      });
+      // });
     }
   },
 
