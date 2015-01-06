@@ -422,7 +422,7 @@ Ext.define('App.view.track.TrackController', {
     for(i = 0;i < alerts.length;i++) {
       var alert_to_pass = alerts[i];
 
-      HF.reverse_geocode({self:this, alert:alert_to_pass}, alert.lat, alert.lng, function(passed, results, status) {
+      HF.reverse_geocode({self:this, alert:alert_to_pass}, alert_to_pass.lat, alert_to_pass.lng, function(passed, results, status) {
         var self = passed.self;
         var alert = passed.alert;
 
