@@ -283,7 +283,7 @@ Ext.define('App.view.track.TrackController', {
 
       callback: function(records) {
         var path = [];
-		var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
+		    var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
 
         var bounds = new google.maps.LatLngBounds();
 
@@ -333,25 +333,25 @@ Ext.define('App.view.track.TrackController', {
           // TODO Check --
           self.addMarker(marker);
           // --
-		  oms.addMarker(marker);
+    		  oms.addMarker(marker);
 
-		  oms.addListener('click', function(marker) {
-			  // iw.setContent(marker.desc);
-			  //     iw.open(map, marker);
-		  });
-		  oms.addListener('spiderfy', function(markers) {
-			  // for(var i = 0; i < markers.length; i ++) {
-		      // 	// markers[i].setIcon(iconWithColor(spiderfiedColor));
-			  // 	markers[i].setShadow(null);
-		      // }
-			  // iw.close();
-		  });
-		  oms.addListener('unspiderfy', function(markers) {
-			  // for(var i = 0; i < markers.length; i ++) {
-			  // 	// markers[i].setIcon(iconWithColor(usualColor));
-			  // 	markers[i].setShadow(shadow);
-			  // }
-		  });
+    		  oms.addListener('click', function(marker) {
+    			  // iw.setContent(marker.desc);
+    			  //     iw.open(map, marker);
+    		  });
+    		  oms.addListener('spiderfy', function(markers) {
+    			  // for(var i = 0; i < markers.length; i ++) {
+    		      // 	// markers[i].setIcon(iconWithColor(spiderfiedColor));
+    			  // 	markers[i].setShadow(null);
+    		      // }
+    			  // iw.close();
+    		  });
+    		  oms.addListener('unspiderfy', function(markers) {
+    			  // for(var i = 0; i < markers.length; i ++) {
+    			  // 	// markers[i].setIcon(iconWithColor(usualColor));
+    			  // 	markers[i].setShadow(shadow);
+    			  // }
+    		  });
 
           google.maps.event.addListener(marker, 'click', function(e) {
             var track = this.info;
