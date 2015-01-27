@@ -2,7 +2,7 @@ class Attachment < ActiveRecord::Base
 
   stampable
 
-  mount_uploader :path, ImageUploader
+  mount_uploader :path, MediaUploader
 
   belongs_to :on, polymorphic: true
 

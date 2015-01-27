@@ -51,6 +51,12 @@ Ext.define('App.model.Track', {
     name: 'front_img_url', type: 'string'
   }, {
     name: 'rear_img_url', type: 'string'
+  }, {
+    name: 'video_url', type: 'string'
+  }, {
+    name: 'front_video_url', type: 'string'
+  }, {
+    name: 'rear_video_url', type: 'string'
   }],
 
   proxy: {

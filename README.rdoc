@@ -21,7 +21,8 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+* Service Start
+unicorn_rails --config-file config/unicorn.rb
 
 
 Please feel free to use a different markup language if you do not plan to run

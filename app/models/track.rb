@@ -6,7 +6,7 @@ class Track < ActiveRecord::Base
   def update_trip
     attributes = self.attributes.clone
 
-    attributes = attributes.except('id', 'front_img_url', 'rear_img_url', 'speed')
+    attributes = attributes.except('id', 'front_img_url', 'rear_img_url', 'video_url', 'front_video_url', 'rear_video_url', 'speed')
 
     trip = Trip.where(driver_id: attributes['driver_id'], start_time: attributes['start_time']).first_or_create(attributes)
     trip.update_attributes!(attributes)

@@ -18,28 +18,35 @@ File.open(File.dirname(__FILE__) + '/alerts.csv', 'r').each_with_index do |line,
     end
 
     front_img = data[:'front_img']
-    data = data.except(:front_img)
     rear_img = data[:rear_img]
-    data = data.except(:rear_img)
+    video = data[:video]
+    data = data.except(:front_img, :rear_img, :video)
 
     alert = Alert.create! data
 
-    front_img_file = Attachment.where(on_id: alert.id, on_type: 'Track', tag: 'front').first_or_create(
+    front_img_file = Attachment.where(on_id: alert.id, on_type: 'Alert', tag: 'front').first_or_create(
       path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', front_img)),
       on: alert,
       tag: 'front'
     ) unless front_img.empty?
 
-    rear_img_file = Attachment.where(on_id: alert.id, on_type: 'Track', tag: 'rear').first_or_create(
+    rear_img_file = Attachment.where(on_id: alert.id, on_type: 'Alert', tag: 'rear').first_or_create(
       path: File.open(Rails.root.join('app', 'assets', 'images', 'samples', rear_img)),
       on: alert,
       tag: 'rear'
     ) unless rear_img.empty?
 
+    video_file = Attachment.where(on_id: alert.id, on_type: 'Alert', tag: 'video').first_or_create(
+      path: File.open(Rails.root.join('app', 'assets', 'videos', 'samples', video)),
+      on: alert,
+      tag: 'video'
+    ) unless video.empty?
+
     alert.update!(
       front_img_url: front_img_file && front_img_file.path,
-      rear_img_url: rear_img_file && rear_img_file.path
-    ) if front_img_file || rear_img_file
+      rear_img_url: rear_img_file && rear_img_file.path,
+      video_url: video_file && video_file.path
+    ) if front_img_file || rear_img_file || video_file
 
   end
 end

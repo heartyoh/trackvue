@@ -493,6 +493,9 @@ Ext.define('App.view.track.TrackController', {
             if(alert.rear_img_url) {
               content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
             }
+            if(alert.video_url) {
+              content += '<br/><video src="' + alert.video_url + '" width=256 height=172 controls></video>';
+            }
 
             self.setInformationWindow(gmap, content, marker);
             gmap.setCenter(latlng);

@@ -20,7 +20,7 @@ class TracksController < ApplicationController
   end
 
   def create
-    @track = Track.create(track_params.except(:front_img, :rear_img))
+    @track = Track.create(track_params.except(:front_img, :rear_img, :video))
 
     front_img = Attachment.create(
       path: track_params[:front_img],
@@ -34,10 +34,17 @@ class TracksController < ApplicationController
       tag: 'rear'
     ) if track_params[:rear_img]
 
+    video = Attachment.create(
+      path: track_params[:video],
+      on: @track,
+      tag: 'video'
+    ) if track_params[:video]
+
     @track.update!(
       front_img_url: front_img && front_img.path,
-      rear_img_url: rear_img && rear_img.path
-    ) if front_img || rear_img
+      rear_img_url: rear_img && rear_img.path,
+      video_url: video && video.path
+    ) if front_img || rear_img || video
 
     respond_with(@track)
   end
@@ -45,7 +52,7 @@ class TracksController < ApplicationController
 private
 
   def track_params
-    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img, :count_off, :count_idle, :count_slow, :count_normal, :count_fast, :count_speeding)
+    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img, :video, :count_off, :count_idle, :count_slow, :count_normal, :count_fast, :count_speeding)
   end
 end
 

@@ -16,7 +16,7 @@ class AlertsController < ApplicationController
   end
 
   def create
-    @alert = Alert.create(alert_params.except(:front_img, :rear_img))
+    @alert = Alert.create(alert_params.except(:front_img, :rear_img, :video))
 
     front_img = Attachment.create(
       path: alert_params[:front_img],
@@ -30,10 +30,17 @@ class AlertsController < ApplicationController
       tag: 'rear'
     ) if alert_params[:rear_img]
 
+    video = Attachment.create(
+      path: alert_params[:video],
+      on: @alert,
+      tag: 'video'
+    ) if alert_params[:video]
+
     @alert.update!(
       front_img_url: front_img && front_img.path,
-      rear_img_url: rear_img && rear_img.path
-    ) if front_img || rear_img
+      rear_img_url: rear_img && rear_img.path,
+      video_url: video && video.path
+    ) if front_img || rear_img || video
 
     respond_with(@alert)
   end
@@ -41,6 +48,6 @@ class AlertsController < ApplicationController
 private
 
   def alert_params
-    params.require(:alert).permit(:driver_id, :trip_start_time, :alert_time, :alert_type, :severity, :value, :lat, :lng, :front_img, :rear_img)
+    params.require(:alert).permit(:driver_id, :trip_start_time, :alert_time, :alert_type, :severity, :value, :lat, :lng, :front_img, :rear_img, :video)
   end
 end

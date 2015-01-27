@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227073504) do
+ActiveRecord::Schema.define(version: 20150127222200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 20141227073504) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "trip_start_time"
+    t.string   "video_url"
+    t.string   "front_video_url"
+    t.string   "rear_video_url"
   end
 
   add_index "alerts", ["driver_id", "alert_time"], name: "idx_alerts_0", unique: true, using: :btree
@@ -124,6 +127,9 @@ ActiveRecord::Schema.define(version: 20141227073504) do
     t.integer  "updater_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "video_url"
+    t.string   "front_video_url"
+    t.string   "rear_video_url"
   end
 
   add_index "tracks", ["driver_id", "start_time", "end_time"], name: "idx_tracks_0", unique: true, using: :btree
