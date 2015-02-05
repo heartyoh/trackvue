@@ -54,4 +54,4 @@ File.open(File.dirname(__FILE__) + '/tracks.csv', 'r').each_with_index do |line,
     ) if front_img_file || rear_img_file || video_file
 
   end
-end
+end if false

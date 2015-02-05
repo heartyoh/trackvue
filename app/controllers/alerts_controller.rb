@@ -36,11 +36,26 @@ class AlertsController < ApplicationController
       tag: 'video'
     ) if alert_params[:video]
 
+    video_file_path = nil
+    extract_base_dir = nil
+    extract_base_url = nil
+
+    if (video && video.path)
+      video_file_path = video.path.current_path
+      extract_base_dir = File.join(File.dirname(video_file_path), 'ext')
+      extract_base_url = File.join(File.dirname(video.path.url), 'ext')
+    end
+
     @alert.update!(
       front_img_url: front_img && front_img.path,
       rear_img_url: rear_img && rear_img.path,
-      video_url: video && video.path
+      video_url: video && video.path,
+      front_video_url: extract_base_url && File.join(extract_base_url, 'front.mp4'),
+      rear_video_url: extract_base_url && File.join(extract_base_url, 'rear.mp4'),
+      audio_url: extract_base_url && File.join(extract_base_url, 'audio.mp3')
     ) if front_img || rear_img || video
+
+    exec "#{Rails.root.join('video.sh')} #{video_file_path} #{extract_base_dir}" if video_file_path
 
     respond_with(@alert)
   end

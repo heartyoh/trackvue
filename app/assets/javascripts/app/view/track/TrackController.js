@@ -25,15 +25,86 @@ Ext.define('App.view.track.TrackController', {
     }
   },
 
+  statics: {
+    tplAlertInfoWindow: new Ext.XTemplate(
+      '<div>Occurred at {alert_time}</div>',
+      '<div>Address : {address}</div>',
+      '<tpl if="this.hasResource(front_img_url)">',
+        '<img src="{front_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      '<tpl if="this.hasResource(rear_img_url)">',
+        '<img src="{rear_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      '<tpl if="this.hasResource(video_url)">',
+        '<video src="{front_video_url}" width=256 height=172 controls xmediagroup="pip"></video>',
+        '<video src="{rear_video_url}" width=256 height=172 xmediagroup="pip"></video>',
+        '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+      '</tpl>',
+      '<br/>',
+      {
+        hasResource: function(url) {
+          return !!url;
+        }
+      }
+    ),
+
+    tplTrackInfoWindow: new Ext.XTemplate(
+      '<div>Recorded at {end_time}</div>',
+      '<div>Trip Started at {start_time}</div>',
+      '<tpl if="this.hasResource(front_img_url)">',
+        '<img src="{front_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      '<tpl if="this.hasResource(rear_img_url)">',
+        '<img src="{rear_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      '<tpl if="this.hasResource(video_url)">',
+        '<video src="{front_video_url}" width=256 height=172 controls xmediagroup="pip"></video>',
+        '<video src="{rear_video_url}" width=256 height=172 xmediagroup="pip"></video>',
+        '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+      '</tpl>',
+      {
+        hasResource: function(url) {
+          return !!url;
+        }
+      }
+    ),
+
+    tplCompanyInfoWindow: new Ext.XTemplate(
+      '<b>{company}</b><br>',
+      '<hr><br>',
+      '<b>Location : </b>{address}'
+    ),
+
+    tplDriverInfoWindow: new Ext.XTemplate(
+      '<b>Vehicle : </b>#{id}<br>',
+      '<hr><br>',
+      'Model : {car_model}</div><br>',
+      'Name : {vehicle_name}</div><br>',
+      'Drivers : {lastname} {firstname}<br>',
+      'Location : {[values.address || "(home)"]}<br>',
+      '<tpl if="this.hasResource(driver_img_url)">',
+        '<img src="{driver_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      '<tpl if="this.hasResource(vehicle_img_url)">',
+        '<img src="{vehicle_img_url}" width=256 height=172></img>',
+      '</tpl>',
+      {
+        hasResource: function(url) {
+          return !!url;
+        }
+      }
+    )
+  },
+
   onAfterRender: function() {
     var model = this.getViewModel();
-	this.onRefreshTermChange(60);
-	this.cluster = [];
+    this.onRefreshTermChange(60);
+    this.cluster = [];
 
     model.get('stores.drivers').load({
       scope: this,
       callback: function(records) {
-		  this.onMapReady(true);
+      this.onMapReady(true);
         // for(var i = 0;i < records.length;i++) {
         //   var record = records[i];
         //   HF.reverse_geocode(record, record.get('lat'), record.get('lng'), function(record, results, status) {
@@ -68,7 +139,7 @@ Ext.define('App.view.track.TrackController', {
   },
 
   addMarker: function(marker) {
-	  var self = this;
+    var self = this;
     if(marker instanceof Array) {
       for(var i = 0;i < marker.length;i++) {
         this.addMarker(marker[i]);
@@ -125,23 +196,21 @@ Ext.define('App.view.track.TrackController', {
     this.infowindow.open(gmap, marker);
   },
 
-  setInformationWindowDirver: function(gmap, vehicle, firstname, lastname, location, marker) {
+  setInformationWindowDirver: function(gmap, driver, marker) {
     if(!this.infowindow)
       this.infowindow = new google.maps.InfoWindow();
 
-	var content = '<b>Vehicle :</b> ' + vehicle + '<br><hr><br> Drivers : ' + lastname +
-	' ' + firstname + '<br>' +
-	'Location : ' + location + '<br>';
+    var content = App.view.track.TrackController.tplDriverInfoWindow.apply(driver);
 
     this.infowindow.setContent(content);
     this.infowindow.open(gmap, marker);
   },
 
-  setInformationWindowCompany: function(gmap, company, address, marker) {
+  setInformationWindowCompany: function(gmap, company, marker) {
     if(!this.infowindow)
       this.infowindow = new google.maps.InfoWindow();
 
-	var content = '<b>Company :</b> ' + company + '<br>' + '<b>Location :</b> ' + address + '<br>';
+    var content = App.view.track.TrackController.tplCompanyInfoWindow.apply(company);
 
     this.infowindow.setContent(content);
     this.infowindow.open(gmap, marker);
@@ -149,9 +218,8 @@ Ext.define('App.view.track.TrackController', {
 
   onDriverSelect: function(grid, record, item, index, e, eOpts) {
 
-	this.onRefreshTaskCancel();
-
-	this.onRefreshDriver(60, grid, record, item, index, e, eOpts);
+    this.onRefreshTaskCancel();
+    this.onRefreshDriver(60, grid, record, item, index, e, eOpts);
 
     this.getViewModel().set('vehicle', record.data);
 
@@ -214,7 +282,7 @@ Ext.define('App.view.track.TrackController', {
         icon: icon
       });
       this.addMarker(marker);
-      this.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('address'), marker);
+      this.setInformationWindowDirver(gmap, record.getData(), marker);
       gmap.setCenter(latlng);
     } else {
       /* 현재 주소에 값이 없는 경우 */
@@ -248,15 +316,15 @@ Ext.define('App.view.track.TrackController', {
           icon: icon
         });
         self.addMarker(marker);
-        self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('home'), marker);
+        self.setInformationWindowDirver(gmap, record.getData(), marker);
         gmap.setCenter(latlng);
       });
     }
   },
 
   onTripSelect: function(grid, record, item, index, e, eOpts) {
-	this.onRefreshTaskCancel();
-	this.onRefreshTrip(60, grid, record, item, index, e, eOpts);
+  this.onRefreshTaskCancel();
+  this.onRefreshTrip(60, grid, record, item, index, e, eOpts);
 
     var id = record.get('id');
     var self = this;
@@ -267,7 +335,6 @@ Ext.define('App.view.track.TrackController', {
     })
     var tabdetail = this.getView().down('#tabdetail');
     tabdetail.setActiveTab(4);
-
 
     var gmap = this.getView().down('#gmap').gmap;
     this.clearAll();
@@ -280,10 +347,9 @@ Ext.define('App.view.track.TrackController', {
       start_time: Ext.Date.format(record.get('start_time'), 'c')
     };
     tracks.load({
-
       callback: function(records) {
         var path = [];
-		    var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
+        var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
 
         var bounds = new google.maps.LatLngBounds();
 
@@ -333,39 +399,35 @@ Ext.define('App.view.track.TrackController', {
           // TODO Check --
           self.addMarker(marker);
           // --
-    		  oms.addMarker(marker);
-
-    		  oms.addListener('click', function(marker) {
-    			  // iw.setContent(marker.desc);
-    			  //     iw.open(map, marker);
-    		  });
-    		  oms.addListener('spiderfy', function(markers) {
-    			  // for(var i = 0; i < markers.length; i ++) {
-    		      // 	// markers[i].setIcon(iconWithColor(spiderfiedColor));
-    			  // 	markers[i].setShadow(null);
-    		      // }
-    			  // iw.close();
-    		  });
-    		  oms.addListener('unspiderfy', function(markers) {
-    			  // for(var i = 0; i < markers.length; i ++) {
-    			  // 	// markers[i].setIcon(iconWithColor(usualColor));
-    			  // 	markers[i].setShadow(shadow);
-    			  // }
-    		  });
+          oms.addMarker(marker);
+          oms.addListener('click', function(marker) {
+            // iw.setContent(marker.desc);
+            //     iw.open(map, marker);
+            });
+          oms.addListener('spiderfy', function(markers) {
+            // for(var i = 0; i < markers.length; i ++) {
+              //  // markers[i].setIcon(iconWithColor(spiderfiedColor));
+            //  markers[i].setShadow(null);
+              // }
+            // iw.close();
+          });
+          oms.addListener('unspiderfy', function(markers) {
+            // for(var i = 0; i < markers.length; i ++) {
+            //  // markers[i].setIcon(iconWithColor(usualColor));
+            //  markers[i].setShadow(shadow);
+            // }
+          });
 
           google.maps.event.addListener(marker, 'click', function(e) {
+
             var track = this.info;
-            var content = "<div>Start : " + track.start_time + "</div>"
-            + "<div>End : " + track.end_time + "</div>";
-            if(track.front_img_url) {
-              content += '<img src="' + track.front_img_url + '" width=256 height=172></img>';
-            }
-            if(track.rear_img_url) {
-              content += '<img src="' + track.rear_img_url + '" width=256 height=172></img>';
-            }
+
+            var content = App.view.track.TrackController.tplTrackInfoWindow.apply(track);
+
             self.setInformationWindow(gmap, content, this);
           });
 
+          // TODO 아래 부분은 TRIP의 것이다. 트랙에서 할 일이 아니다.
           self.getViewModel().set('trip.events',
             '<span class="speed-off">' + record.get('count_off') + '</span>' +
             '<span class="speed-idle">' + record.get('count_idle') + '</span>' +
@@ -423,206 +485,181 @@ Ext.define('App.view.track.TrackController', {
     for(i = 0;i < alerts.length;i++) {
       // var alert_to_pass = alerts[i];
       var alert = alerts[i];
-      // HF.reverse_geocode({self:this, alert:alert_to_pass}, alert_to_pass.lat, alert_to_pass.lng, function(passed, results, status) {
-        // var self = passed.self;
-        // var alert = passed.alert;
 
-        // var address = '--';
-        // if (results && results[0]) {
-        //   address = results[0].formatted_address
-        // }
+      var icon = 'assets/alert_';
+      var severity = alert.severity; //H, M, L
+      var type = alert.alert_type; //G,
 
-        var icon = 'assets/alert_';
-        var severity = alert.severity; //H, M, L
-        var type = alert.alert_type; //G,
+      switch(type) {
+        case 'G': // G Sensor
+          icon += 'safety_';
+          break;
+        case 'E':
+        case 'B':
+          icon += 'efficiency_';
+          break;
+        case 'F': // Geofence
+          icon += 'geofence_';
+          break;
+        default:
+          icon += 'safety_';
+      }
 
-        switch(type) {
-          case 'G': // G Sensor
-            icon += 'safety_';
-            break;
-          case 'E':
-          case 'B':
-            icon += 'efficiency_';
-            break;
-          case 'F': // Geofence
-            icon += 'geofence_';
-            break;
-          default:
-            icon += 'safety_';
-        }
+      switch(severity) {
+        case 'S':
+          icon += 'red.png';
+          break;
+        case 'N':
+          icon += 'blue.png';
+          break;
+        case 'T':
+          icon += 'green.png';
+          break;
+        default:
+          icon += 'blue.png';
+      }
 
-        switch(severity) {
-          case 'S':
-            icon += 'red.png';
-            break;
-          case 'N':
-            icon += 'blue.png';
-            break;
-          case 'T':
-            icon += 'green.png';
-            break;
-          default:
-            icon += 'blue.png';
-        }
+      var latlng = new google.maps.LatLng(alert.lat, alert.lng);
+      var marker = new google.maps.Marker({
+        position: latlng,
+        map: gmap,
+        zIndex: 1000 - i,
+        icon: icon,
+        info: alert
+      });
+      this.addMarker(marker);
 
-        var latlng = new google.maps.LatLng(alert.lat, alert.lng);
-        var marker = new google.maps.Marker({
-          position: latlng,
-          map: gmap,
-          zIndex: 1000 - i,
-          icon: icon,
-          info: alert
+      if(fit) {
+        HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
+
+          var alert = marker.info;
+
+          var address = '--';
+          if (results && results[0]) {
+            address = results[0].formatted_address
+          }
+
+          alert.address = address;
+          var content = App.view.track.TrackController.tplAlertInfoWindow.apply(alert);
+
+          self.setInformationWindow(gmap, content, marker);
+          gmap.setCenter(latlng);
         });
-        this.addMarker(marker);
+      } else {
+        google.maps.event.addListener(marker, 'click', function(e) {
 
-        if(fit) {
-          HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
-            // var self = passed.self;
-            var alert = marker.info;
+          var alert = this.info;
+
+          HF.reverse_geocode(this, alert.lat, alert.lng, function(marker, results, status) {
 
             var address = '--';
             if (results && results[0]) {
               address = results[0].formatted_address
             }
 
-            var content = "<div>Address : " + address + "</div>"
-            + "<div>Time : " + alert.alert_time + "</div>";
-            if(alert.front_img_url) {
-              content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
-            }
-            if(alert.rear_img_url) {
-              content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
-            }
-            if(alert.video_url) {
-              content += '<br/><video src="' + alert.video_url + '" width=256 height=172 controls></video>';
-            }
+            alert.address = address;
+            var content = App.view.track.TrackController.tplAlertInfoWindow.apply(alert);
 
             self.setInformationWindow(gmap, content, marker);
-            gmap.setCenter(latlng);
           });
-        } else {
-          google.maps.event.addListener(marker, 'click', function(e) {
-            var alert = this.info;
-
-            // var alert = this.info;
-            HF.reverse_geocode(this, alert.lat, alert.lng, function(marker, results, status) {
-              // var alert = marker.info;
-
-              var address = '--';
-              if (results && results[0]) {
-                address = results[0].formatted_address
-              }
-
-              var content = "<div>Address : " + address + "</div>"
-              + "<div>Time : " + alert.alert_time + "</div>";
-              if(alert.front_img_url) {
-                content += '<img src="' + alert.front_img_url + '" width=256 height=172></img>';
-              }
-              if(alert.rear_img_url) {
-                content += '<img src="' + alert.rear_img_url + '" width=256 height=172></img>';
-              }
-
-              self.setInformationWindow(gmap, content, marker);
-            });
-          });
-        }
-      // });
+        });
+      }
     }
   },
 
   onAlertSelect: function(grid, record, item, index, e, eOpts) {
-	this.onRefreshTaskCancel();
+  this.onRefreshTaskCancel();
 
     this.clearAll();
 
-	this.onRefreshAlert(60, grid, record, item, index, e, eOpts);
+  this.onRefreshAlert(60, grid, record, item, index, e, eOpts);
 
     this.showAlerts([record.data], true);
   },
 
   onRefreshTermChange : function(value) {
     // TODO Check --
-	// var interval = value * 1000;
-	// if(this.refreshTask) {
-	// 	this.refreshTask.cancel();
-	// }
+  // var interval = value * 1000;
+  // if(this.refreshTask) {
+  //  this.refreshTask.cancel();
+  // }
 
-	// this.refreshTask = new Ext.util.DelayedTask(function() {
-	// 	this.onMapReady(false);
-	// 	this.refreshTask.delay(interval);
-	// }, this);
+  // this.refreshTask = new Ext.util.DelayedTask(function() {
+  //  this.onMapReady(false);
+  //  this.refreshTask.delay(interval);
+  // }, this);
 
-	// this.refreshTask.delay(interval);
+  // this.refreshTask.delay(interval);
   },
 
   onRefreshAlert : function(value, grid, record, item, index, e, eOpts) {
     // TODO Check --
-	// var interval = value * 1000;
-	// if(this.refreshTask) {
-	// 	this.refreshTask.cancel();
-	// }
+  // var interval = value * 1000;
+  // if(this.refreshTask) {
+  //  this.refreshTask.cancel();
+  // }
 
-	// this.refreshTask = new Ext.util.DelayedTask(function() {
-	// 	this.onAlertSelect(grid, record, item, index, e, eOpts);
-	// 	this.refreshTask.delay(interval);
-	// }, this);
+  // this.refreshTask = new Ext.util.DelayedTask(function() {
+  //  this.onAlertSelect(grid, record, item, index, e, eOpts);
+  //  this.refreshTask.delay(interval);
+  // }, this);
 
-	// this.refreshTask.delay(interval);
+  // this.refreshTask.delay(interval);
   },
 
   onRefreshDriver : function(value, grid, record, item, index, e, eOpts) {
     // TODO Check --
-	// var interval = value * 1000;
-	// if(this.refreshTask) {
-	// 	this.refreshTask.cancel();
-	// }
+  // var interval = value * 1000;
+  // if(this.refreshTask) {
+  //  this.refreshTask.cancel();
+  // }
 
-	// this.refreshTask = new Ext.util.DelayedTask(function() {
-	// 	this.onDriverSelect(grid, record, item, index, e, eOpts);
-	// 	this.refreshTask.delay(interval);
-	// }, this);
+  // this.refreshTask = new Ext.util.DelayedTask(function() {
+  //  this.onDriverSelect(grid, record, item, index, e, eOpts);
+  //  this.refreshTask.delay(interval);
+  // }, this);
 
-	// this.refreshTask.delay(interval);
+  // this.refreshTask.delay(interval);
   },
 
   onRefreshTrip : function(value, grid, record, item, index, e, eOpts) {
     // TODO Check --
-	// var interval = value * 1000;
-	// if(this.refreshTask) {
-	// 	this.refreshTask.cancel();
-	// }
+  // var interval = value * 1000;
+  // if(this.refreshTask) {
+  //  this.refreshTask.cancel();
+  // }
 
-	// this.refreshTask = new Ext.util.DelayedTask(function() {
-	// 	this.onTripSelect(grid, record, item, index, e, eOpts);
-	// 	this.refreshTask.delay(interval);
-	// }, this);
+  // this.refreshTask = new Ext.util.DelayedTask(function() {
+  //  this.onTripSelect(grid, record, item, index, e, eOpts);
+  //  this.refreshTask.delay(interval);
+  // }, this);
 
-	// this.refreshTask.delay(interval);
+  // this.refreshTask.delay(interval);
   },
 
   onRefreshTaskCancel : function() {
     // TODO Check --
-	// if(this.refreshTask) {
-	// 	this.refreshTask.cancel();
-	// 	this.refreshTask = null;
-	// }
+  // if(this.refreshTask) {
+  //  this.refreshTask.cancel();
+  //  this.refreshTask = null;
+  // }
   },
 
   onMapReady: function(fit) {
 
-	this.clearAll();
-	var gmap = this.getView().down('#gmap').gmap;
-	var self = this;
-	var count = 0;
+    this.clearAll();
+    var gmap = this.getView().down('#gmap').gmap;
+    var self = this;
+    var count = 0;
     /*
       그룹에 해당하는 위치를 중심으로 초기에 지도의 위치를 잡는다.
     */
     var lat = this.getViewModel().get('location.lat');
     var lng = this.getViewModel().get('location.lng');
-	var address = this.getViewModel().get('location.address');
-	var company = this.getViewModel().get('location.description');
+    var address = this.getViewModel().get('location.address');
+    var company = this.getViewModel().get('location.description');
 
-	var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
+    var oms = new OverlappingMarkerSpiderfier(gmap, {markersWontMove: true, markersWontHide: true});
 
     var location = new google.maps.LatLng(lat, lng);
 
@@ -632,167 +669,169 @@ Ext.define('App.view.track.TrackController', {
       icon: '/assets/home_location.png'
     });
 
-	oms.addMarker(marker);
+    oms.addMarker(marker);
 
     google.maps.event.addListener(marker, 'click', function() {
-      self.setInformationWindowCompany(gmap, company, address, marker);
+      self.setInformationWindowCompany(gmap, {
+        company: company,
+        address: address
+      }, marker);
     });
 
-	var driver_store = this.getViewModel().get('stores.drivers');
+    var driver_store = this.getViewModel().get('stores.drivers');
 
-	var bounds = null;
+    var bounds = null;
 
-	driver_store.each(function(record) {
+    driver_store.each(function(record) {
 
-	    if(record.get('lat') && record.get('lng')) {
-			var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
+      if(record.get('lat') && record.get('lng')) {
+      var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
 
-	        var icon;
-	        var status = record.get('status');
-	        if(status == 'E' || status == 'F')
-	          icon = '/assets/van_off.png';
-	        else {
-	          var prefix = '/assets/van_';
-	          var speed = record.get('speed');
+      var icon;
+      var status = record.get('status');
+      if(status == 'E' || status == 'F')
+        icon = '/assets/van_off.png';
+      else {
+        var prefix = '/assets/van_';
+        var speed = record.get('speed');
 
-	          if(speed == 0)
-	            icon = prefix + 'idle.png';
-	          else if(speed <= 32)
-	            icon = prefix + 'slow.png';
-	          else if(speed <= 97)
-	            icon = prefix + 'normal.png';
-	          else if(speed <= 121)
-	            icon = prefix + 'fast.png';
-	          else
-	            icon = prefix + 'speed.png';
-	        }
+        if(speed == 0)
+          icon = prefix + 'idle.png';
+        else if(speed <= 32)
+          icon = prefix + 'slow.png';
+        else if(speed <= 97)
+          icon = prefix + 'normal.png';
+        else if(speed <= 121)
+          icon = prefix + 'fast.png';
+        else
+          icon = prefix + 'speed.png';
+      }
 
-	        var marker = new google.maps.Marker({
-	          position: latlng,
-	          map: gmap,
-	          icon: icon
-	        });
-            // TODO Check --
-            self.addMarker(marker);
-            // --
-	        oms.addMarker(marker);
+      var marker = new google.maps.Marker({
+        position: latlng,
+        map: gmap,
+        icon: icon
+      });
 
-			if(!bounds)
-				bounds = new google.maps.LatLngBounds(latlng, latlng);
-			else if (latlng)
-				bounds.extend(latlng);
+      // TODO Check --
+      self.addMarker(marker);
+      // --
 
-			oms.addListener('click', function(marker) {
-				// iw.setContent(marker.desc);
-				//     iw.open(map, marker);
-			});
-			oms.addListener('spiderfy', function(markers) {
-				// for(var i = 0; i < markers.length; i ++) {
-				// 	// markers[i].setIcon(iconWithColor(spiderfiedColor));
-				// 	markers[i].setShadow(null);
-				// }
-				// iw.close();
-			});
-		    oms.addListener('unspiderfy', function(markers) {
-				// for(var i = 0; i < markers.length; i ++) {
-				// 	// markers[i].setIcon(iconWithColor(usualColor));
-				// 	markers[i].setShadow(shadow);
-				// }
-			});
+      oms.addMarker(marker);
 
+      if(!bounds)
+        bounds = new google.maps.LatLngBounds(latlng, latlng);
+      else if (latlng)
+        bounds.extend(latlng);
 
-	        google.maps.event.addListener(marker, 'click', function() {
-	          self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('address'), marker);
-	        });
+      oms.addListener('click', function(marker) {
+        // iw.setContent(marker.desc);
+        //     iw.open(map, marker);
+      });
+      oms.addListener('spiderfy', function(markers) {
+        // for(var i = 0; i < markers.length; i ++) {
+        //  // markers[i].setIcon(iconWithColor(spiderfiedColor));
+        //  markers[i].setShadow(null);
+        // }
+        // iw.close();
+      });
+      oms.addListener('unspiderfy', function(markers) {
+        // for(var i = 0; i < markers.length; i ++) {
+        //  // markers[i].setIcon(iconWithColor(usualColor));
+        //  markers[i].setShadow(shadow);
+        // }
+      });
 
-			count++;
+      google.maps.event.addListener(marker, 'click', function() {
+        self.setInformationWindowDirver(gmap, record.getData(), marker);
+      });
 
-		    if(count == driver_store.count())
-		    {
-				if(fit)
-			  	  gmap.fitBounds(bounds);
-		    }
-		} else {
-	        HF.geocode(this, record.get('home'), function(scope, results, status) {
+      count++;
 
-			  var usualColor = 'eebb22';
-			  var spiderfiedColor = 'ffee22';
+      if(count == driver_store.count())
+      {
+        if(fit)
+          gmap.fitBounds(bounds);
+        }
+      } else {
+        HF.geocode(this, record.get('home'), function(scope, results, status) {
 
+        var usualColor = 'eebb22';
+        var spiderfiedColor = 'ffee22';
 
+        var latlng = results && results[0].geometry.location;
 
-	          var latlng = results && results[0].geometry.location;
+        var icon;
+        var status = record.get('status');
+        if(status == 'E' || status == 'F')
+          icon = '/assets/van_off.png';
+        else {
+          var prefix = '/assets/van_';
+          var speed = record.get('speed');
 
-		      var icon;
-		      var status = record.get('status');
-		      if(status == 'E' || status == 'F')
-		        icon = '/assets/van_off.png';
-		      else {
-		        var prefix = '/assets/van_';
-		        var speed = record.get('speed');
+          if(speed == 0)
+            icon = prefix + 'idle.png';
+          else if(speed <= 32)
+            icon = prefix + 'slow.png';
+          else if(speed <= 97)
+            icon = prefix + 'normal.png';
+          else if(speed <= 121)
+            icon = prefix + 'fast.png';
+          else
+            icon = prefix + 'speed.png';
+        }
 
-		        if(speed == 0)
-		          icon = prefix + 'idle.png';
-		        else if(speed <= 32)
-		          icon = prefix + 'slow.png';
-		        else if(speed <= 97)
-		          icon = prefix + 'normal.png';
-		        else if(speed <= 121)
-		          icon = prefix + 'fast.png';
-		        else
-		          icon = prefix + 'speed.png';
-		      }
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: gmap,
+          icon: icon
+        });
 
-	          var marker = new google.maps.Marker({
-	            position: latlng,
-	            map: gmap,
-	            icon: icon
-	          });
+        // TODO Check --
+        self.addMarker(marker);
+        // --
 
-              // TODO Check --
-              self.addMarker(marker);
-              // --
+        oms.addMarker(marker);
+        // gmap.setCenter(latlng);
 
-	          oms.addMarker(marker);
-			  // gmap.setCenter(latlng);
+        // gmap.setZoom(10);
+        if(!bounds)
+        bounds = new google.maps.LatLngBounds(latlng, latlng);
+        else if (latlng)
+        bounds.extend(latlng);
 
-			  // gmap.setZoom(10);
-  			  if(!bounds)
-  				bounds = new google.maps.LatLngBounds(latlng, latlng);
-  			  else if (latlng)
-  				bounds.extend(latlng);
+        oms.addListener('click', function(marker) {
+          // iw.setContent(marker.desc);
+          //     iw.open(map, marker);
+        });
+        oms.addListener('spiderfy', function(markers) {
+          // for(var i = 0; i < markers.length; i ++) {
+          //  // markers[i].setIcon(iconWithColor(spiderfiedColor));
+          //  markers[i].setShadow(null);
+          // }
+          // iw.close();
+        });
+        oms.addListener('unspiderfy', function(markers) {
+          // for(var i = 0; i < markers.length; i ++) {
+          //  // markers[i].setIcon(iconWithColor(usualColor));
+          //  markers[i].setShadow(shadow);
+          // }
+        });
 
-				oms.addListener('click', function(marker) {
-				// iw.setContent(marker.desc);
-				//     iw.open(map, marker);
-			});
-			oms.addListener('spiderfy', function(markers) {
-				// for(var i = 0; i < markers.length; i ++) {
-				// 	// markers[i].setIcon(iconWithColor(spiderfiedColor));
-				// 	markers[i].setShadow(null);
-				// }
-				// iw.close();
-			});
-			    oms.addListener('unspiderfy', function(markers) {
-				// for(var i = 0; i < markers.length; i ++) {
-				// 	// markers[i].setIcon(iconWithColor(usualColor));
-				// 	markers[i].setShadow(shadow);
-				// }
-			});
+        google.maps.event.addListener(marker, 'click', function() {
+          self.setInformationWindowDirver(gmap, record.getData(), marker);
+        });
 
-		      google.maps.event.addListener(marker, 'click', function() {
-		        self.setInformationWindowDirver(gmap, record.get('vehicle_name'), record.get('firstname'), record.get('lastname'), record.get('home'), marker);
-		      });
+        count++;
 
-			  count++;
-
-			  if(count == driver_store.count())
-			  {
-				  if(fit)
-					  gmap.fitBounds(bounds);
-			  }
-	        });
-		}
-	});
+        if(count == driver_store.count())
+        {
+          if(fit)
+            gmap.fitBounds(bounds);
+          }
+        });
+      }
+    });
   }
 
 });
