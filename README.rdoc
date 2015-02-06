@@ -24,7 +24,11 @@ Things you may want to cover:
 * Service Start
 unicorn_rails --config-file config/unicorn.rb
 
-unicorn_rails -c /var/www/trackvue/config/unicorn.conf.rb -D -E production
+# 서버에서는 이렇게 실행함.
+unicorn_rails -c /var/www/trackvue/config/unicorn.server.rb -D
+
+# production 모드에 문제가 있음..
+unicorn_rails -c /var/www/trackvue/config/unicorn.server.rb -D -E production
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
