@@ -54,7 +54,8 @@ Ext.define('App.mixin.MediaGroup', function() {
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video,audio[xmediagroup=' + mediagroup + ']').not(video).each(function(){
-        this.currentTime = video.currentTime;
+        if(this.currentTime != video.currentTime)
+          this.currentTime = video.currentTime;
         this.play();
     });
   });
@@ -80,6 +81,7 @@ Ext.define('App.mixin.MediaGroup', function() {
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video,audio[xmediagroup=' + mediagroup + ']').not(video).each(function(){
+      if(this.currentTime != video.currentTime)
         this.currentTime = video.currentTime;
     });
   });

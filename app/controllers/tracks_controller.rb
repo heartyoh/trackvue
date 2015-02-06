@@ -59,7 +59,7 @@ class TracksController < ApplicationController
       audio_url: extract_base_url && File.join(extract_base_url, 'audio.mp3')
     ) if front_img || rear_img || video
 
-    exec "#{Rails.root.join('video.sh')} #{video_file_path} #{extract_base_dir}" if video_file_path
+    system "#{Rails.root.join('video.sh')} #{video_file_path} #{extract_base_dir}" if video_file_path
 
     respond_with(@track)
   end
