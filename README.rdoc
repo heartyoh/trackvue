@@ -24,6 +24,7 @@ Things you may want to cover:
 * Service Start
 unicorn_rails --config-file config/unicorn.rb
 
+unicorn_rails -c /var/www/trackvue/config/unicorn.conf.rb -D -E production
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
