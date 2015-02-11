@@ -51,16 +51,42 @@ span.speed-regend{
     margin:5px 0 10px 0;font-size:12px;line-height:1.4;color:#999
 }
 
-.pip-container img,.pip-container video{
+.pip-container{
+    width:400px;
+}
+
+.pip-container video{
     width:375px;
 }
 
-.backward-layer{
+.pip-container img{
+    width:256px;
+}
+
+video.backward-layer{
     border:2px solid #999;
     z-index:0
 }
 
-.forward-layer{
+video.forward-layer{
+    position:absolute;
+    border:1px solid #000;
+    width:140px !important;
+    z-index:10;
+    right:10px;
+    margin-top:-6px;
+    opacity:.9;
+    -webkit-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
+    -moz-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
+    box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
+}
+
+img.backward-layer{
+    border:2px solid #999;
+    z-index:0
+}
+
+img.forward-layer{
     position:absolute;
     border:1px solid #000;
     width:140px !important;

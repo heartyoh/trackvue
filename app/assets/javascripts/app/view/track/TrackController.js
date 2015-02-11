@@ -35,6 +35,11 @@ Ext.define('App.view.track.TrackController', {
           '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
           '<audio src="{audio_url}" xmediagroup="pip" hidden></audio>',
         '</div>',
+      '<tpl elseif="this.hasResource(front_img_url)">',
+        '<div class="pip-container">',
+          '<img src="{front_img_url}" class="backward-layer"></img>',
+          '<img src="{rear_img_url}" class="forward-layer"></img>',
+        '</div>',
       '</tpl>',
       {
         hasResource: function(url) {
@@ -46,11 +51,17 @@ Ext.define('App.view.track.TrackController', {
     tplTrackInfoWindow: new Ext.XTemplate(
       '<div>Recorded at <strong>{end_time}</strong></div>',
       '<div>Trip Started at {start_time}</div>',
-      '<tpl if="this.hasResource(front_img_url)">',
-        '<img src="{front_img_url}" width=256 height=172 ></img>',
-      '</tpl>',
-      '<tpl if="this.hasResource(rear_img_url)">',
-        '<img src="{rear_img_url}" width=256 height=172 ></img>',
+      '<tpl if="this.hasResource(video_url)">',
+        '<div class="pip-container">',
+          '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
+          '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
+          '<audio src="{audio_url}" xmediagroup="pip" hidden></audio>',
+        '</div>',
+      '<tpl elseif="this.hasResource(front_img_url)">',
+        '<div class="pip-container">',
+          '<img src="{front_img_url}" class="backward-layer"></img>',
+          '<img src="{rear_img_url}" class="forward-layer"></img>',
+        '</div>',
       '</tpl>',
       {
         hasResource: function(url) {
