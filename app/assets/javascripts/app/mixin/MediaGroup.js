@@ -32,11 +32,8 @@ Ext.define('App.mixin.MediaGroup', function() {
 
   $.createEventCapturing(['play', 'pause', 'seeked']);
 
-  $(document).on('click', function(e) {
+  $(document).on('click', 'video:not([controls])', function(e) {
     var video = e.target;
-
-    if(video.nodeName != 'VIDEO')
-      return;
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video[xmediagroup=' + mediagroup + ']').not(video).each(function(){
@@ -46,25 +43,23 @@ Ext.define('App.mixin.MediaGroup', function() {
     $(video).attr('controls', true);
   });
 
-  $(document).on('play', function(e) {
-    var video = e.target;
+  $(document).on('click', '.pip-container *', function(){
+    $( ".backward-layer" ).removeClass("backward-layer").addClass("forward-layer");
+    $(this).addClass("backward-layer").removeClass("forward-layer");
+  });
 
-    if(!$(video).attr('controls'))
-      return;
+  $(document).on('play', 'video[controls]', function(e) {
+    var video = e.target;
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video,audio[xmediagroup=' + mediagroup + ']').not(video).each(function(){
-        if(this.currentTime != video.currentTime)
-          this.currentTime = video.currentTime;
+        this.currentTime = video.currentTime;
         this.play();
     });
   });
 
-  $(document).on('pause', function(e) {
+  $(document).on('pause', 'video[controls]', function(e) {
     var video = e.target;
-
-    if(!$(video).attr('controls'))
-      return;
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video,audio[xmediagroup=' + mediagroup + ']').not(video).each(function(){
@@ -73,16 +68,12 @@ Ext.define('App.mixin.MediaGroup', function() {
     });
   });
 
-  $(document).on('seeked', function(e) {
+  $(document).on('seeked', 'video[controls]', function(e) {
     var video = e.target;
-
-    if(!$(video).attr('controls'))
-      return;
 
     var mediagroup = $(video).attr('xmediagroup');
     $('video,audio[xmediagroup=' + mediagroup + ']').not(video).each(function(){
-      if(this.currentTime != video.currentTime)
-        this.currentTime = video.currentTime;
+      this.currentTime = video.currentTime;
     });
   });
 

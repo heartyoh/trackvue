@@ -28,19 +28,20 @@ Ext.define('App.view.track.TrackController', {
   statics: {
     tplAlertInfoWindow: new Ext.XTemplate(
       '<div>Occurred at {alert_time}</div>',
-      '<div>Address : {address}</div>',
+      '<div class="detail-address">Address : {address}</div>',
       '<tpl if="this.hasResource(front_img_url)">',
-        '<img src="{front_img_url}" width=256 height=172></img>',
-      '</tpl>',
-      '<tpl if="this.hasResource(rear_img_url)">',
-        '<img src="{rear_img_url}" width=256 height=172></img>',
+        '<div class="pip-container">',
+            '<img src="{front_img_url}" width=256 height=172 class="backward-layer"></img>',
+            '<img src="{rear_img_url}" width=256 height=172 class="forward-layer"></img>',
+        '</div>',
       '</tpl>',
       '<tpl if="this.hasResource(video_url)">',
-        '<video src="{front_video_url}" width=256 height=172 controls xmediagroup="pip"></video>',
-        '<video src="{rear_video_url}" width=256 height=172 xmediagroup="pip"></video>',
-        '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+        '<div class="pip-container">',
+          '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
+          '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
+          '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+        '</div>',
       '</tpl>',
-      '<br/>',
       {
         hasResource: function(url) {
           return !!url;
@@ -52,15 +53,17 @@ Ext.define('App.view.track.TrackController', {
       '<div>Recorded at {end_time}</div>',
       '<div>Trip Started at {start_time}</div>',
       '<tpl if="this.hasResource(front_img_url)">',
-        '<img src="{front_img_url}" width=256 height=172></img>',
-      '</tpl>',
-      '<tpl if="this.hasResource(rear_img_url)">',
-        '<img src="{rear_img_url}" width=256 height=172></img>',
+        '<div class="pip-container">',
+          '<img src="{front_img_url}" class="backward-layer"></img>',
+          '<img src="{rear_img_url}" class="forward-layer"></img>',
+        '</div>',
       '</tpl>',
       '<tpl if="this.hasResource(video_url)">',
-        '<video src="{front_video_url}" width=256 height=172 controls xmediagroup="pip"></video>',
-        '<video src="{rear_video_url}" width=256 height=172 xmediagroup="pip"></video>',
-        '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+        '<div class="pip-container">',
+          '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
+          '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
+          '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+        '</div>',
       '</tpl>',
       {
         hasResource: function(url) {
@@ -72,22 +75,24 @@ Ext.define('App.view.track.TrackController', {
     tplCompanyInfoWindow: new Ext.XTemplate(
       '<b>{company}</b><br>',
       '<hr><br>',
-      '<b>Location : </b>{address}'
+      '<b class="detail-address">Location : </b>{address}'
     ),
 
     tplDriverInfoWindow: new Ext.XTemplate(
-      '<b>Vehicle : </b>#{id}<br>',
-      '<hr><br>',
-      'Model : {car_model}</div><br>',
-      'Name : {vehicle_name}</div><br>',
-      'Drivers : {lastname} {firstname}<br>',
-      'Location : {[values.address || "(home)"]}<br>',
-      '<tpl if="this.hasResource(driver_img_url)">',
-        '<img src="{driver_img_url}" width=256 height=172></img>',
-      '</tpl>',
-      '<tpl if="this.hasResource(vehicle_img_url)">',
-        '<img src="{vehicle_img_url}" width=256 height=172></img>',
-      '</tpl>',
+      '<div class="photos">',
+        '<img src="{vehicle_img_url}"/>',
+        '<img src="{driver_img_url}" hidden/>',
+        '<div>',
+          '<button onclick="$(\'.photos img\').toggle();">toggle photo</button>',
+        '</div>',
+      '</div>',
+      '<div style="overflow: auto;">',
+        '<strong>Vehicle : #{id}</strong>',
+        '<span>Model : {car_model}</span>',
+        '<span>Name : {vehicle_name}</span>',
+        '<span>Drivers : {lastname} {firstname}</span>',
+        '<span>Location : {[values.address || "(home)"]}</span>',
+      '</div>',
       {
         hasResource: function(url) {
           return !!url;
