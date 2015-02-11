@@ -27,14 +27,8 @@ Ext.define('App.view.track.TrackController', {
 
   statics: {
     tplAlertInfoWindow: new Ext.XTemplate(
-      '<div>Occurred at {alert_time}</div>',
+      '<div>Occurred at <strong>{alert_time}</strong></div>',
       '<div class="detail-address">Address : {address}</div>',
-      '<tpl if="this.hasResource(front_img_url)">',
-        '<div class="pip-container">',
-            '<img src="{front_img_url}" width=256 height=172 class="backward-layer"></img>',
-            '<img src="{rear_img_url}" width=256 height=172 class="forward-layer"></img>',
-        '</div>',
-      '</tpl>',
       '<tpl if="this.hasResource(video_url)">',
         '<div class="pip-container">',
           '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
@@ -50,20 +44,13 @@ Ext.define('App.view.track.TrackController', {
     ),
 
     tplTrackInfoWindow: new Ext.XTemplate(
-      '<div>Recorded at {end_time}</div>',
+      '<div>Recorded at <strong>{end_time}</strong></div>',
       '<div>Trip Started at {start_time}</div>',
       '<tpl if="this.hasResource(front_img_url)">',
-        '<div class="pip-container">',
-          '<img src="{front_img_url}" class="backward-layer"></img>',
-          '<img src="{rear_img_url}" class="forward-layer"></img>',
-        '</div>',
+        '<img src="{front_img_url}" width=256 height=172 ></img>',
       '</tpl>',
-      '<tpl if="this.hasResource(video_url)">',
-        '<div class="pip-container">',
-          '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
-          '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
-          '<audio src="{audio_url}" xmediagroup="pip"></audio>',
-        '</div>',
+      '<tpl if="this.hasResource(rear_img_url)">',
+        '<img src="{rear_img_url}" width=256 height=172 ></img>',
       '</tpl>',
       {
         hasResource: function(url) {
