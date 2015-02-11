@@ -33,7 +33,7 @@ Ext.define('App.view.track.TrackController', {
         '<div class="pip-container">',
           '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
           '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
-          '<audio src="{audio_url}" xmediagroup="pip"></audio>',
+          '<audio src="{audio_url}" xmediagroup="pip" hidden></audio>',
         '</div>',
       '</tpl>',
       {
