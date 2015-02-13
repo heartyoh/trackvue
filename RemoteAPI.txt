@@ -2,7 +2,7 @@
 #
 # After login into the system, save session information into cookiefile.
 
-curl -c cookiefile -d 'user[email]=admin@example.com' -d 'user[password]=admin123' http://104.236.113.238/signin
+curl -c cookiefile -d 'user[email]=test@trackvue.com' -d 'user[password]=admin123' http://104.236.113.238/signin
 
 # Extract encoded part for HTTP Cookie Header from the cookiefile
 

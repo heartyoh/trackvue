@@ -21,7 +21,8 @@ Ext.define('App.view.track.Track', {
     xtype: 'panel',
     region: 'west',
     width: 500,
-    // split: true,
+    // collapsible: true,
+    split: true,
     layout: 'border',
     items: [{
       xtype: 'tabpanel',
