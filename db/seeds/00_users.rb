@@ -1,7 +1,7 @@
 #encoding: utf-8
 
-User.current_user = User.where(email: 'admin@example.com').first_or_create(
-  email: 'admin@example.com',
+User.current_user = User.where(email: 'test@trackvue.com').first_or_create(
+  email: 'test@trackvue.com',
   password: 'admin123',
   password_confirmation: 'admin123'
 )

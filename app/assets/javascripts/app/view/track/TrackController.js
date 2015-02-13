@@ -78,8 +78,10 @@ Ext.define('App.view.track.TrackController', {
 
     tplDriverInfoWindow: new Ext.XTemplate(
       '<div class="photos">',
-        '<img src="{vehicle_img_url}"/>',
-        '<img src="{driver_img_url}" hidden/>',
+        // '<img src="{vehicle_img_url}"/>',
+        // '<img src="{driver_img_url}" hidden/>',
+        '<img src="assets/ph_car.png"/>',
+        '<img src="assets/ph_user.png" hidden/>',
         '<div>',
           '<button onclick="$(\'.photos img\').toggle();">toggle photo</button>',
         '</div>',

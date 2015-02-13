@@ -238,11 +238,13 @@ Ext.define('App.view.track.Track', {
           },
           items: [{
             bind: {
-              src: '{vehicle.driver_img_url}'
+              // src: '{vehicle.driver_img_url}'
+              src: 'assets/ph_user.png'
             }
           }, {
             bind: {
-              src: '{vehicle.vehicle_img_url}'
+              // src: '{vehicle.vehicle_img_url}'
+              src: 'assets/ph_car.png'
             }
           }]
         }]
