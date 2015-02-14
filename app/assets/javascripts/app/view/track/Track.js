@@ -19,9 +19,12 @@ Ext.define('App.view.track.Track', {
 
   items: [{
     xtype: 'panel',
+    itemId: 'infopanel',
+    title: 'Information',
+    header: false,
     region: 'west',
-    width: 500,
-    // collapsible: true,
+    width: 410,
+    collapsible: true,
     split: true,
     layout: 'border',
     items: [{
@@ -321,7 +324,7 @@ Ext.define('App.view.track.Track', {
         ]
       }, {
         xtype: 'panel',
-        title: 'TRIP DETAILS',
+        title: 'TRIP INFO.',
         tbar: [{
           xtype: 'displayfield',
           fieldLabel: 'TRIP ID',

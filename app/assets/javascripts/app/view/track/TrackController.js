@@ -106,6 +106,20 @@ Ext.define('App.view.track.TrackController', {
     this.onRefreshTermChange(60);
     this.cluster = [];
 
+    var infopanel = this.getView().down('#infopanel');
+    var tabmaster = this.getView().down('#tabmaster');
+    tabmaster.tabBar.insert(2, [{
+      xtype: 'component',
+      flex: 1
+    }, {
+      xtype: 'button',
+      iconCls: 'x-tool-img x-tool-collapse-left',
+      width: 34,
+      handler: function() {
+        infopanel.collapse();
+      }
+    }]);
+
     model.get('stores.drivers').load({
       scope: this,
       callback: function(records) {
