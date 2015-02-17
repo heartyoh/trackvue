@@ -2,11 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 $speed-off:#bbbbbb;
-$speed-idle:#888888;
-$speed-slow:#5555bb;
-$speed-normal:#55bb55;
-$speed-fast:#bbbb55;
-$speed-speeding:#bb5555;
+$speed-idle:#5c5c5c;
+$speed-slow:#006bb9;
+$speed-normal:#009f00;
+$speed-fast:#da8500;
+$speed-speeding:#bd0d0d;
 
 span.speed-off{
     background:$speed-off;
