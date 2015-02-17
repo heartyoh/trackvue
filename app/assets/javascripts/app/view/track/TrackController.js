@@ -98,6 +98,15 @@ Ext.define('App.view.track.TrackController', {
           return !!url;
         }
       }
+    ),
+
+    tplTripEvent: new Ext.XTemplate(
+      '<span class="speed-off">{count_off}</span>',
+      '<span class="speed-idle">{count_idle}</span>',
+      '<span class="speed-slow">{count_slow}</span>',
+      '<span class="speed-normal">{count_normal}</span>',
+      '<span class="speed-fast">{count_fast}</span>',
+      '<span class="speed-speeding">{count_speeding}</span>'
     )
   },
 
@@ -342,14 +351,16 @@ Ext.define('App.view.track.TrackController', {
   },
 
   onTripSelect: function(grid, record, item, index, e, eOpts) {
-  this.onRefreshTaskCancel();
-  this.onRefreshTrip(60, grid, record, item, index, e, eOpts);
+    this.onRefreshTaskCancel();
+    this.onRefreshTrip(60, grid, record, item, index, e, eOpts);
 
     var id = record.get('id');
     var self = this;
     App.model.Trip.load(id, {
       success: function(trip) {
         self.getViewModel().set('trip', trip);
+        var events = App.view.track.TrackController.tplTripEvent.apply(trip);
+        self.getViewModel().set('trip.events', events);
       }
     })
     var tabdetail = this.getView().down('#tabdetail');
@@ -445,16 +456,6 @@ Ext.define('App.view.track.TrackController', {
 
             self.setInformationWindow(gmap, content, this);
           });
-
-          // TODO 아래 부분은 TRIP의 것이다. 트랙에서 할 일이 아니다.
-          self.getViewModel().set('trip.events',
-            '<span class="speed-off">' + record.get('count_off') + '</span>' +
-            '<span class="speed-idle">' + record.get('count_idle') + '</span>' +
-            '<span class="speed-slow">' + record.get('count_slow') + '</span>' +
-            '<span class="speed-normal">' + record.get('count_normal') + '</span>' +
-            '<span class="speed-fast">' + record.get('count_fast') + '</span>' +
-            '<span class="speed-speeding">' + record.get('count_speeding') + '</span>'
-          );
         }
 
         gmap.fitBounds(bounds);
