@@ -320,7 +320,7 @@ Ext.define('App.view.track.Track', {
           { text: 'MAX', dataIndex: 'speed_max', width: 60 },
           { text: 'AVG', dataIndex: 'speed_avg', width: 60 },
           { text: 'DIST.', dataIndex: 'distance', width: 60 },
-          { text: 'TIME', dataIndex: 'elapsed', width: 80 }
+          { text: 'TIME', dataIndex: 'calculated_elapsed', width: 80 }
         ]
       }, {
         xtype: 'panel',
