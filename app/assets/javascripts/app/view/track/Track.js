@@ -164,11 +164,11 @@ Ext.define('App.view.track.Track', {
           bind: {
             value: '{location.vehicle_count}'
           }
-        }, {
-          fieldLabel: 'Trips',
-          bind: {
-            value: '{location.total_trips}'
-          }
+        // }, {
+        //   fieldLabel: 'Trips',
+        //   bind: {
+        //     value: '{location.total_trips}'
+        //   }
         }]
       }, {
         xtype: 'container',
@@ -260,14 +260,14 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alert_history}'
         },
         columns: [
-          { text: 'VEHICLE / DRIVER',  width: 200,
-            renderer: function(value, x, record) {
-              var drivers = this.up('app-track').getViewModel().get('stores.drivers');
-              var driver = drivers.findRecord('id', record.get('driver_id'));
-              return driver.get('lastname') + ' ' + driver.get('firstname') + ' / ' + driver.get('vehicle_name');
-            }
-          },
-          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
+          // { text: 'VEHICLE / DRIVER',  width: 200,
+          //   renderer: function(value, x, record) {
+          //     var drivers = this.up('app-track').getViewModel().get('stores.drivers');
+          //     var driver = drivers.findRecord('id', record.get('driver_id'));
+          //     return driver.get('lastname') + ' ' + driver.get('firstname') + ' / ' + driver.get('vehicle_name');
+          //   }
+          // },
+          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 160 },
           { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50,
             renderer: function(value, s, record){
               var severity = record.get('severity'); //Severe, Normal, Trivial
@@ -316,7 +316,7 @@ Ext.define('App.view.track.Track', {
         },
         columns: [
           { text: '#', dataIndex: 'id', width: 50, hidden: true },
-          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:sZ', width: 160 },
+          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 160 },
           { text: 'MAX', dataIndex: 'speed_max', width: 60 },
           { text: 'AVG', dataIndex: 'speed_avg', width: 60 },
           { text: 'DIST.', dataIndex: 'distance', width: 60 },
@@ -327,16 +327,16 @@ Ext.define('App.view.track.Track', {
         title: 'TRIP INFO.',
         tbar: [{
           xtype: 'displayfield',
-          fieldLabel: 'TRIP ID',
+          fieldLabel: 'Started at',
           labelStyle: 'font-weight:bold;',
           labelWidth: 60,
           bind: {
-            value: '{trip.id}'
+            value: '{trip.start_time}'
           }
-        }, '->', {
-          icon: '/assets/sort_up.png'
-        }, {
-          icon: '/assets/sort_down.png'
+        // }, '->', {
+        //   icon: '/assets/sort_up.png'
+        // }, {
+        //   icon: '/assets/sort_down.png'
         }],
         // layout: 'anchor',
         autoScroll: true,
@@ -350,9 +350,10 @@ Ext.define('App.view.track.Track', {
           padding: 0
         },
         items: [{
-          fieldLabel: 'Start / End Time',
+          fieldLabel: 'Till',
+          labelWidth: 68,
           bind: {
-            value: '{trip_start_time} ~ {trip_end_time}'
+            value: '{trip.end_time}'
           }
         }, {
           fieldLabel: 'Duration / Distance',
