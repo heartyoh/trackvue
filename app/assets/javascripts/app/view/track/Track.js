@@ -315,11 +315,11 @@ Ext.define('App.view.track.Track', {
           store: '{stores.trips}'
         },
         columns: [
-          { text: '#', dataIndex: 'id', width: 50 },
-          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:sZ', width: 150 },
-          { text: 'MAX', dataIndex: 'speed_max', width: 80 },
-          { text: 'AVG', dataIndex: 'speed_avg', width: 80 },
-          { text: 'DISTANCE', dataIndex: 'distance', width: 80 },
+          { text: '#', dataIndex: 'id', width: 50, hidden: true },
+          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:sZ', width: 160 },
+          { text: 'MAX', dataIndex: 'speed_max', width: 60 },
+          { text: 'AVG', dataIndex: 'speed_avg', width: 60 },
+          { text: 'DIST.', dataIndex: 'distance', width: 60 },
           { text: 'TIME', dataIndex: 'elapsed', width: 80 }
         ]
       }, {
