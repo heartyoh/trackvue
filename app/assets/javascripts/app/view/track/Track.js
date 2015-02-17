@@ -355,9 +355,9 @@ Ext.define('App.view.track.Track', {
             value: '{trip_start_time} ~ {trip_end_time}'
           }
         }, {
-          fieldLabel: 'Distance / Duration',
+          fieldLabel: 'Duration / Distance',
           bind: {
-            value: '{trip.distance} Km / {trip.elapsed} seconds'
+            value: '{trip.calculated_elapsed} seconds / {trip.distance} Km'
           }
         }, {
           fieldLabel: 'Speed / Status',
@@ -365,7 +365,7 @@ Ext.define('App.view.track.Track', {
             value: '{trip.speed_max} Km/h (Avg: {trip.speed_avg}) / {trip.status}'
           }
         }, {
-          fieldLabel: 'Events',
+          fieldLabel: 'Speeds',
           bind: {
             value: '{trip.events}'
           }

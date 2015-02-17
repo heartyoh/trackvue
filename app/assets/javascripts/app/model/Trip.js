@@ -12,6 +12,8 @@ Ext.define('App.model.Trip', {
   }, {
     name: 'elapsed', type: 'integer'
   }, {
+    name: 'calculated_elapsed', type: 'integer'
+  }, {
     name: 'speed_max', type: 'integer'
   }, {
     name: 'speed_avg', type: 'integer'
