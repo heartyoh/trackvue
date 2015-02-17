@@ -361,7 +361,7 @@ Ext.define('App.view.track.TrackController', {
         trip.set('calculated_elapsed', (trip.get('end_time') - trip.get('start_time'))/1000);
         self.getViewModel().set('trip', trip);
 
-        self.getViewModel().set('trip.events', App.view.track.TrackController.tplTripEvent.apply(trip));
+        self.getViewModel().set('trip.events', App.view.track.TrackController.tplTripEvent.apply(trip.data));
       }
     })
     var tabdetail = this.getView().down('#tabdetail');
