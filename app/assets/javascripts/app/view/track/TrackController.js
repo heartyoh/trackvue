@@ -358,7 +358,7 @@ Ext.define('App.view.track.TrackController', {
     var self = this;
     App.model.Trip.load(id, {
       success: function(trip) {
-        // trip.set('calculated_elapsed', (trip.get('end_time') - trip.get('start_time'))/1000);
+        trip.set('calculated_elapsed', (trip.get('end_time') - trip.get('start_time'))/1000);
         self.getViewModel().set('trip', trip);
 
         self.getViewModel().set('trip.events', App.view.track.TrackController.tplTripEvent.apply(trip.data));
