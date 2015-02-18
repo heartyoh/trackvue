@@ -67,59 +67,12 @@ Ext.define('App.view.track.Track', {
             }
           },
           // { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
-          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 120 },
-          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50,
-            renderer: function(value, s, record){
-              var severity = record.get('severity'); //Severe, Normal, Trivial
-              var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
-              var icon;
-              switch(type) {
-                case 'G': // G Sensor
-                  icon = 'safety_';
-                  break;
-                case 'E': // External Button
-                case 'B': // Button
-                  icon = 'efficiency_';
-                  break;
-                case 'F': // Geofence
-                  icon = 'geofence_';
-                  break;
-                default:
-                  icon = 'safety_';
-              }
-
-              switch(severity) {
-                case 'S':
-                  icon += 'red.png';
-                  break;
-                case 'N':
-                  icon += 'blue.png';
-                  break;
-                case 'T':
-                  icon += 'green.png';
-                  break;
-                default:
-                  icon += 'blue.png';
-              }
-
-              return '<img src="assets/alert/alert_' + icon + '" height="16" width="16" />';
-            }
-          },
-          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
+          { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 150 },
+          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50, renderer: HF.renderer.alert_type },
+          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1, renderer: HF.renderer.alert_description }
         ]
 
       }]
-    // }, {
-    //     xtype: 'component',
-    //     region:'south',
-    //     height: 20,
-    //     cls: 'speed-regend',
-    //     html: 'Speed : <span class="speed-off">Off</span>' +
-    //         '<span class="speed-idle">Idle</span>' +
-    //         '<span class="speed-slow">Slow</span>' +
-    //         '<span class="speed-normal">Normal</span>' +
-    //         '<span class="speed-fast">Fast</span>' +
-    //         '<span class="speed-speeding">Speeding</span>'
     }, {
       xtype: 'tabpanel',
       itemId: 'tabdetail',
@@ -260,52 +213,9 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alert_history}'
         },
         columns: [
-          // { text: 'VEHICLE / DRIVER',  width: 200,
-          //   renderer: function(value, x, record) {
-          //     var drivers = this.up('app-track').getViewModel().get('stores.drivers');
-          //     var driver = drivers.findRecord('id', record.get('driver_id'));
-          //     return driver.get('lastname') + ' ' + driver.get('firstname') + ' / ' + driver.get('vehicle_name');
-          //   }
-          // },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 160 },
-          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50,
-            renderer: function(value, s, record){
-              var severity = record.get('severity'); //Severe, Normal, Trivial
-              var type = record.get('alert_type'); //G sensor, External Button, Button, Geofence(F)
-              var icon;
-              switch(type) {
-                case 'G': // G Sensor
-                  icon = 'safety_';
-                  break;
-                case 'E': // External Button
-                case 'B': // Button
-                  icon = 'efficiency_';
-                  break;
-                case 'F': // Geofence
-                  icon = 'geofence_';
-                  break;
-                default:
-                  icon = 'safety_';
-              }
-
-              switch(severity) {
-                case 'S':
-                  icon += 'red.png';
-                  break;
-                case 'N':
-                  icon += 'blue.png';
-                  break;
-                case 'T':
-                  icon += 'green.png';
-                  break;
-                default:
-                  icon += 'blue.png';
-              }
-
-              return '<img src="assets/alert/alert_' + icon + '" height="16" width="16" />';
-            }
-          },
-          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1 }
+          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50, renderer: HF.renderer.alert_type },
+          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1, renderer: HF.renderer.alert_description }
         ]
       }, {
         xtype: 'grid',
