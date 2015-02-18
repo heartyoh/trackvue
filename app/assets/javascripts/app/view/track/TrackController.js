@@ -132,38 +132,11 @@ Ext.define('App.view.track.TrackController', {
     model.get('stores.drivers').load({
       scope: this,
       callback: function(records) {
-      this.onMapReady(true);
-        // for(var i = 0;i < records.length;i++) {
-        //   var record = records[i];
-        //   HF.reverse_geocode(record, record.get('lat'), record.get('lng'), function(record, results, status) {
-        //     console.log(arguments)
-        //     if (results && results[0]) {
-        //       record.set('address', results[0].formatted_address);
-        //     } else {
-        //       record.set('address', '--')
-        //     }
-        //   });
-        // }
-
+        this.onMapReady(true);
       }
     });
 
-    model.get('stores.alerts').load({
-      scope: this,
-      callback: function(records) {
-        // for(var i = 0;i < records.length;i++) {
-        //   var record = records[i];
-        //   HF.reverse_geocode(record, record.get('lat'), record.get('lng'), function(record, results, status) {
-        //     console.log(arguments)
-        //     if (results && results[0]) {
-        //       record.set('address', results[0].formatted_address);
-        //     } else {
-        //       record.set('address', '--')
-        //     }
-        //   });
-        // }
-      }
-    });
+    model.get('stores.alerts').loadPage(1);
   },
 
   addMarker: function(marker) {
@@ -256,22 +229,14 @@ Ext.define('App.view.track.TrackController', {
       driver_id: record.get('id')
     };
 
-    trips.load({
-      scope: this,
-      callback: function(records) {
-      }
-    });
+    trips.loadPage(1);
 
     var alert_history = this.getViewModel().get('stores.alert_history');
     alert_history.getProxy().extraParams = {
       driver_id: record.get('id')
     };
 
-    alert_history.load({
-      scope: this,
-      callback: function(records) {
-      }
-    });
+    alert_history.loadPage(1);
 
     var gmap = this.getView().down('#gmap').gmap;
 
@@ -282,33 +247,14 @@ Ext.define('App.view.track.TrackController', {
     var latlng;
 
     if(record.get('lat') && record.get('lng')) {
+
       var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
-
-      var icon;
-      var status = record.get('status');
-      if(status == 'E' || status == 'F')
-        icon = '/assets/van_off.png';
-      else {
-        var prefix = '/assets/van_';
-        var speed = record.get('speed');
-
-        if(speed == 0)
-          icon = prefix + 'idle.png';
-        else if(speed <= 32)
-          icon = prefix + 'slow.png';
-        else if(speed <= 97)
-          icon = prefix + 'normal.png';
-        else if(speed <= 121)
-          icon = prefix + 'fast.png';
-        else
-          icon = prefix + 'speed.png';
-      }
-
       var marker = new google.maps.Marker({
         position: latlng,
         map: gmap,
-        icon: icon
+        icon: this.getVehicleIcon(record)
       });
+
       this.addMarker(marker);
       this.setInformationWindowDirver(gmap, record.getData(), marker);
       gmap.setCenter(latlng);
@@ -317,32 +263,12 @@ Ext.define('App.view.track.TrackController', {
       HF.geocode(this, record.get('home'), function(self, results, status) {
 
         var latlng = results && results[0].geometry.location;
-
-        var icon;
-        var status = record.get('status');
-        if(status == 'E' || status == 'F')
-          icon = '/assets/van_off.png';
-        else {
-          var prefix = '/assets/van_';
-          var speed = record.get('speed');
-
-          if(speed == 0)
-            icon = prefix + 'idle.png';
-          else if(speed <= 32)
-            icon = prefix + 'slow.png';
-          else if(speed <= 97)
-            icon = prefix + 'normal.png';
-          else if(speed <= 121)
-            icon = prefix + 'fast.png';
-          else
-            icon = prefix + 'speed.png';
-        }
-
         var marker = new google.maps.Marker({
           position: latlng,
           map: gmap,
-          icon: icon
+          icon: self.getVehicleIcon(record)
         });
+
         self.addMarker(marker);
         self.setInformationWindowDirver(gmap, record.getData(), marker);
         gmap.setCenter(latlng);
@@ -391,40 +317,11 @@ Ext.define('App.view.track.TrackController', {
 
           bounds.extend(latlng);
 
-          var icon;
-          var status = record.get('status');
-
-          if(status == 'S')
-            icon = 'tripstart';
-          else if(status == 'E')
-            icon = 'tripend';
-          else {
-            var prefix = 'tripmarker_';
-            if(record.get('front_img_url') || record.get('rear_img_url'))
-              prefix += 'i_';
-
-            if(status == 'F')
-              icon = prefix + 'off';
-            else {
-              var speed = record.get('speed');
-              if(speed == 0)
-                icon = prefix + 'idle';
-              else if(speed <= 32)
-                icon = prefix + 'slow';
-              else if(speed <= 97)
-                icon = prefix + 'normal';
-              else if(speed <= 121)
-                icon = prefix + 'fast';
-              else
-                icon = prefix + 'speed';
-            }
-          }
-
           var marker = new google.maps.Marker({
             position: latlng,
             map: gmap,
             zIndex: i,
-            icon: '/assets/' + icon + '.png',
+            icon: self.getTrackIcon(record),
             info: record.data
           });
           // TODO Check --
@@ -504,48 +401,16 @@ Ext.define('App.view.track.TrackController', {
     }
 
     for(i = 0;i < alerts.length;i++) {
-      // var alert_to_pass = alerts[i];
+
       var alert = alerts[i];
 
-      var icon = 'assets/alert_';
-      var severity = alert.severity; //H, M, L
-      var type = alert.alert_type; //G,
-
-      switch(type) {
-        case 'G': // G Sensor
-          icon += 'safety_';
-          break;
-        case 'E':
-        case 'B':
-          icon += 'efficiency_';
-          break;
-        case 'F': // Geofence
-          icon += 'geofence_';
-          break;
-        default:
-          icon += 'safety_';
-      }
-
-      switch(severity) {
-        case 'S':
-          icon += 'red.png';
-          break;
-        case 'N':
-          icon += 'blue.png';
-          break;
-        case 'T':
-          icon += 'green.png';
-          break;
-        default:
-          icon += 'blue.png';
-      }
 
       var latlng = new google.maps.LatLng(alert.lat, alert.lng);
       var marker = new google.maps.Marker({
         position: latlng,
         map: gmap,
         zIndex: 1000 - i,
-        icon: icon,
+        icon: this.getAlertIcon(alert),
         info: alert
       });
       this.addMarker(marker);
@@ -589,11 +454,11 @@ Ext.define('App.view.track.TrackController', {
   },
 
   onAlertSelect: function(grid, record, item, index, e, eOpts) {
-  this.onRefreshTaskCancel();
+    this.onRefreshTaskCancel();
 
     this.clearAll();
 
-  this.onRefreshAlert(60, grid, record, item, index, e, eOpts);
+    this.onRefreshAlert(60, grid, record, item, index, e, eOpts);
 
     this.showAlerts([record.data], true);
   },
@@ -708,30 +573,10 @@ Ext.define('App.view.track.TrackController', {
       if(record.get('lat') && record.get('lng')) {
       var latlng = new google.maps.LatLng(record.get('lat'), record.get('lng'));
 
-      var icon;
-      var status = record.get('status');
-      if(status == 'E' || status == 'F')
-        icon = '/assets/van_off.png';
-      else {
-        var prefix = '/assets/van_';
-        var speed = record.get('speed');
-
-        if(speed == 0)
-          icon = prefix + 'idle.png';
-        else if(speed <= 32)
-          icon = prefix + 'slow.png';
-        else if(speed <= 97)
-          icon = prefix + 'normal.png';
-        else if(speed <= 121)
-          icon = prefix + 'fast.png';
-        else
-          icon = prefix + 'speed.png';
-      }
-
       var marker = new google.maps.Marker({
         position: latlng,
         map: gmap,
-        icon: icon
+        icon: self.getVehicleIcon(record)
       });
 
       // TODO Check --
@@ -782,30 +627,10 @@ Ext.define('App.view.track.TrackController', {
 
         var latlng = results && results[0].geometry.location;
 
-        var icon;
-        var status = record.get('status');
-        if(status == 'E' || status == 'F')
-          icon = '/assets/van_off.png';
-        else {
-          var prefix = '/assets/van_';
-          var speed = record.get('speed');
-
-          if(speed == 0)
-            icon = prefix + 'idle.png';
-          else if(speed <= 32)
-            icon = prefix + 'slow.png';
-          else if(speed <= 97)
-            icon = prefix + 'normal.png';
-          else if(speed <= 121)
-            icon = prefix + 'fast.png';
-          else
-            icon = prefix + 'speed.png';
-        }
-
         var marker = new google.maps.Marker({
           position: latlng,
           map: gmap,
-          icon: icon
+          icon: self.getVehicleIcon(record)
         });
 
         // TODO Check --
@@ -853,6 +678,99 @@ Ext.define('App.view.track.TrackController', {
         });
       }
     });
-  }
+  },
 
+  getVehicleIcon: function(vehicle) {
+    var icon;
+    var status = vehicle.get('status');
+    if(status == 'E' || status == 'F')
+      icon = '/assets/van_off.png';
+    else {
+      var prefix = '/assets/van_';
+      var speed = vehicle.get('speed');
+
+      if(speed == 0)
+        icon = prefix + 'idle.png';
+      else if(speed <= 32)
+        icon = prefix + 'slow.png';
+      else if(speed <= 97)
+        icon = prefix + 'normal.png';
+      else if(speed <= 121)
+        icon = prefix + 'fast.png';
+      else
+        icon = prefix + 'speed.png';
+    }
+
+    return icon;
+  },
+
+  getAlertIcon: function(alert) {
+    var icon = 'assets/alert_';
+    var severity = alert.severity; //H, M, L
+    var type = alert.alert_type; //G,
+
+    switch(type) {
+      case 'G': // G Sensor
+        icon += 'safety_';
+        break;
+      case 'E':
+      case 'B':
+        icon += 'efficiency_';
+        break;
+      case 'F': // Geofence
+        icon += 'geofence_';
+        break;
+      default:
+        icon += 'safety_';
+    }
+
+    switch(severity) {
+      case 'S':
+        icon += 'red.png';
+        break;
+      case 'N':
+        icon += 'blue.png';
+        break;
+      case 'T':
+        icon += 'green.png';
+        break;
+      default:
+        icon += 'blue.png';
+    }
+
+    return icon;
+  },
+
+  getTrackIcon: function(track) {
+    var icon;
+    var status = track.get('status');
+
+    if(status == 'S')
+      icon = 'tripstart';
+    else if(status == 'E')
+      icon = 'tripend';
+    else {
+      var prefix = 'tripmarker_';
+      if(track.get('front_img_url') || track.get('rear_img_url'))
+        prefix += 'i_';
+
+      if(status == 'F')
+        icon = prefix + 'off';
+      else {
+        var speed = track.get('speed');
+        if(speed == 0)
+          icon = prefix + 'idle';
+        else if(speed <= 32)
+          icon = prefix + 'slow';
+        else if(speed <= 97)
+          icon = prefix + 'normal';
+        else if(speed <= 121)
+          icon = prefix + 'fast';
+        else
+          icon = prefix + 'speed';
+      }
+    }
+
+    return '/assets/' + icon + '.png';
+  }
 });
