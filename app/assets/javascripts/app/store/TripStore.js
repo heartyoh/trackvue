@@ -5,11 +5,17 @@ Ext.define('App.store.TripStore', {
 
   autoLoad: false,
 
+  pageSize: 10,
+
+  remoteSort: true,
+
   proxy: {
     type: 'rest',
     url: 'trips',
     reader: {
-      type: 'json'
+      type: 'json',
+      root: 'trips',
+      totalProperty: 'total'
     }
   }
 });

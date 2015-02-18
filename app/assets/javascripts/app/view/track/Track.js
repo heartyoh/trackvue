@@ -59,7 +59,7 @@ Ext.define('App.view.track.Track', {
           store: '{stores.alerts}'
         },
         columns: [
-          { text: 'VEHICLE / DRIVER',  width: 200,
+          { text: 'VEHICLE / DRIVER',  width: 200, sortable: false,
             renderer: function(value, x, record) {
               var drivers = this.up('app-track').getViewModel().get('stores.drivers');
               var driver = drivers.findRecord('id', record.get('driver_id'));
@@ -68,10 +68,18 @@ Ext.define('App.view.track.Track', {
           },
           // { text: 'DRIVER', dataIndex: 'driver_id', width: 80 },
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 150 },
-          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50, renderer: HF.renderer.alert_type },
-          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1, renderer: HF.renderer.alert_description }
-        ]
-
+          { text: 'TYPE', dataIndex: 'alert_type', sortable: false, align: 'center', width: 50, renderer: HF.renderer.alert_type },
+          { text: 'DESCRIPTION', dataIndex: 'description', sortable: false, flex: 1, renderer: HF.renderer.alert_description }
+        ],
+        dockedItems: [{
+          xtype: 'pagingtoolbar',
+          dock: 'bottom',
+          displayInfo: true,
+          displayMsg: '{0} - {1} of {2}',
+          bind: {
+            store: '{stores.alerts}'
+          }
+        }]
       }]
     }, {
       xtype: 'tabpanel',
@@ -214,9 +222,18 @@ Ext.define('App.view.track.Track', {
         },
         columns: [
           { xtype: 'datecolumn', text: 'DATE/TIME', dataIndex: 'alert_time', format: 'Y-m-d H:i:s', width: 160 },
-          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50, renderer: HF.renderer.alert_type },
-          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1, renderer: HF.renderer.alert_description }
-        ]
+          { text: 'TYPE', dataIndex: 'alert_type', align: 'center', width: 50, sortable: false, renderer: HF.renderer.alert_type },
+          { text: 'DESCRIPTION', dataIndex: 'description', flex: 1, sortable: false, renderer: HF.renderer.alert_description }
+        ],
+        dockedItems: [{
+          xtype: 'pagingtoolbar',
+          dock: 'bottom',
+          displayInfo: true,
+          displayMsg: '{0} - {1} of {2}',
+          bind: {
+            store: '{stores.alert_history}'
+          }
+        }]
       }, {
         xtype: 'grid',
         title: 'TRIPS',
@@ -227,11 +244,20 @@ Ext.define('App.view.track.Track', {
         columns: [
           { text: '#', dataIndex: 'id', width: 50, hidden: true },
           { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 160 },
-          { text: 'MAX', dataIndex: 'speed_max', width: 60 },
-          { text: 'AVG', dataIndex: 'speed_avg', width: 60 },
-          { text: 'DIST.', dataIndex: 'distance', width: 60 },
-          { text: 'TIME', dataIndex: 'calculated_elapsed', width: 80 }
-        ]
+          { text: 'MAX', dataIndex: 'speed_max', width: 60, sortable: false },
+          { text: 'AVG', dataIndex: 'speed_avg', width: 60, sortable: false },
+          { text: 'DIST.', dataIndex: 'distance', width: 60, sortable: false },
+          { text: 'TIME', dataIndex: 'calculated_elapsed', width: 80, sortable: false }
+        ],
+        dockedItems: [{
+          xtype: 'pagingtoolbar',
+          dock: 'bottom',
+          displayInfo: true,
+          displayMsg: '{0} - {1} of {2}',
+          bind: {
+            store: '{stores.trips}'
+          }
+        }]
       }, {
         xtype: 'panel',
         title: 'TRIP INFO.',

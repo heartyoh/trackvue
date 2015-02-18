@@ -3,9 +3,22 @@ class TripsController < ApplicationController
 
   def index
     filter = {}
-    filter[:driver_id] = params[:driver_id] if params[:driver_id]
+    filter[:driver_id] = params[:driver_id] unless params[:driver_id].blank?
 
-    respond_with(@trips=Trip.where(filter).order(start_time: :desc))
+    sorter = 'start_time desc';
+    unless params[:sort].blank?
+      sorters = JSON.parse(params[:sort])
+      sorter = sorters.collect { |s| "#{s['property']} #{s['direction']}" }.join(",")
+    end
+
+    total = Trip.where(filter).count
+
+    @trips = {
+      trips: Trip.where(filter).order(sorter).limit(params[:limit]).offset(params[:start]),
+      total: total
+    }
+
+    respond_with(@trips)
   end
 
   def show

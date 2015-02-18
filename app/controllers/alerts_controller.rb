@@ -3,10 +3,22 @@ class AlertsController < ApplicationController
 
   def index
     filter = {}
-    filter[:driver_id] = params[:driver_id] if params[:driver_id]
-    filter[:trip_start_time] = Time.parse(params[:trip_start_time]) if params[:trip_start_time]
+    filter[:driver_id] = params[:driver_id] unless params[:driver_id].blank?
+    filter[:trip_start_time] = Time.parse(params[:trip_start_time]) unless params[:trip_start_time].blank?
 
-    respond_with(@alerts=Alert.where(filter).order(alert_time: :desc))
+    sorter = 'alert_time desc';
+    unless params[:sort].blank?
+      sorters = JSON.parse(params[:sort])
+      sorter = sorters.collect { |s| "#{s['property']} #{s['direction']}" }.join(",")
+    end
+
+    total = Alert.where(filter).count
+
+    @alerts = {
+      alerts: Alert.where(filter).order(sorter).limit(params[:limit]).offset(params[:start]),
+      total: total
+    }
+    respond_with(@alerts)
   end
 
   def show

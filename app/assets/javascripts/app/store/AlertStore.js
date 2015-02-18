@@ -5,11 +5,17 @@ Ext.define('App.store.AlertStore', {
 
   autoLoad: false,
 
+  pageSize: 20,
+
+  remoteSort: true,
+
   proxy: {
     type: 'rest',
     url: 'alerts',
     reader: {
-      type: 'json'
+      type: 'json',
+      root: 'alerts',
+      totalProperty: 'total'
     }
   }
 });
