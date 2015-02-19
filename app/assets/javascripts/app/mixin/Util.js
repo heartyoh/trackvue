@@ -96,7 +96,7 @@ Ext.define('App.mixin.Util', function() {
     var hours = Math.floor(seconds / 3600);
     var minutes = Math.floor(seconds / 60) % 60;
 
-    return sprintfhours + ' h ' + minutes + ' m ' + (seconds % 60) + ' s';
+    return hours + ' h ' + minutes + ' m ' + (seconds % 60) + ' s';
   }
 
   return {
