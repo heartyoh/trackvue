@@ -13,9 +13,9 @@ Ext.define('App.model.Trip', {
     name: 'elapsed', type: 'integer'
   }, {
     name: 'calculated_elapsed',
-    type: 'integer',
+    type: 'string',
     convert: function(v, record) {
-      return (record.get('end_time') - record.get('start_time'))/1000;
+      return HF.formula_duration((record.get('end_time') - record.get('start_time'))/1000);
     }
   }, {
     name: 'speed_max', type: 'integer'

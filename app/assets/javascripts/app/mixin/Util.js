@@ -92,9 +92,17 @@ Ext.define('App.mixin.Util', function() {
     return description + 'Alert';
   }
 
+  function formula_duration(seconds) {
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor(seconds / 60) % 60;
+
+    return sprintfhours + ' h ' + minutes + ' m ' + (seconds % 60) + ' s';
+  }
+
   return {
     geocode: geocode,
     reverse_geocode: reverse_geocode,
+    formula_duration: formula_duration,
     renderer: {
       alert_type: renderer_alert_type,
       alert_description: renderer_alert_description

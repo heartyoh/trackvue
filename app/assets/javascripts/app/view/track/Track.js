@@ -247,7 +247,7 @@ Ext.define('App.view.track.Track', {
           { text: 'MAX', dataIndex: 'speed_max', width: 60, sortable: false },
           { text: 'AVG', dataIndex: 'speed_avg', width: 60, sortable: false },
           { text: 'DIST.', dataIndex: 'distance', width: 60, sortable: false },
-          { text: 'TIME', dataIndex: 'calculated_elapsed', width: 80, sortable: false }
+          { text: 'DURATION', dataIndex: 'calculated_elapsed', width: 80, sortable: false }
         ],
         dockedItems: [{
           xtype: 'pagingtoolbar',
@@ -294,7 +294,7 @@ Ext.define('App.view.track.Track', {
         }, {
           fieldLabel: 'Duration / Distance',
           bind: {
-            value: '{trip.calculated_elapsed} seconds / {trip.distance} Km'
+            value: '{trip.calculated_elapsed} / {trip.distance} Km'
           }
         }, {
           fieldLabel: 'Speed / Status',
