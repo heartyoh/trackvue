@@ -242,11 +242,11 @@ Ext.define('App.view.track.Track', {
           store: '{stores.trips}'
         },
         columns: [
-          { text: '#', dataIndex: 'id', width: 50, hidden: true },
-          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 160 },
-          { text: 'MAX', dataIndex: 'speed_max', width: 60, sortable: false },
-          { text: 'AVG', dataIndex: 'speed_avg', width: 60, sortable: false },
-          { text: 'DIST.', dataIndex: 'distance', width: 60, sortable: false },
+          { text: '#', dataIndex: 'id', width: 50 },
+          { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 140 },
+          { text: 'MAX', dataIndex: 'speed_max', width: 50, sortable: false },
+          { text: 'AVG', dataIndex: 'speed_avg', width: 50, sortable: false },
+          { text: 'DIST.', dataIndex: 'distance', width: 50, sortable: false },
           { text: 'DURATION', dataIndex: 'calculated_elapsed', width: 80, sortable: false }
         ],
         dockedItems: [{
@@ -263,11 +263,11 @@ Ext.define('App.view.track.Track', {
         title: 'TRIP INFO.',
         tbar: [{
           xtype: 'displayfield',
-          fieldLabel: 'Started at',
+          fieldLabel: 'Trip #',
           labelStyle: 'font-weight:bold;',
           labelWidth: 60,
           bind: {
-            value: '{trip.start_time}'
+            value: '{trip.id}'
           }
         // }, '->', {
         //   icon: '/assets/sort_up.png'
@@ -286,6 +286,12 @@ Ext.define('App.view.track.Track', {
           padding: 0
         },
         items: [{
+          fieldLabel: 'Started at',
+          labelWidth: 68,
+          bind: {
+            value: '{trip.start_time}'
+          }
+        }, {
           fieldLabel: 'Till',
           labelWidth: 68,
           bind: {
