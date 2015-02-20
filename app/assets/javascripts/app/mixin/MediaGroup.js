@@ -40,7 +40,7 @@ Ext.define('App.mixin.MediaGroup', function() {
       $(this).removeClass("backward-layer").addClass("forward-layer");
     });
 
-    $(this).addClass("backward-layer").removeClass("forward-layer");
+    $(img).addClass("backward-layer").removeClass("forward-layer");
   });
 
   $(document).on('click', '.pip-container video.forward-layer', function(e){
@@ -53,7 +53,7 @@ Ext.define('App.mixin.MediaGroup', function() {
     });
 
     $(video).prop('controls', true);
-    $(this).addClass("backward-layer").removeClass("forward-layer");
+    $(video).addClass("backward-layer").removeClass("forward-layer");
   });
 
   $(document).on('play', 'video.backward-layer', function(e) {
