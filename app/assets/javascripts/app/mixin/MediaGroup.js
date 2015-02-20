@@ -32,15 +32,9 @@ Ext.define('App.mixin.MediaGroup', function() {
 
   $.createEventCapturing(['play', 'pause', 'seeked']);
 
-  $(document).on('click', '.pip-container img.forward-layer', function(e){
-    var img = e.target;
-
-    var mediagroup = $(img).attr('xmediagroup');
-    $('img[xmediagroup=' + mediagroup + ']').not(img).each(function(){
-      $(this).removeClass("backward-layer").addClass("forward-layer");
-    });
-
-    $(img).addClass("backward-layer").removeClass("forward-layer");
+  $(document).on('click', '.pip-container img.forward-layer', function(){
+    $(".backward-layer").removeClass("backward-layer").addClass("forward-layer");
+    $(this).addClass("backward-layer").removeClass("forward-layer");
   });
 
   $(document).on('click', '.pip-container video.forward-layer', function(e){
@@ -53,7 +47,7 @@ Ext.define('App.mixin.MediaGroup', function() {
     });
 
     $(video).prop('controls', true);
-    $(video).addClass("backward-layer").removeClass("forward-layer");
+    $(this).addClass("backward-layer").removeClass("forward-layer");
   });
 
   $(document).on('play', 'video.backward-layer', function(e) {
