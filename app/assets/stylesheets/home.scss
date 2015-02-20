@@ -61,7 +61,7 @@ span.speed-regend{
 }
 
 .pip-container img{
-    width:256px;
+    width:276px;
 }
 
 video.backward-layer{
@@ -95,7 +95,7 @@ img.forward-layer{
     border:1px solid #000;
     width:130px !important;
     z-index:10;
-    right:10px;
+    right:-10px;
     margin-top:0px;
     opacity:.9;
     -webkit-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
