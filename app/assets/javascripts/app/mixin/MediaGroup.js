@@ -32,7 +32,7 @@ Ext.define('App.mixin.MediaGroup', function() {
 
   $.createEventCapturing(['play', 'pause', 'seeked']);
 
-  $(document).on('click', '.pip-container img.forward-layer', function(){
+  $(document).on('click', '.pip-container img.forward-layer', function(e){
     var img = e.target;
 
     var mediagroup = $(img).attr('xmediagroup');
