@@ -64,6 +64,7 @@ span.speed-regend{
 }
 
 video.backward-layer{
+    position: relative;
     border:2px solid #999;
     z-index:0
 }
@@ -82,6 +83,7 @@ video.forward-layer{
 }
 
 img.backward-layer{
+    position: relative;
     border:2px solid #999;
     z-index:0
 }
