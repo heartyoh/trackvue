@@ -56,7 +56,8 @@ span.speed-regend{
 }
 
 .pip-container video{
-    width:375px;
+    position: relative;
+    height: auto;
 }
 
 .pip-container img{
@@ -64,17 +65,19 @@ span.speed-regend{
 }
 
 video.backward-layer{
-    position: relative;
     border:2px solid #999;
-    z-index:0
+    width:100%;
+    min-height:220px;
+    z-index:0;
 }
 
 video.forward-layer{
     position:absolute;
     border:1px solid #000;
     width:140px !important;
+    max-height:100px !important;
     z-index:10;
-    right:10px;
+    right:-10px;
     margin-top:-6px;
     opacity:.9;
     -webkit-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
@@ -83,7 +86,6 @@ video.forward-layer{
 }
 
 img.backward-layer{
-    position: relative;
     border:2px solid #999;
     z-index:0
 }
