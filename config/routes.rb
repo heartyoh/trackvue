@@ -24,11 +24,18 @@ Rails.application.routes.draw do
   resources :alerts
   resources :attachments
   resources :geofences
+  resources :generators
   
 	resources :groups do
     member do
       post :update_group_address
     end
+	end
+  
+	resources :generators do
+		collection do
+			post :export_data
+		end
 	end
 
   # Example resource route with options:

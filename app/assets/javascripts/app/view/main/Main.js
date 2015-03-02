@@ -88,7 +88,8 @@ Ext.define('App.view.main.Main', {
             {text: 'Site Preferences', target: 'App.view.setting.SitePreference', handler: 'onClickMenu'},
             {text: 'Group Information', target: 'App.view.setting.GroupInfo', handler: 'onClickMenu'},
             {text: 'Group Device Setting', target: 'App.view.setting.GroupDevice', handler: 'onClickMenu'},
-            {text: 'Register Driver', target: 'App.view.setting.RegisterDriver', handler: 'onClickMenu'}
+            {text: 'Register Driver', target: 'App.view.setting.RegisterDriver', handler: 'onClickMenu'},
+			// {text: 'Generator', target: 'App.view.setting.SettingGenerator', handler: 'onClickMenu'}
           ]
         }, {
           xtype: 'button',
