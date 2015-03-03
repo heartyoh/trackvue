@@ -9,11 +9,11 @@ namespace :trackvue do
     tracks = Track.where("driver_id = ? and start_time > ?", driver, start_date)
     alerts = Alert.where("driver_id = ? and alert_time > ?", driver, start_date)
     
-    File.open("/Users/jyp/Desktop/#{driver}.sh", "w+") do |f|
+    File.open("#{Rails.root}/public/#{driver}.sh", "w+") do |f|
       f.write("#!/bin/bash\n")
       f.write("curl -c cookiefile -d 'user[email]=test@trackvue.com' -d 'user[password]=admin123' http://#{url}/signin\n")
       f.write("cat cookiefile | grep -v ^'# '| grep -v ^$| grep -v POST$|cut -f7 > cookie\n")
-      f.write("COOKIE_DATA=`cat cookie`\n")
+      f.write("COOKIE_DATA=`cat cookie`\n\n")
       
       tracks.each do |track|
         if(track.front_img_url.nil?)
