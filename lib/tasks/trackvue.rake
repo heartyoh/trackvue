@@ -15,14 +15,24 @@ namespace :trackvue do
       f.write("cat cookiefile | grep -v ^'# '| grep -v ^$| grep -v POST$|cut -f7 > cookie\n")
       f.write("COOKIE_DATA=`cat cookie`\n\n")
       
+      
       tracks.each do |track|
-        if(track.front_img_url.nil?)
-          track_data = tracking_data("1", track, url)
-        elsif(track.front_img_url && track.video_url.nil?)
-          track_data = tracking_data("2", track, url)
-        elsif(track.front_img_url && track.video_url)
-          track_data = tracking_data("3", track, url)
+        track_data = "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"track[driver_id]=#{track.driver_id}\" --form \"track[start_time]=#{track.start_time}\" --form \"track[end_time]=#{track.end_time}\" --form \"track[speed]=#{track.speed}\" --form \"track[speed_max]=#{track.speed_max}\" --form \"track[speed_avg]=#{track.speed_avg}\" --form \"track[status]=#{track.status}\" --form \"track[from_lat]=#{track.from_lat}\" --form \"track[from_lng]=#{track.from_lng}\" --form \"track[to_lat]=#{track.to_lat}\" --form \"track[to_lng]=#{track.to_lng}\" --form \"track[elapsed]=#{track.elapsed}\" --form \"track[distance]=#{track.distance}\" --form \"track[count_off]=#{track.count_off}\" --form \"track[count_idle]=#{track.count_idle}\" --form \"track[count_slow]=#{track.count_slow}\" --form \"track[count_normal]=#{track.count_normal}\" --form \"track[count_fast]=#{track.count_fast}\" --form \"track[count_speeding]=#{track.count_speeding}\""
+      
+        if(!track.front_img_url.nil?)
+          track_data += " --form \"track[front_img]=@#{Rails.root}/public#{track.front_img_url};type=image/jpeg\""
         end
+        
+        if(!track.rear_img_url.nil?)
+          track_data += " --form \"track[rear_img]=@#{Rails.root}/public#{track.rear_img_url};type=image/jpeg\""
+        end
+        
+        if(!track.video_url.nil?)
+          track_data += " --form \"track[video]=@#{Rails.root}/public#{track.video_url};type=video/mp4\""
+        end
+        
+        track_data += " http://#{url}/tracks.json\n"
+
         f.write(track_data)
       end
       
@@ -31,23 +41,12 @@ namespace :trackvue do
       alerts.each do |alert|
         if(alert.front_img_url.nil?)
           alert_data = alert_event("1", alert, url)
-        elsif(alert.front_img_url && alert.rear_img_url)
+        else
           alert_data = alert_event("2", alert, url)
         end
         f.write(alert_data)
       end
       
-    end
-  end
-  
-  def tracking_data(type, params, url)
-    case type
-    when "1"
-      return "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"track[driver_id]=#{params.driver_id}\" --form \"track[start_time]=#{params.start_time}\" --form \"track[end_time]=#{params.end_time}\" --form \"track[speed]=#{params.speed}\" --form \"track[speed_max]=#{params.speed_max}\" --form \"track[speed_avg]=#{params.speed_avg}\" --form \"track[status]=#{params.status}\" --form \"track[from_lat]=#{params.from_lat}\" --form \"track[from_lng]=#{params.from_lng}\" --form \"track[to_lat]=#{params.to_lat}\" --form \"track[to_lng]=#{params.to_lng}\" --form \"track[elapsed]=#{params.elapsed}\" --form \"track[distance]=#{params.distance}\" --form \"track[count_off]=#{params.count_off}\" --form \"track[count_idle]=#{params.count_idle}\" --form \"track[count_slow]=#{params.count_slow}\" --form \"track[count_normal]=#{params.count_normal}\" --form \"track[count_fast]=#{params.count_fast}\" --form \"track[count_speeding]=#{params.count_speeding}\" http://#{url}/tracks.json\n"
-    when "2"
-      return "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"track[driver_id]=#{params.driver_id}\" --form \"track[start_time]=#{params.start_time}\" --form \"track[end_time]=#{params.end_time}\" --form \"track[speed]=#{params.speed}\" --form \"track[speed_max]=#{params.speed_max}\" --form \"track[speed_avg]=#{params.speed_avg}\" --form \"track[status]=#{params.status}\" --form \"track[from_lat]=#{params.from_lat}\" --form \"track[from_lng]=#{params.from_lng}\" --form \"track[to_lat]=#{params.to_lat}\" --form \"track[to_lng]=#{params.to_lng}\" --form \"track[elapsed]=#{params.elapsed}\" --form \"track[distance]=#{params.distance}\" --form \"track[count_off]=#{params.count_off}\" --form \"track[count_idle]=#{params.count_idle}\" --form \"track[count_slow]=#{params.count_slow}\" --form \"track[count_normal]=#{params.count_normal}\" --form \"track[count_fast]=#{params.count_fast}\" --form \"track[count_speeding]=#{params.count_speeding}\" --form \"track[front_img]=@#{Rails.root}/public#{params.front_img_url}\"  --form \"track[rear_img]=@#{Rails.root}/public#{params.rear_img_url};type=image/jpeg\" http://#{url}/tracks.json\n"
-    when "3"
-      return "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"track[driver_id]=#{params.driver_id}\" --form \"track[start_time]=#{params.start_time}\" --form \"track[end_time]=#{params.end_time}\" --form \"track[speed]=#{params.speed}\" --form \"track[speed_max]=#{params.speed_max}\" --form \"track[speed_avg]=#{params.speed_avg}\" --form \"track[status]=#{params.status}\" --form \"track[from_lat]=#{params.from_lat}\" --form \"track[from_lng]=#{params.from_lng}\" --form \"track[to_lat]=#{params.to_lat}\" --form \"track[to_lng]=#{params.to_lng}\" --form \"track[elapsed]=#{params.elapsed}\" --form \"track[distance]=#{params.distance}\" --form \"track[count_off]=#{params.count_off}\" --form \"track[count_idle]=#{params.count_idle}\" --form \"track[count_slow]=#{params.count_slow}\" --form \"track[count_normal]=#{params.count_normal}\" --form \"track[count_fast]=#{params.count_fast}\" --form \"track[count_speeding]=#{params.count_speeding}\" --form \"track[front_img]=@#{Rails.root}/public#{params.front_img_url}\"  --form \"track[rear_img]=@#{Rails.root}/public#{params.rear_img_url};type=image/jpeg\" --form \"track[video]=@#{Rails.root}/public#{params.video_url};type=video/mp4\" http://#{url}/tracks.json\n"
     end
   end
   
