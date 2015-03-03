@@ -31,7 +31,7 @@ namespace :trackvue do
       alerts.each do |alert|
         if(alert.front_img_url.nil?)
           alert_data = alert_event("1", alert, url)
-        elsif(track.front_img_url && track.rear_img_url)
+        elsif(alert.front_img_url && alert.rear_img_url)
           alert_data = alert_event("2", alert, url)
         end
         f.write(alert_data)
