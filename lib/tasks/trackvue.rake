@@ -34,6 +34,11 @@ namespace :trackvue do
         track_data += " http://#{url}/tracks.json\n"
 
         f.write(track_data)
+        
+        if(!track.video_url.nil?)
+          f.write("sleep 2\n")
+        end
+        
       end
       
       f.write("\n\n\n")
@@ -56,6 +61,10 @@ namespace :trackvue do
         alert_data += " http://#{url}/alerts.json\n"
         
         f.write(alert_data)
+        
+        if(!alert.video_url.nil?)
+          f.write("sleep 2\n")
+        end
       end
       
     end
