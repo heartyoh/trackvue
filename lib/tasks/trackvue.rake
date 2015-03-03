@@ -39,23 +39,25 @@ namespace :trackvue do
       f.write("\n\n\n")
       
       alerts.each do |alert|
-        if(alert.front_img_url.nil?)
-          alert_data = alert_event("1", alert, url)
-        else
-          alert_data = alert_event("2", alert, url)
+        alert_data = "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"alert[driver_id]=#{alert.driver_id}\" --form \"alert[trip_start_time]=#{alert.trip_start_time}\" --form \"alert[alert_time]=#{alert.alert_time}\" --form \"alert[alert_type]=#{alert.alert_type}\" --form \"alert[severity]=#{alert.severity}\" --form \"alert[value]=#{alert.value}\" --form \"alert[lat]=#{alert.lat}\" --form \"alert[lng]=#{alert.lng}\""
+        
+        if(!alert.front_img_url.nil?)
+          alert_data += " --form \"alert[front_img]=@#{Rails.root}/public#{params.front_img_url};type=image/jpeg\""
         end
+        
+        if(!alert.rear_img_url.nil?)
+          alert_data += "  --form \"alert[rear_img]=@#{Rails.root}/public#{params.rear_img_url};type=image/jpeg\""
+        end
+        
+        if(!alert.video_url.nil?)
+          alert_data += " --form \"alert[video]=@#{Rails.root}/public#{params.video_url};type=video/mp4\""
+        end
+        
+        alert_data += " http://#{url}/alerts.json\n"
+        
         f.write(alert_data)
       end
       
-    end
-  end
-  
-  def alert_event(type, params, url)
-    case type
-    when "1"
-      return "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"alert[driver_id]=#{params.driver_id}\" --form \"alert[trip_start_time]=#{params.trip_start_time}\" --form \"alert[alert_time]=#{params.alert_time}\" --form \"alert[alert_type]=#{params.alert_type}\" --form \"alert[severity]=#{params.severity}\" --form \"alert[value]=#{params.value}\" --form \"alert[lat]=#{params.lat}\" --form \"alert[lng]=#{params.lng}\" --form \"alert[video]=@#{Rails.root}/public#{params.video_url};type=video/mp4\" http://#{url}/alerts.json\n"
-    when "2"
-      return "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"alert[driver_id]=#{params.driver_id}\" --form \"alert[trip_start_time]=#{params.trip_start_time}\" --form \"alert[alert_time]=#{params.alert_time}\" --form \"alert[alert_type]=#{params.alert_type}\" --form \"alert[severity]=#{params.severity}\" --form \"alert[value]=#{params.value}\" --form \"alert[lat]=#{params.lat}\" --form \"alert[lng]=#{params.lng}\" --form \"alert[front_img]=@#{Rails.root}/public#{params.front_img_url};type=image/jpeg\"  --form \"alert[rear_img]=@#{Rails.root}/public#{params.rear_img_url};type=image/jpeg\" --form \"alert[video]=@#{Rails.root}/public#{params.video_url};type=video/mp4\" http://#{url}/alerts.json\n"
     end
   end
   
