@@ -416,21 +416,41 @@ Ext.define('App.view.track.TrackController', {
       this.addMarker(marker);
 
       if(fit) {
-        HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
+	    HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
 
-          var alert = marker.info;
+	    var alert = marker.info;
 
-          var address = '--';
-          if (results && results[0]) {
-            address = results[0].formatted_address
-          }
+	    var address = '--';
+	    if (results && results[0]) {
+	      address = results[0].formatted_address
+	    }
 
-          alert.address = address;
-          var content = App.view.track.TrackController.tplAlertInfoWindow.apply(alert);
+	    alert.address = address;
+	    var content = App.view.track.TrackController.tplAlertInfoWindow.apply(alert);
 
-          self.setInformationWindow(gmap, content, marker);
-          gmap.setCenter(latlng);
-        });
+	    self.setInformationWindow(gmap, content, marker);
+	      gmap.setCenter(latlng);
+	    });
+		  
+		google.maps.event.addListener(marker, 'click', function(e) {
+			// var alert = this.info;
+	      HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
+
+	      var alert = marker.info;
+
+	      var address = '--';
+	      if (results && results[0]) {
+	        address = results[0].formatted_address
+	      }
+
+	      alert.address = address;
+	      var content = App.view.track.TrackController.tplAlertInfoWindow.apply(alert);
+
+	      self.setInformationWindow(gmap, content, marker);
+	      gmap.setCenter(latlng);
+	      });
+		});
+        
       } else {
         google.maps.event.addListener(marker, 'click', function(e) {
 
