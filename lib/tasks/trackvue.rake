@@ -42,15 +42,15 @@ namespace :trackvue do
         alert_data = "curl -H \"Cookie: _trackvue_session=$COOKIE_DATA\" --form \"alert[driver_id]=#{alert.driver_id}\" --form \"alert[trip_start_time]=#{alert.trip_start_time}\" --form \"alert[alert_time]=#{alert.alert_time}\" --form \"alert[alert_type]=#{alert.alert_type}\" --form \"alert[severity]=#{alert.severity}\" --form \"alert[value]=#{alert.value}\" --form \"alert[lat]=#{alert.lat}\" --form \"alert[lng]=#{alert.lng}\""
         
         if(!alert.front_img_url.nil?)
-          alert_data += " --form \"alert[front_img]=@#{Rails.root}/public#{params.front_img_url};type=image/jpeg\""
+          alert_data += " --form \"alert[front_img]=@#{Rails.root}/public#{alert.front_img_url};type=image/jpeg\""
         end
         
         if(!alert.rear_img_url.nil?)
-          alert_data += "  --form \"alert[rear_img]=@#{Rails.root}/public#{params.rear_img_url};type=image/jpeg\""
+          alert_data += "  --form \"alert[rear_img]=@#{Rails.root}/public#{alert.rear_img_url};type=image/jpeg\""
         end
         
         if(!alert.video_url.nil?)
-          alert_data += " --form \"alert[video]=@#{Rails.root}/public#{params.video_url};type=video/mp4\""
+          alert_data += " --form \"alert[video]=@#{Rails.root}/public#{alert.video_url};type=video/mp4\""
         end
         
         alert_data += " http://#{url}/alerts.json\n"
