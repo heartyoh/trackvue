@@ -15,7 +15,7 @@ Ext.define('App.model.Trip', {
     name: 'calculated_elapsed',
     type: 'string',
     convert: function(v, record) {
-      return HF.formula_duration((record.get('end_time') - record.get('start_time'))/1000);
+      return HF.formula_duration(record.get('elapsed'));
     }
   }, {
     name: 'speed_max', type: 'integer'
@@ -31,6 +31,12 @@ Ext.define('App.model.Trip', {
     name: 'to_lng', type: 'float'
   }, {
     name: 'distance', type: 'float'
+  }, {
+    name: 'calculated_distance',
+    type: 'float',
+    convert: function(v, record) {
+        return record.get('distance') / 1000
+    }
   }, {
     name: 'status', type: 'string'
   }, {

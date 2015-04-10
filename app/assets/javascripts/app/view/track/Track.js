@@ -246,7 +246,7 @@ Ext.define('App.view.track.Track', {
           { xtype: 'datecolumn', text: 'START TIME',  dataIndex: 'start_time', format: 'Y-m-d H:i:s', width: 140 },
           { text: 'MAX', dataIndex: 'speed_max', width: 50, sortable: false },
           { text: 'AVG', dataIndex: 'speed_avg', width: 50, sortable: false },
-          { text: 'DIST.', dataIndex: 'distance', width: 50, sortable: false },
+          { text: 'DIST.', dataIndex: 'calculated_distance', width: 50, sortable: false },
           { text: 'DURATION', dataIndex: 'calculated_elapsed', width: 80, sortable: false }
         ],
         dockedItems: [{
@@ -300,7 +300,7 @@ Ext.define('App.view.track.Track', {
         }, {
           fieldLabel: 'Duration / Distance',
           bind: {
-            value: '{trip.calculated_elapsed} / {trip.distance} Km'
+            value: '{trip.calculated_elapsed} / {trip.calculated_distance} Km'
           }
         }, {
           fieldLabel: 'Speed / Status',
