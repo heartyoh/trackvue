@@ -28,46 +28,38 @@ class AlertsController < ApplicationController
   end
 
   def create
-    @alert = Alert.create(alert_params.except(:front_img, :rear_img, :video))
+    @alert = Alert.create(alert_params.except(:video1, :video2, :video3, :video4))
 
-    front_img = Attachment.create(
-      path: alert_params[:front_img],
+    video1 = Attachment.create(
+      path: alert_params[:video1],
       on: @alert,
-      tag: 'front'
-    ) if alert_params[:front_img]
+      tag: 'video1'
+    ) if alert_params[:video1]
 
-    rear_img = Attachment.create(
-      path: alert_params[:rear_img],
+    video2 = Attachment.create(
+      path: alert_params[:video2],
       on: @alert,
-      tag: 'rear'
-    ) if alert_params[:rear_img]
+      tag: 'video2'
+    ) if alert_params[:video2]
 
-    video = Attachment.create(
-      path: alert_params[:video],
+    video3 = Attachment.create(
+      path: alert_params[:video3],
       on: @alert,
-      tag: 'video'
-    ) if alert_params[:video]
+      tag: 'video3'
+    ) if alert_params[:video3]
 
-    video_file_path = nil
-    extract_base_dir = nil
-    extract_base_url = nil
-
-    if (video && video.path)
-      video_file_path = video.path.current_path
-      extract_base_dir = File.join(File.dirname(video_file_path), 'ext')
-      extract_base_url = File.join(File.dirname(video.path.url), 'ext')
-    end
+    video4 = Attachment.create(
+      path: alert_params[:video4],
+      on: @alert,
+      tag: 'video4'
+    ) if alert_params[:video4]
 
     @alert.update!(
-      front_img_url: front_img && front_img.path,
-      rear_img_url: rear_img && rear_img.path,
-      video_url: video && video.path,
-      front_video_url: extract_base_url && File.join(extract_base_url, 'front.mp4'),
-      rear_video_url: extract_base_url && File.join(extract_base_url, 'rear.mp4'),
-      audio_url: extract_base_url && File.join(extract_base_url, 'audio.mp3')
-    ) if front_img || rear_img || video
-
-    system "#{Rails.root.join('video.sh')} #{video_file_path} #{extract_base_dir}" if video_file_path
+      video1_url: video1 && video1.path,
+      video2_url: video2 && video2.path,
+      video3_url: video3 && video3.path,
+      video4_url: video4 && video4.path
+    ) if video1 || video2 || video3 || video4
 
     respond_with(@alert)
   end
@@ -75,6 +67,6 @@ class AlertsController < ApplicationController
 private
 
   def alert_params
-    params.require(:alert).permit(:driver_id, :trip_start_time, :alert_time, :alert_type, :severity, :value, :lat, :lng, :front_img, :rear_img, :video)
+    params.require(:alert).permit(:driver_id, :trip_start_time, :alert_time, :alert_type, :severity, :value, :lat, :lng, :video1, :video2, :video3, :video4)
   end
 end

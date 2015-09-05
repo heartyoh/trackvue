@@ -64,6 +64,17 @@ span.speed-regend{
     width:276px;
 }
 
+#video-selector a.selected {
+    background:#009f00;
+}
+
+#video-list video {
+    border:2px solid #999;
+    width:100%;
+    min-height:220px;
+    z-index:0;
+}
+
 video.backward-layer{
     border:2px solid #999;
     width:100%;

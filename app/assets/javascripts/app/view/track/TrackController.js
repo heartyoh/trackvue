@@ -29,18 +29,34 @@ Ext.define('App.view.track.TrackController', {
     tplAlertInfoWindow: new Ext.XTemplate(
       '<div>Occurred at <strong>{alert_time}</strong></div>',
       '<div class="detail-address">Address : {address}</div>',
-      '<tpl if="this.hasResource(video_url)">',
-        '<div class="pip-container">',
-          '<video src="{front_video_url}" controls xmediagroup="pip" class="backward-layer"></video>',
-          '<video src="{rear_video_url}" xmediagroup="pip" class="forward-layer"></video>',
-          '<audio src="{audio_url}" xmediagroup="pip" hidden></audio>',
-        '</div>',
-      '<tpl elseif="this.hasResource(front_img_url)">',
-        '<div class="pip-container">',
-          '<img src="{front_img_url}" class="backward-layer"></img>',
-          '<img src="{rear_img_url}" class="forward-layer"></img>',
-        '</div>',
-      '</tpl>',
+      '<div id="video-list">',
+        '<tpl if="this.hasResource(video1_url)">',
+          '<video id="video-1" src="{video1_url}" controls></video>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video2_url)">',
+          '<video id="video-2" src="{video2_url}" controls hidden></video>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video3_url)">',
+          '<video id="video-3" src="{video3_url}" controls hidden></video>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video4_url)">',
+          '<video id="video-4" src="{video4_url}" controls hidden></video>',
+        '</tpl>',
+      '</div>',
+      '<div id="video-selector">',
+        '<tpl if="this.hasResource(video1_url)">',
+          '<a id="video-link-1" class="selected">1</a>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video2_url)">',
+          '<a id="video-link-2">2</a>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video3_url)">',
+          '<a id="video-link-3">3</a>',
+        '</tpl>',
+        '<tpl if="this.hasResource(video4_url)">',
+          '<a id="video-link-4">4</a>',
+        '</tpl>',
+      '</div>',
       {
         hasResource: function(url) {
           return !!url;
@@ -432,7 +448,7 @@ Ext.define('App.view.track.TrackController', {
 	    self.setInformationWindow(gmap, content, marker);
 	      gmap.setCenter(latlng);
 	    });
-		  
+
 		google.maps.event.addListener(marker, 'click', function(e) {
 			// var alert = this.info;
 	      HF.reverse_geocode(marker, alert.lat, alert.lng, function(marker, results, status) {
@@ -451,7 +467,7 @@ Ext.define('App.view.track.TrackController', {
 	      gmap.setCenter(latlng);
 	      });
 		});
-        
+
       } else {
         google.maps.event.addListener(marker, 'click', function(e) {
 

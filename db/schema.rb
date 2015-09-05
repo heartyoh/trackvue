@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150127222200) do
+ActiveRecord::Schema.define(version: 20150127222300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,10 @@ ActiveRecord::Schema.define(version: 20150127222200) do
     t.string   "front_video_url"
     t.string   "rear_video_url"
     t.string   "audio_url"
+    t.string   "video1_url"
+    t.string   "video2_url"
+    t.string   "video3_url"
+    t.string   "video4_url"
   end
 
   add_index "alerts", ["driver_id", "alert_time"], name: "idx_alerts_0", unique: true, using: :btree
