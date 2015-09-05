@@ -22,12 +22,6 @@ class TracksController < ApplicationController
   def create
     @track = Track.create(track_params.except(:image1, :image2, :image3, :image4))
 
-    video1 = Attachment.create(
-      path: alert_params[:video1],
-      on: @alert,
-      tag: 'video1'
-    ) if alert_params[:video1]
-
     image1 = Attachment.create(
       path: track_params[:image1],
       on: @track,

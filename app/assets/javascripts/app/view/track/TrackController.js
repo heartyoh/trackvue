@@ -804,7 +804,7 @@ Ext.define('App.view.track.TrackController', {
       icon = 'tripend';
     else {
       var prefix = 'tripmarker_';
-      if(track.get('front_img_url') || track.get('rear_img_url'))
+      if(track.get('image1_url') || track.get('image2_url'))
         prefix += 'i_';
 
       if(status == 'F')

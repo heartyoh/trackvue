@@ -96,6 +96,13 @@ video.forward-layer{
     box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
 }
 
+#image-list img {
+    border:2px solid #999;
+    z-index:0;
+    width:352px;
+    height:196px;
+}
+
 img.backward-layer{
     border:2px solid #999;
     z-index:0

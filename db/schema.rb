@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150127222300) do
+ActiveRecord::Schema.define(version: 20150127222400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,10 @@ ActiveRecord::Schema.define(version: 20150127222300) do
     t.string   "front_video_url"
     t.string   "rear_video_url"
     t.string   "audio_url"
+    t.string   "image1_url"
+    t.string   "image2_url"
+    t.string   "image3_url"
+    t.string   "image4_url"
   end
 
   add_index "tracks", ["driver_id", "start_time", "end_time"], name: "idx_tracks_0", unique: true, using: :btree

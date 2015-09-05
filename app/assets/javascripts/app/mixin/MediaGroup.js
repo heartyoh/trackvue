@@ -28,6 +28,34 @@ Ext.define('App.mixin.MediaGroup', function() {
     $('#video-4').show();
   });
 
+  $(document).on('click', '#image-link-1', function() {
+    $('#image-selector a').removeClass('selected');
+    $(this).addClass('selected');
+    $('#image-list img').hide();
+    $('#image-1').show();
+  });
+
+  $(document).on('click', '#image-link-2', function() {
+    $('#image-selector a').removeClass('selected');
+    $(this).addClass('selected');
+    $('#image-list img').hide();
+    $('#image-2').show();
+  });
+
+  $(document).on('click', '#image-link-3', function() {
+    $('#image-selector a').removeClass('selected');
+    $(this).addClass('selected');
+    $('#image-list img').hide();
+    $('#image-3').show();
+  });
+
+  $(document).on('click', '#image-link-4', function() {
+    $('#image-selector a').removeClass('selected');
+    $(this).addClass('selected');
+    $('#image-list img').hide();
+    $('#image-4').show();
+  });
+
   $.createEventCapturing = (function () {
     var special = $.event.special;
     return function (names) {
