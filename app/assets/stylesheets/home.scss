@@ -60,10 +60,6 @@ span.speed-regend{
     height: auto;
 }
 
-.pip-container img{
-    width:276px;
-}
-
 #video-selector a.selected {
     background:#009f00;
 }
@@ -94,6 +90,10 @@ video.forward-layer{
     -webkit-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
     -moz-box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
     box-shadow: -1px 1px 3px 1px rgba(0,0,0,0.3);
+}
+
+#image-selector a.selected {
+    background:#009f00;
 }
 
 #image-list img {
