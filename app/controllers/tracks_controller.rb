@@ -20,46 +20,44 @@ class TracksController < ApplicationController
   end
 
   def create
-    @track = Track.create(track_params.except(:front_img, :rear_img, :video))
+    @track = Track.create(track_params.except(:image1, :image2, :image3, :image4))
 
-    front_img = Attachment.create(
-      path: track_params[:front_img],
+    video1 = Attachment.create(
+      path: alert_params[:video1],
+      on: @alert,
+      tag: 'video1'
+    ) if alert_params[:video1]
+
+    image1 = Attachment.create(
+      path: track_params[:image1],
       on: @track,
-      tag: 'front'
-    ) if track_params[:front_img]
+      tag: 'image1'
+    ) if track_params[:image1]
 
-    rear_img = Attachment.create(
-      path: track_params[:rear_img],
+    image2 = Attachment.create(
+      path: track_params[:image2],
       on: @track,
-      tag: 'rear'
-    ) if track_params[:rear_img]
+      tag: 'image2'
+    ) if track_params[:image2]
 
-    video = Attachment.create(
-      path: track_params[:video],
+    image3 = Attachment.create(
+      path: track_params[:image3],
       on: @track,
-      tag: 'video'
-    ) if track_params[:video]
+      tag: 'image3'
+    ) if track_params[:image3]
 
-    video_file_path = nil
-    extract_base_dir = nil
-    extract_base_url = nil
-
-    if (video && video.path)
-      video_file_path = video.path.current_path
-      extract_base_dir = File.join(File.dirname(video_file_path), 'ext')
-      extract_base_url = File.join(File.dirname(video.path.url), 'ext')
-    end
+    image4 = Attachment.create(
+      path: track_params[:image4],
+      on: @track,
+      tag: 'image4'
+    ) if track_params[:image4]
 
     @track.update!(
-      front_img_url: front_img && front_img.path,
-      rear_img_url: rear_img && rear_img.path,
-      video_url: video && video.path,
-      front_video_url: extract_base_url && File.join(extract_base_url, 'front.mp4'),
-      rear_video_url: extract_base_url && File.join(extract_base_url, 'rear.mp4'),
-      audio_url: extract_base_url && File.join(extract_base_url, 'audio.mp3')
-    ) if front_img || rear_img || video
-
-    system "#{Rails.root.join('video.sh')} #{video_file_path} #{extract_base_dir}" if video_file_path
+      image1_url: image1 && image1.path,
+      image2_url: image2 && image2.path,
+      image3_url: image3 && image3.path,
+      image4_url: image4 && image4.path,
+    ) if image1 || image2 || image3 || image4
 
     respond_with(@track)
   end
@@ -67,7 +65,7 @@ class TracksController < ApplicationController
 private
 
   def track_params
-    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img, :video, :count_off, :count_idle, :count_slow, :count_normal, :count_fast, :count_speeding)
+    params.require(:track).permit(:driver_id, :start_time, :end_time, :speed, :speed_max, :speed_avg, :status, :from_lat, :from_lng, :to_lat, :to_lng, :elapsed, :distance, :front_img, :rear_img, :video, :count_off, :count_idle, :count_slow, :count_normal, :count_fast, :count_speeding, :image1, :image2, :image3, :image4)
   end
 end
 
